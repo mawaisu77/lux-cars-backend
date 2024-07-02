@@ -53,6 +53,18 @@ const User = sequelize.define('user',
       type: Sequelize.ENUM('admin', 'user'),
       defaultValue: 'user'
     },
+    document: {
+      type: Sequelize.STRING, 
+      allowNull: true
+    },
+    documentVerified: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    documentVerificationStatus: {
+      type: Sequelize.ENUM('pending', 'approved', 'rejected'),
+      defaultValue: 'pending'
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

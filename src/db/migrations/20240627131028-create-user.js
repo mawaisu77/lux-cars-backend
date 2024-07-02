@@ -2,6 +2,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+
+    await queryInterface.sequelize.query(`
+      CREATE TYPE "enum_user_documentVerificationStatus" AS ENUM ('pending', 'verified', 'rejected')
+    `);
+
     await queryInterface.createTable('user',
       {
         id: {
@@ -43,6 +48,18 @@ module.exports = {
           type: Sequelize.ENUM('admin', 'user'),
           defaultValue: 'user'
         },
+        document: {
+          type: Sequelize.STRING, 
+          allowNull: true
+        },
+        documentVerified: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: false
+        },
+        documentVerificationStatus: {
+          type: Sequelize.ENUM('pending', 'approved', 'rejected'),
+          defaultValue: 'pending'
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
@@ -58,5 +75,9 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('user');
+  // Use raw SQL to drop the enum type
+  await queryInterface.sequelize.query(`
+    DROP TYPE "enum_user_documentVerificationStatus"
+  `);
   }
 };

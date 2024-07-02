@@ -2,7 +2,8 @@ const authRepository = require('../repositories/auth.repositories');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendMail');
 const { generateToken } = require('../utils/generateToken');
- 
+const ApiError = require('../utils/ApiError');
+
 const generateTokenAndExpiry = () => {
     const token = crypto.randomBytes(20).toString('hex');
     const tokenExpiry = Date.now() + 24 * 60 * 60 * 1000; 
@@ -40,7 +41,7 @@ console.log(existingUser)
 
 if(existingUser){
     if(existingUser.isEmailVerified){
-      throw new ApiError(400, 'Email already exists');
+      throw new ApiError(400, 'Email already existss');
     } else {
 
         const { token, tokenExpiry } = generateTokenAndExpiry();

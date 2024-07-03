@@ -1,4 +1,4 @@
-const authRepository = require('../repositories/auth.repositories');
+const authRepository = require('../repositories/auth.repository');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendMail');
 const { generateToken } = require('../utils/generateToken');

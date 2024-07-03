@@ -9,7 +9,14 @@ const uploadDocuments = asyncHandler(async (req, res, next) => {
 });
 
 
+const updateProfile = asyncHandler(async (req, res, next) => {
+    const { userId } = req.user; 
+    const updatedProfileData = req.body;
+    const updatedUser = await userService.updateProfile(userId, updatedProfileData);
+    res.status(200).json(new ApiResponse(200, updatedUser, 'Profile updated successfully'));
+  });
+
 module.exports = {
     uploadDocuments,
-
+    updateProfile
 };

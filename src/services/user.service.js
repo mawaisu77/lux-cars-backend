@@ -3,7 +3,6 @@ const ApiError = require('../utils/ApiError');
 const {uploadOnCloudinary} = require("../utils/cloudinary.js")
 
 const uploadDocuments = async (req, res) => {
-    console.log("req.user")
 
     if (!req.files || req.files.length === 0) {
         throw new ApiError(400, 'No document files provided');
@@ -29,8 +28,38 @@ const uploadDocuments = async (req, res) => {
       await user.save();
       return user;
 
+};
+
+const updateProfile = async (userId, updatedProfileData) => {
+    try {
+      const user = await authRepository.findByPk(userId);
+      if (!user) {
+        throw new ApiError(404, 'User not found');
+      }
+  
+      // Update allowed fields
+      if (updatedProfileData.username) {
+        user.username = updatedProfileData.username;
+      }
+      if (updatedProfileData.email) {
+        user.email = updatedProfileData.email;
+      }
+      if (updatedProfileData.fullName) {
+        user.fullName = updatedProfileData.fullName;
+      }
+      if (updatedProfileData.phoneNumber) {
+        user.phoneNumber = updatedProfileData.phoneNumber;
+      }
+  
+      await user.save();
+      return user;
+    } catch (error) {
+      throw new ApiError(400, 'Error updating profile', error);
+    }
   };
+  
 
   module.exports = {
-    uploadDocuments
+    uploadDocuments,
+    updateProfile
 }

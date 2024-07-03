@@ -35,7 +35,7 @@ const findByResetToken = async (resetPasswordToken) => {
         }
       }
     });
-  };
+};
 
 const findUserById = async (id) => {
     return await User.findByPk(id);
@@ -48,5 +48,4 @@ module.exports = {
     findByVerificationToken,
     findByResetToken,
     findUserById
-
 };

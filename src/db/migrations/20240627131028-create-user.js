@@ -48,9 +48,9 @@ module.exports = {
           type: Sequelize.ENUM('admin', 'user'),
           defaultValue: 'user'
         },
-        document: {
-          type: Sequelize.STRING, 
-          allowNull: true
+        documents: {
+          type: Sequelize.TEXT, // Store URLs as JSON string
+          allowNull: true,
         },
         documentVerified: {
           type: Sequelize.BOOLEAN,

@@ -53,9 +53,16 @@ const User = sequelize.define('user',
       type: Sequelize.ENUM('admin', 'user'),
       defaultValue: 'user'
     },
-    document: {
-      type: Sequelize.STRING, 
-      allowNull: true
+    documents: {
+      type: Sequelize.TEXT, // Store URLs as JSON string
+      allowNull: true,
+      get() {
+        const documents = this.getDataValue('documents');
+        return documents ? JSON.parse(documents) : [];
+      },
+      set(value) {
+        this.setDataValue('documents', JSON.stringify(value));
+      }
     },
     documentVerified: {
       type: Sequelize.BOOLEAN,

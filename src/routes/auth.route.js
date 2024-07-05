@@ -9,6 +9,5 @@ router.route("/auth/login").post(login)
 router.route("/auth/forgot-password").post(forgotPassword)
 router.route("/auth/reset-password/:token").put(resetPassword)
 
-router.route("/user/upload-document").put(resetPassword)
 
 module.exports =  router

@@ -13,5 +13,5 @@ axiosPrivate.interceptors.request.use(
         // Handle the error
         return Promise.reject(error);
     }
-);
+); 
 module.exports = { axiosPrivate };

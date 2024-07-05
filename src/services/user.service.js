@@ -30,14 +30,17 @@ const uploadDocuments = async (req, res) => {
 
 };
 
-const updateProfile = async (userId, updatedProfileData) => {
+const editProfile = async (userId, updatedProfileData) => {
+
     try {
-      const user = await authRepository.findByPk(userId);
+
+      console.log("update profile", updatedProfileData)
+      const user = await authRepository.findUserById(userId);
+
       if (!user) {
         throw new ApiError(404, 'User not found');
       }
   
-      // Update allowed fields
       if (updatedProfileData.username) {
         user.username = updatedProfileData.username;
       }
@@ -56,10 +59,10 @@ const updateProfile = async (userId, updatedProfileData) => {
     } catch (error) {
       throw new ApiError(400, 'Error updating profile', error);
     }
-  };
+};
   
 
   module.exports = {
     uploadDocuments,
-    updateProfile
+    editProfile
 }

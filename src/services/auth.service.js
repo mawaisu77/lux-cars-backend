@@ -53,9 +53,12 @@ if(existingUser){
                 tokenExpiry,
             }, true); //  isUpdate is true
 
-            const verificationUrl = `${req.protocol}://${req.get(
-                "host"
-              )}/api/v1/auth/verify-email/${token}`;
+            // const verificationUrl = `${req.protocol}://${req.get(
+            //     "host"
+            //   )}/api/v1/auth/verify-email/${token}`;
+            const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
+
+
             const message = `Hello ${username},\n\nPlease click on the following link to verify your email:\n${verificationUrl}`;
 
             await sendEmail({
@@ -77,9 +80,12 @@ if(existingUser){
         tokenExpiry,
     }); //  isUpdate is false by default
 
-    const verificationUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/api/v1/auth/verify-email/${token}`;
+    // const verificationUrl = `${req.protocol}://${req.get(
+    //     "host"
+    //   )}/api/v1/auth/verify-email/${token}`;
+
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
+
     const message = `Hello ${username},\n\nPlease click on the following link to verify your email:\n${verificationUrl}`;
 
     await sendEmail({
@@ -88,7 +94,7 @@ if(existingUser){
         message
     }, 'text');
 
-    return newUser;
+    return ;
 }
 };
 

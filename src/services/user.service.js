@@ -61,8 +61,16 @@ const editProfile = async (userId, updatedProfileData) => {
     }
 };
   
+const getUserProfile = async (userId) => {
+  const user = await authRepository.findUserById(userId);
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+  return user;
+};
 
   module.exports = {
     uploadDocuments,
-    editProfile
+    editProfile,
+    getUserProfile
 }

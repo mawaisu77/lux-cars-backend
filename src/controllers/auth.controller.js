@@ -1,11 +1,10 @@
-
 const asyncHandler = require('express-async-handler');
 const { ApiResponse } = require('../utils/ApiResponse');
 const authService = require('../services/auth.service');
 
 const registerUser = asyncHandler(async (req, res, next) => {
-    const user = await authService.registerUser(req);
-    res.status(201).json(new ApiResponse(201, user, "User created successfully"));}
+    await authService.registerUser(req);
+    res.status(201).json(new ApiResponse(201, null, "User created successfully, Please verify your email"));}
 );
 
 const verifyEmail = asyncHandler(async (req, res, next) => {

@@ -8,6 +8,13 @@ const uploadDocuments = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(200, user, 'Documents uploaded successfully, awaiting verification.'));
 });
 
+
+const getUserProfile = asyncHandler(async (req, res, next) => {
+    const userId = req.user.id;
+    const user = await userService.getUserProfile(userId);
+    res.status(200).json(new ApiResponse(200, user, 'User profile fetched successfully'));
+  });
+
 const editProfile = asyncHandler(async (req, res, next) => {
     const userId = req.user.id; 
     const updatedProfileData = req.body;
@@ -17,5 +24,6 @@ const editProfile = asyncHandler(async (req, res, next) => {
 
 module.exports = {
     uploadDocuments,
-    editProfile
+    editProfile,
+    getUserProfile
 };

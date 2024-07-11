@@ -34,24 +34,24 @@ const editProfile = async (userId, updatedProfileData) => {
 
     try {
 
-      console.log("update profile", updatedProfileData)
       const user = await authRepository.findUserById(userId);
 
       if (!user) {
         throw new ApiError(404, 'User not found');
       }
   
+
       if (updatedProfileData.username) {
         user.username = updatedProfileData.username;
       }
       if (updatedProfileData.email) {
         user.email = updatedProfileData.email;
       }
-      if (updatedProfileData.fullName) {
-        user.fullName = updatedProfileData.fullName;
+      if (updatedProfileData.address) {
+        user.address = updatedProfileData.address;
       }
-      if (updatedProfileData.phoneNumber) {
-        user.phoneNumber = updatedProfileData.phoneNumber;
+      if (updatedProfileData.phone) {
+        user.phone = updatedProfileData.phone;
       }
   
       await user.save();

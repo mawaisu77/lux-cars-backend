@@ -189,7 +189,8 @@ const forgotPassword = async (req) => {
     const resetToken = await user.getResetPasswordToken();
     await user.save({ validate: false });
   
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/api/auth/reset-password/${resetToken}`;
+    // const resetPasswordUrl = `${process.env.FRONTEND_URL}/api/auth/reset-password/${resetToken}`;
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
     const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   

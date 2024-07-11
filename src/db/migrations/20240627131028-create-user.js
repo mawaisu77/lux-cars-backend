@@ -48,6 +48,12 @@ module.exports = {
           type: Sequelize.ENUM('admin', 'user'),
           defaultValue: 'user'
         },
+        address: {
+          type: Sequelize.STRING
+        },
+        phone: {
+          type: Sequelize.STRING
+        },
         documents: {
           type: Sequelize.TEXT, // Store URLs as JSON string
           allowNull: true,

@@ -7,7 +7,9 @@ const uploadDocuments = async (req, res) => {
   if (!req.files || req.files.length === 0) {
     throw new ApiError(400, 'No document files provided');
   }
-  console.log("+++", req.files)
+
+  
+  console.log("files ----- >", req.files)
 
   const uploadResponses = [];
   for (const file of req.files) {
@@ -18,12 +20,18 @@ const uploadDocuments = async (req, res) => {
     }
   }
 
-  const user = await authRepository.findUserById(req.user.id)
+  const userId = req.user.id
+  
+  // if(!userId){
+  //   throw new ApiError(400, 'No document files provided');
+  // }
+
+  const user = await authRepository.findUserById(userId)
   if (!user) {
     throw new ApiError(404, 'User not found');
   }
 
-  user.documents = JSON.stringify(uploadResponses); // Store URLs as JSON array string
+  user.documents = uploadResponses // Store URLs as JSON array string
   user.documentVerificationStatus = 'pending';
   await user.save();
   return user;

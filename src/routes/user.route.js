@@ -4,7 +4,7 @@ const { isAuthenticatedUser } = require("../middlewares/auth.js");
 const { upload } = require("../middlewares/multer.js");
 const router = Router()
 
-router.post('/user/upload-documents',isAuthenticatedUser, upload.array('documents', 10), uploadDocuments);
+router.post('/user/upload-documents',isAuthenticatedUser, upload.array('documents', 2), uploadDocuments);
 router.get('/user/profile', isAuthenticatedUser, getUserProfile);
 router.put('/user/edit-profile', isAuthenticatedUser, editProfile);
 

@@ -1,5 +1,6 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
+
 const getAllCars = async (req, res) => {
     try {
         const query = {

@@ -2,7 +2,7 @@ const dotenv = require('dotenv')
 dotenv.config({ path: `${process.cwd()}/.env` });
 
 
-module.exports =  {
+module.exports = {
   "development": {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
@@ -20,10 +20,10 @@ module.exports =  {
     "dialect": "mysql"
   },
   "production": {
-    "username": process.env.DB_PROD_USERNAME,
-    "password": process.env.DB_PROD_PASSWORD,
-    "database": process.env.DB_PROD_NAME,
-    "host": process.env.DB_PROD_HOST,
-    "dialect": "postgres"
+    username: process.env.DB_PROD_USERNAME,
+    password: process.env.DB_PROD_PASSWORD,
+    database: process.env.DB_PROD_NAME,
+    host: process.env.DB_PROD_HOST,
+    dialect: "postgres"
   }
 }

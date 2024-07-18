@@ -12,7 +12,7 @@ const corsOptions = {
   };
   
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(morgan('dev'));
@@ -20,12 +20,14 @@ app.use(morgan('dev'));
 
 const authRouter = require('./routes/auth.route.js');
 const userRouter = require('./routes/user.route.js');
-const carsRouter = require('./routes/cars.route.js')
+const carsRouter = require('./routes/cars.route.js');
+const localCarsRouter = require('./routes/localCars.route.js')
 const globalErrorHandler = require('./middlewares/errorHandler.js');
 
 app.use("/api/v1", authRouter)
 app.use("/api/v1", userRouter)
 app.use("/api/v1", carsRouter)
+app.use("/api/v1", localCarsRouter)
 
 app.use(
     '*',

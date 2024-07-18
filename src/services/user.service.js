@@ -7,7 +7,18 @@ const uploadDocuments = async (req, res) => {
   if (!req.files || req.files.length === 0) {
     throw new ApiError(400, 'No document files provided');
   }
-  console.log("+++", req.files)
+
+  
+  const userId = req.user.id;
+  const user = await authRepository.findUserById(userId);
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  const existingDocuments = user.documents || [];
+  if (existingDocuments.length >= 2) {
+    throw new ApiError(400, 'You can only upload a maximum of 2 documents');
+  }
 
   const uploadResponses = [];
   for (const file of req.files) {
@@ -18,16 +29,15 @@ const uploadDocuments = async (req, res) => {
     }
   }
 
-  const user = await authRepository.findUserById(req.user.id)
-  if (!user) {
-    throw new ApiError(404, 'User not found');
-  }
 
-  user.documents = JSON.stringify(uploadResponses); // Store URLs as JSON array string
-  user.documentVerificationStatus = 'pending';
-  await user.save();
-  return user;
-
+ // Concatenate new uploads to existing documents without exceeding the limit of 2
+ const updatedDocuments = existingDocuments.concat(uploadResponses).slice(0, 2);
+  
+ user.documents = updatedDocuments; // Store URLs as JSON array
+ user.documentVerificationStatus = 'pending';
+ await user.save();
+ 
+return user
 };
 
 const editProfile = async (userId, updatedProfileData) => {

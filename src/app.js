@@ -6,7 +6,13 @@ const cors = require("cors")
 
 const app = express()
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:3000', // Your frontend's origin
+    credentials: true, // Allow credentials
+  };
+  
+
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(morgan('dev'));

@@ -79,7 +79,7 @@ const getUserProfile = async (userId) => {
   return user;
 };
 
-  module.exports = {
+module.exports = {
     uploadDocuments,
     editProfile,
     getUserProfile

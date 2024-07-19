@@ -36,7 +36,7 @@ const CarDealers = sequelize.define('carDealers',
     },
     dealershipLicense: {
       allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     createdAt: {
       allowNull: false,

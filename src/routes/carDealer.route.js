@@ -1,12 +1,10 @@
 const { Router } = require("express");
-const { uploadCar } = require("../controllers/localCars.controller.js");
+const { registerCarDealer } = require("../controllers/carDealers.controller.js");
 const { isAuthenticatedUser } = require("../middlewares/auth.js");
 const { upload } = require("../middlewares/multer.js");
 const router = Router()
 
 
-router.post('/localCars/saveCarDealer',  upload.fields([{
-                                            name: 'dealershipLicense', maxCount: 1
-                                        }]), uploadCar);
+router.post('/car-dealer/register-car-dealer',  upload.array('dealershipLicense', 2), registerCarDealer);
 
 module.exports =  router

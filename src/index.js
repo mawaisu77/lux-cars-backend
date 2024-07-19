@@ -1,7 +1,11 @@
 const dotenv = require('dotenv');
 const { app } = require('./app.js');
+var bodyParser = require('body-parser')
+
 
 dotenv.config({ path: `${process.cwd()}/.env` });
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 // const PORT =  8000;
 

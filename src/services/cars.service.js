@@ -1,5 +1,6 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
+const logger = require('../utils/logger')
 
 const getAllCars = async (req, res) => {
     try {
@@ -18,6 +19,7 @@ const getAllCars = async (req, res) => {
         return mixedResponse;
 
     } catch (err) {
+        logger.error('ERROR INSIDE GET CARS SERVICE')
         console.log('ERROR INSIDE GET CARS SERVICE')
     }
 }

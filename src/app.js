@@ -13,7 +13,7 @@ const corsOptions = {
 
   const corsProd = {
     origin: 'https://lux-cars-prod.vercel.app', // Your frontend's origin
-    credentials: true, // Allow credentials
+    // credentials: true, // Allow credentials
   };
 
   

@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const { ApiResponse } = require('../utils/ApiResponse');
 const localCars = require('../services/localCars.service')
+
 const uploadCar = asyncHandler(async (req, res) => {
     try {
         const car = await localCars.uploadCar(req)
@@ -9,6 +10,7 @@ const uploadCar = asyncHandler(async (req, res) => {
         console.log('Error while sending request');
     }
 })
+
 module.exports = {
     uploadCar
 }

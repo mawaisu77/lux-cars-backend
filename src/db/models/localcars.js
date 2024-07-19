@@ -83,9 +83,7 @@ const LocalCars = sequelize.define('localCars',
     },
     carImages: {
       allowNull: false,
-      type: Sequelize.STRING,
-      Array: true,
-      default: []
+      type: Sequelize.ARRAY(Sequelize.STRING),
     },
     referral: {
       allowNull: false,

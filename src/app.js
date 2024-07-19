@@ -22,12 +22,14 @@ const authRouter = require('./routes/auth.route.js');
 const userRouter = require('./routes/user.route.js');
 const carsRouter = require('./routes/cars.route.js');
 const localCarsRouter = require('./routes/localCars.route.js')
+const carDealersRouter = require('./routes/carDealer.route.js')
 const globalErrorHandler = require('./middlewares/errorHandler.js');
 
 app.use("/api/v1", authRouter)
 app.use("/api/v1", userRouter)
 app.use("/api/v1", carsRouter)
 app.use("/api/v1", localCarsRouter)
+app.use("/api/v1", carDealersRouter)
 
 app.use(
     '*',

@@ -1,64 +1,57 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
-const dealerRepository = require('../repositories/carDealers.repository');
+const localCarsRepository = require('../repositories/localCars.repository.js');
+const { uploadDocuments } = require('../utils/uplaodDocument.js')
 
-const saveDealerDetails = async (dealerDetails, userID) => {
-    const dealer = dealerRepository.getDealerByUserID(userID)
-    if(!dealer){
-        const {buyerFee, dealershipName, dealershipWebsite, vehicleSalesEachMonth } = dealerDetails
-        const dealerData = {
-            userID,
-            buyerFee,
-            dealershipName,
-            dealershipWebsite,
-            vehicleSalesEachMonth
-        }
-    }
-
-}
-
-const uploadDocuments = async (req, res) => {
-
-    if (!req.files || req.files.length === 0) {
-      throw new ApiError(400, 'No document files provided');
-    }
-    console.log("+++", req.files)
-  
-    const uploadResponses = [];
-    for (const file of req.files) {
-      const localFilePath = file.path;
-      const uploadResponse = await uploadOnCloudinary(localFilePath);
-      if (uploadResponse) {
-        uploadResponses.push(uploadResponse.secure_url);
-      }
-    }
-
-    return uploadResponses
-}
 
 const uploadCar = async (req, res) => {
     try {
-        const {carDetails, dealerDetails, titledDetails} = req.body
-        console.log(req.files)
-        console.log(req.fields)
-        if(dealerDetails){
-            saveDealerDetails(dealerDetails, req.user.id)
-        }
 
-        // const body = {
-        //     carDetails:{
+        // Uplaoding car images
+        const carImages = await uploadDocuments(req)
 
-        //     },
-        //     dealerDetails:{
+        // Getting userID
+        const userID = 1
+        console.log(userID)
 
-        //     },
+        // Preparing CarData 
+        const carData = {...req.body, userID, carImages}
 
-        // }
+        // Sending Car to database
+        const car = await localCarsRepository.createLocalCar(carData)
+        return car
 
     } catch (err) {
-        console.log('ERROR INSIDE GET CARS SERVICE')
+        console.log(err)
     }
 }
+
+const updateCar = async (req, res) => {
+    try {
+        // Uplaoding car images
+        const carImages = await uploadDocuments(req)
+
+        // Getting userID
+        const userID = 1
+        console.log(userID)
+
+        // Preparing CarData 
+        var carData = req.body
+        carData = {...req.body, userID, carImages}
+        console.log(carData)
+        const car = await localCarsRepository.createLocalCar(carData)
+        return car
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+
+
+
+
 module.exports = {
     uploadCar
 }

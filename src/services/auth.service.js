@@ -54,6 +54,7 @@ if(existingUser){
             // const verificationUrl = `${req.protocol}://${req.get(
             //     "host"
             //   )}/api/v1/auth/verify-email/${token}`;
+            
             const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
 
 

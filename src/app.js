@@ -19,7 +19,7 @@ const corsOptions = {
   
   
 
-app.use(cors())
+app.use(cors(corsProd))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(morgan('dev'));

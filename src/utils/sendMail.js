@@ -3,6 +3,7 @@ const nodeMailer = require("nodemailer");
 // const fs = require('fs');
 // const path = require('path');
 const emailConfig = require("./emailConfig.js");
+const logger = require("./logger.js");
 
 const createTransporter = () => {
     return nodeMailer.createTransport(emailConfig.smtp);
@@ -21,7 +22,8 @@ const sendEmail = async (options, contentType = 'html') => {
         }    
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        console.error('Error sending email:', error);
+        logger.error(`Error sending email: ${error}`)
+        // console.error('Error sending email:', error);
         throw error;
     }
 };

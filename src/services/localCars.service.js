@@ -1,6 +1,7 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
 const dealerRepository = require('../repositories/carDealers.repository');
+const logger = require('../utils/logger');
 
 const saveDealerDetails = async (dealerDetails, userID) => {
     const dealer = dealerRepository.getDealerByUserID(userID)
@@ -56,7 +57,8 @@ const uploadCar = async (req, res) => {
         // }
 
     } catch (err) {
-        console.log('ERROR INSIDE GET CARS SERVICE')
+        logger.error('ERROR INSIDE uploadCar SERVICE')
+        console.log('ERROR INSIDE uploadCar SERVICE')
     }
 }
 module.exports = {

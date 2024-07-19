@@ -24,7 +24,6 @@ const saveUser = async (userDetails, isUpdate = false) => {
 
     if (isUpdate) {
         const user = await authRepository.findByEmail(userPayload.email)
-        console.log(userPayload)
 
         return await user.update(userPayload)
     } else {
@@ -37,7 +36,6 @@ const registerUser = async (req) => {
 
 const { username, email, password } = req.body;
 const existingUser = await authRepository.findByEmail(email);
-console.log(existingUser)
 
 if(existingUser){
     if(existingUser.isEmailVerified){
@@ -124,7 +122,6 @@ const verifyEmail = async (req) => {
 
 const requestNewVerificationEmail = async (req) => {
     const existingUser = await authRepository.findByEmail(req.body.email);
-    console.log("existingUser", existingUser)
     if(!existingUser){
         throw new ApiError(400, 'User not found');
     }

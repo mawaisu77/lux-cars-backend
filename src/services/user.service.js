@@ -8,6 +8,10 @@ const uploadDocuments = async (req, res) => {
     throw new ApiError(400, 'No document files provided');
   }
 
+  if (req.files.length === 1) {
+    throw new ApiError(400, 'Please uplaod both documents');
+  }
+
   const userId = req.user.id;
   const user = await authRepository.findUserById(userId);
   if (!user) {
@@ -15,7 +19,6 @@ const uploadDocuments = async (req, res) => {
   }
 
   const existingDocuments = user.documents || [];
-
 
   if (existingDocuments.length >= 2) {
     throw new ApiError(400, 'You can only upload a maximum of 2 documents');

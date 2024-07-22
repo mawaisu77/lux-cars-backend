@@ -7,19 +7,12 @@ const cors = require("cors")
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // Your frontend's origin
-    credentials: true, // Allow credentials
-  };
+    origin: process.env.FRONTEND_URL
+};
 
-  const corsProd = {
-    origin: 'https://lux-cars-prod.vercel.app', // Your frontend's origin
-    // credentials: true, // Allow credentials
-  };
 
-  
-  
 
-app.use(cors(corsProd))
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(morgan('dev'));

@@ -71,10 +71,6 @@ const updateCar = async (req, res) => {
 }
 
 
-
-
-
-
 module.exports = {
     uploadCar,
     getCarByID,

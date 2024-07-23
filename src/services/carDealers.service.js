@@ -47,6 +47,8 @@ const getDealerByUserID = async (req, res) => {
         if (!carDealer){
             throw new ApiError(404, "Car Dealer does not exists.")
         }
+
+        return carDealer
     }
     catch(err){
         throw new ApiError(404, err)

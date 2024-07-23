@@ -10,6 +10,7 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL
 };
 
+console.log(process.env.FRONTEND_URL)
 
 
 app.use(cors(corsOptions))

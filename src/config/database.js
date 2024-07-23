@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv')
 dotenv.config({ path: `${process.cwd()}/.env` });
 
-const env =  'development' ;
+const env = process.env.NODE_ENV ||'development';
 
 const config = require('./config');
 

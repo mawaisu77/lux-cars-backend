@@ -5,8 +5,8 @@ const AppError = require('../utils/ApiError.js');
 
 
 const registerCarDealer = asyncHandler(async (req, res) => {
-        const dealer = await carDealers.registerCarDealer(req)
-        res.status(201).json(new ApiResponse(201, dealer, "Dealer Created successfully." )); 
+    const dealer = await carDealers.registerCarDealer(req)
+    res.status(201).json(new ApiResponse(201, dealer, "Dealer Created successfully." ));
 })
 
 module.exports = {

@@ -48,6 +48,9 @@ module.exports = {
           type: Sequelize.ENUM('admin', 'user'),
           defaultValue: 'user'
         },
+        profilePicture: {
+          type: Sequelize.STRING
+        },
         address: {
           type: Sequelize.STRING
         },

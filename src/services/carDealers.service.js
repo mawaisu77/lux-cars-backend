@@ -1,5 +1,5 @@
 const dealerRepository = require('../repositories/carDealers.repository');
-const { uploadDocuments } = require('../utils/uplaodDocument.js')
+const { uploadDocs } = require('../utils/uplaodDocument.js')
 const ApiError = require('../utils/ApiError.js');
 
 
@@ -17,7 +17,7 @@ console.log("user id ===========================",userID)
         if(!isDealer){
 
             // Uplaoding DealerShip Liecence
-            let dealershipLicense = await uploadDocuments(req)
+            let dealershipLicense = await uploadDocs(req)
             dealershipLicense = dealershipLicense[0]
 
             // Preparing dealerData 
@@ -74,7 +74,7 @@ const updateCarDealer = async (req, res) => {
         // Uplaoding car DealerShip
         var dealershipLicense = ""
         if (req.files && !(req.files.length === 0)){
-            dealershipLicense = await uploadDocuments(req)
+            dealershipLicense = await uploadDocs(req)
             dealershipLicense = dealershipLicense[0]
         }else{
             dealershipLicense = dealer.dealershipLicense

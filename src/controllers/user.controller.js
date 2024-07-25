@@ -2,6 +2,12 @@
 const asyncHandler = require('express-async-handler');
 const { ApiResponse } = require('../utils/ApiResponse');
 const userService = require('../services/user.service.js');
+const uplaodDocument = require('../utils/uplaodDocument.js')
+ 
+const uplaodProfilePicture = asyncHandler(async (req, res) => {
+    const user = await userService.uplaodProfilePicture(req)
+    res.status(200).json(new ApiResponse(200, user, 'Profile picture uploaded successfully!'));
+})
 
 const uploadDocuments = asyncHandler(async (req, res, next) => {
 
@@ -26,5 +32,6 @@ const editProfile = asyncHandler(async (req, res, next) => {
 module.exports = {
     uploadDocuments,
     editProfile,
-    getUserProfile
+    getUserProfile,
+    uplaodProfilePicture
 };

@@ -9,6 +9,13 @@ const placeReview = asyncHandler(async (req, res) => {
 })
 
 
+const luxRatingData = asyncHandler(async (req, res) => {
+    const ratingData = await reviews.luxRatingData()
+    res.status(201).json(new ApiResponse(201, ratingData, "Review Placed successfully.", ));
+
+})
+
 module.exports = {
-    placeReview
+    placeReview,
+    luxRatingData
 }

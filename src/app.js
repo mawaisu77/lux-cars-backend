@@ -7,11 +7,9 @@ const cors = require("cors")
 const app = express()
 
 const corsOptions = {
-    origin: process.env.FRONTEND_URL
+    origin: process.env.FRONTEND_URL, // Your frontend's origin
 };
-
-console.log(process.env.FRONTEND_URL)
-
+  
 
 app.use(cors(corsOptions))
 app.use(express.json());

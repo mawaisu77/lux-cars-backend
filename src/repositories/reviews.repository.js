@@ -7,12 +7,12 @@ const placeReview = async (reviewData) => {
     return await Reviews.create(reviewData);
 };
 
-const ratingData = async () => {
+const luxRatingData = async () => {
     return await Reviews.findAll()
 }
 
 
 module.exports = {
     placeReview,
-    ratingData
+    luxRatingData
 };

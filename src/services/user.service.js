@@ -1,6 +1,34 @@
 const authRepository = require('../repositories/auth.repository.js');
 const ApiError = require('../utils/ApiError');
 const { uploadOnCloudinary } = require("../utils/cloudinary.js")
+const { uploadDocs } = require('../utils/uplaodDocument.js')
+
+
+const uplaodProfilePicture = async (req, res) => {
+    var user = await authRepository.findUserById(req.user.id);
+
+
+    if (user){
+
+        var profilePicture = ""
+
+        profilePicture = await uploadDocs(req)
+        console.log(req.files)
+
+        profilePicture = profilePicture[0]
+        
+        user.profilePicture = profilePicture
+        await user.save()
+        return user
+
+    }else{
+
+      throw new ApiError(404, 'User does not exist!');
+
+    }
+
+}
+
 
 const uploadDocuments = async (req, res) => {
 
@@ -40,7 +68,7 @@ const uploadDocuments = async (req, res) => {
  user.documentVerificationStatus = 'pending';
  await user.save();
  
-return user
+ return user
 };
 
 const editProfile = async (userId, updatedProfileData) => {
@@ -85,5 +113,6 @@ const getUserProfile = async (userId) => {
 module.exports = {
     uploadDocuments,
     editProfile,
-    getUserProfile
+    getUserProfile,
+    uplaodProfilePicture
 }

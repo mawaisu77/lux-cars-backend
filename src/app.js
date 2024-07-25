@@ -7,9 +7,8 @@ const cors = require("cors")
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // Your frontend's origin
-    credentials: true, // Allow credentials
-  };
+    origin: process.env.FRONTEND_URL, // Your frontend's origin
+};
   
 
 app.use(cors(corsOptions))

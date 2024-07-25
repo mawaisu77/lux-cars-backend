@@ -1,9 +1,9 @@
 const dotenv = require('dotenv');
+dotenv.config({ path: `${process.cwd()}/.env` });
 const { app } = require('./app.js');
 var bodyParser = require('body-parser')
 
 
-dotenv.config({ path: `${process.cwd()}/.env` });
 app.use(bodyParser.urlencoded({ extended: false }));
 
 

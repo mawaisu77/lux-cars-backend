@@ -61,9 +61,8 @@ const LocalCars = sequelize.define('localCars',
       type: Sequelize.INTEGER
     },
     isCarForSale: {
-      type: Sequelize.STRING,
-      Array: true,
-      default: []
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      defaultValue: []
     },
     carTitledAt: {
       allowNull: false,
@@ -71,7 +70,8 @@ const LocalCars = sequelize.define('localCars',
     },
     carTitledInfo: {
       allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      defaultValue: "Yes, The vehicle is titled on my name."
     },
     titlesStatus: {
       allowNull: false,

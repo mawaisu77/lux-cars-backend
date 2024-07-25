@@ -1,5 +1,7 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
+const dealerRepository = require('../repositories/carDealers.repository');
+const logger = require('../utils/logger');
 const localCarsRepository = require('../repositories/localCars.repository.js');
 const { uploadDocs } = require('../utils/uplaodDocument.js')
 const ApiError = require('../utils/ApiError.js');
@@ -22,6 +24,8 @@ const uploadCar = async (req, res) => {
 
     } catch (err) {
         throw new ApiError(404, err)
+        logger.error('ERROR INSIDE uploadCar SERVICE')
+        console.log('ERROR INSIDE uploadCar SERVICE')
     }
 }
 

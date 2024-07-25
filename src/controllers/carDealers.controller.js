@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const { ApiResponse } = require('../utils/ApiResponse');
-const carDealers = require('../services/carDealers.service.js')
+const carDealers = require('../services/carDealers.service.js');
+const AppError = require('../utils/ApiError.js');
 
 
 const registerCarDealer = asyncHandler(async (req, res) => {

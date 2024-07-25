@@ -1,4 +1,5 @@
 const AppError = require('../utils/ApiError');
+const logger = require('../utils/logger');
 
 const sendErrorDev = (error, res) => {
     const statusCode = error.statusCode || 500;
@@ -27,6 +28,7 @@ const sendErrorProd = (error, res) => {
     }
 
     console.log(error.name, error.message, stack);
+    logger.error(`${error.name} ${error.message} ${stack}`)
     return res.status(500).json({
         status: 'error',
         message: 'Something went very wrong',

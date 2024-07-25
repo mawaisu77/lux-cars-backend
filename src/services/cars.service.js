@@ -1,7 +1,7 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
 const ApiError = require('../utils/ApiError')
-const { BOOLEAN } = require('sequelize')
+const logger = require('../utils/logger')
 
 const getAllCars = async (req, res) => {
     try {
@@ -41,6 +41,8 @@ const getAllCars = async (req, res) => {
 
     } catch (err) {
         throw new ApiError(404, err)
+        logger.error('ERROR INSIDE GET CARS SERVICE')
+        console.log('ERROR INSIDE GET CARS SERVICE')
     }
 }
 

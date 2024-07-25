@@ -8,9 +8,8 @@ const registerCarDealer = async (req, res) => {
     try{
 
         // Getting userID
-        console.log(req.user)
         const userID = req.user.id
-console.log("user id ===========================",userID)
+
         // checking if user already exist as a dealer or not ?
         const isDealer = await dealerRepository.getDealerByUserID(userID)
 

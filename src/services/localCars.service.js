@@ -13,14 +13,12 @@ const uploadCar = async (req, res) => {
 
         // Getting userID
         const userID = req.user.id
-        console.log("3rd")
 
         // Preparing CarData 
         const carData = {...req.body, userID, carImages}
-        console.log("car data", carData)
+        
         // Sending Car to database
         const car = await localCarsRepository.createLocalCar(carData)
-        console.log("5th")
 
         return car
 

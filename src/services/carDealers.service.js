@@ -8,8 +8,9 @@ const registerCarDealer = async (req, res) => {
     try{
 
         // Getting userID
+        console.log(req.user)
         const userID = req.user.id
-
+console.log("user id ===========================",userID)
         // checking if user already exist as a dealer or not ?
         const isDealer = await dealerRepository.getDealerByUserID(userID)
 
@@ -34,6 +35,7 @@ const registerCarDealer = async (req, res) => {
 
     }catch(err){
 
+        console.log(err)
         throw new ApiError(404, err)
         
     }
@@ -41,6 +43,7 @@ const registerCarDealer = async (req, res) => {
 }
 
 const getDealerByUserID = async (req, res) => {
+
 
     try{
         const carDealer = await dealerRepository.getDealerByUserID(req.user.id)

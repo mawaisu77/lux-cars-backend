@@ -6,7 +6,7 @@ const uploadDocuments = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       throw new ApiError(400, 'No document files provided');
     }
-    console.log("+++", req.files)
+
   
     const uploadResponses = [];
     for (const file of req.files) {

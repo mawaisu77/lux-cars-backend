@@ -7,9 +7,8 @@ exports.isAuthenticatedUser = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token || !token.startsWith("Bearer")) {
-        return next(new ErrorHandler("Please login to access this resource", 401));
+        return next(new ApiError(401, 'Please login to access this resource'));
     }
-
     try {
         const decoded = jwt.verify(token.split(" ")[1], process.env.TOKEN_SECRET);
         const user = await authRepository.findUserById(decoded.id);

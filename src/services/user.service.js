@@ -70,7 +70,7 @@ const editProfile = async (userId, updatedProfileData) => {
       await user.save();
       return user;
     } catch (error) {
-      throw new ApiError(400, 'Error updating profile', error);
+      throw new ApiError(400, 'Error updating profile');
     }
 };
   

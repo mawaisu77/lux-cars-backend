@@ -8,25 +8,24 @@ const ApiError = require('../utils/ApiError.js');
 
 
 const uploadCar = async (req, res) => {
-    try {
-
+    console.log("first")
         // Uplaoding car images
         const carImages = await uploadDocuments(req)
+        console.log("2nd")
 
         // Getting userID
         const userID = req.user.id
+        console.log("3rd")
 
         // Preparing CarData 
         const carData = {...req.body, userID, carImages}
-
+        console.log("car data", carData)
         // Sending Car to database
         const car = await localCarsRepository.createLocalCar(carData)
+        console.log("5th")
+
         return car
 
-    } catch (err) {
-        logger.error('ERROR INSIDE uploadCar SERVICE')
-        console.log('ERROR INSIDE uploadCar SERVICE')
-    }
 }
 
 const getCarByID = async (req, res) => {

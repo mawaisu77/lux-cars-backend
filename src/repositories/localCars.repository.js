@@ -16,10 +16,15 @@ const updateCar = async (carData, carID) => {
     return await carToUpdate.update(carData);
 };
 
+const getAllLocalCars = async (id) => {
+    return await LocalCars.findAll({where : { userID: id }})
+}
+
 
 
 module.exports = {
     createLocalCar,
     getCarByID,
-    updateCar
+    updateCar,
+    getAllLocalCars
 };

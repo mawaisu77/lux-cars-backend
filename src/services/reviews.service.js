@@ -26,7 +26,12 @@ const placeReview = async (req, res) => {
 
 const luxRatingData = async (req, res) => {
     try{
-        const ratingData = await reviewsRepository.ratingData()
+        const ratingData = await reviewsRepository.luxRatingData()
+        if(ratingData){
+            return ratingData
+        }
+
+        throw new ApiError(404, "No rating data found!")
 
     }catch(err){
         throw ApiError(404, err)

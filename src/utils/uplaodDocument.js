@@ -1,7 +1,7 @@
 const { uploadOnCloudinary } = require("../utils/cloudinary.js")
 const ApiError = require("./ApiError.js")
 
-const uploadDocuments = async (req, res) => {
+const uploadDocs = async (req, res) => {
 
     if (!req.files || req.files.length === 0) {
       throw new ApiError(400, 'No document files provided');
@@ -22,5 +22,5 @@ const uploadDocuments = async (req, res) => {
 }
 
 module.exports = {
-    uploadDocuments
+    uploadDocs
 }

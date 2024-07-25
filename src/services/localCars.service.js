@@ -1,15 +1,14 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
 const localCarsRepository = require('../repositories/localCars.repository.js');
-const { uploadDocuments } = require('../utils/uplaodDocument.js')
+const { uploadDocs } = require('../utils/uplaodDocument.js')
 const ApiError = require('../utils/ApiError.js');
 
 
 const uploadCar = async (req, res) => {
     try {
-
         // Uplaoding car images
-        const carImages = await uploadDocuments(req)
+        const carImages = await uploadDocs(req)
 
         // Getting userID
         const userID = req.user.id
@@ -28,10 +27,12 @@ const uploadCar = async (req, res) => {
 
 const getCarByID = async (req, res) => {
     try{
-        const car = await localCarsRepository.getCarByID(req.params.id)
+        const car = await localCarsRepository.getCarByID(req.query.id)
         if (!car){
             throw new ApiError(404, "Car does not exists.")
         }
+
+        return car
     }
     catch(err){
         throw new ApiError(404, err)
@@ -41,6 +42,7 @@ const getCarByID = async (req, res) => {
 
 const updateCar = async (req, res) => {
     try {
+
         // getting car from database
         const car = await localCarsRepository.getCarByID(req.query.id)
         if (!car){
@@ -50,7 +52,7 @@ const updateCar = async (req, res) => {
         // Uplaoding car images
         var carImages = []
         if (req.files && !(req.files.length === 0)){
-            carImages = await uploadDocuments(req)
+            carImages = await uploadDocs(req)
         }else{
             carImages = car.carImages
         }
@@ -70,9 +72,24 @@ const updateCar = async (req, res) => {
     }
 }
 
+const getAllLocalCars = async (req, res) => {
+    try{
+        const localCars = await localCarsRepository.getAllLocalCars(req.user.id)
+        if (localCars){
+            return localCars
+        }
+
+        throw new ApiError(404, "No cars found!")
+
+    }catch(err){
+        throw new ApiError(404, "Server Error in finding user's LocalCars")
+    }
+}
+
 
 module.exports = {
     uploadCar,
     getCarByID,
-    updateCar
+    updateCar,
+    getAllLocalCars
 }

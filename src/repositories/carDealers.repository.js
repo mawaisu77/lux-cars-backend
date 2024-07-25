@@ -11,12 +11,10 @@ const getDealerByUserID = async (id) => {
     return await CarDealers.findOne({where : { userID: id }});
 }
 
-const updateCarDealer = async (dealerData, id) => {
-    const delaerToUpdate = await getDealerByUserID(id)
+const updateCarDealer = async (dealerData) => {
+    const delaerToUpdate = await getDealerByUserID(dealerData.userID)
     return await delaerToUpdate.update(dealerData);
 };
-
-
 
 
 module.exports = {

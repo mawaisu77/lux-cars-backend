@@ -7,7 +7,7 @@ exports.isAuthenticatedUser = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token || !token.startsWith("Bearer")) {
-        return next(new ErrorHandler("Please login to access this resource", 401));
+        return next(new ApiError("Please login to access this resource", 401));
     }
 
     try {

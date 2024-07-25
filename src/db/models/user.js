@@ -59,6 +59,9 @@ const User = sequelize.define('user',
       type: Sequelize.ENUM('admin', 'user'),
       defaultValue: 'user'
     },
+    profilePicture: {
+      type: Sequelize.STRING
+    },
     documents: {
       type: Sequelize.TEXT, // Store URLs as JSON string
       allowNull: true,

@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError.js');
 
 
 const uploadCar = async (req, res) => {
-        // Uplaoding car images
+try{     // Uplaoding car images
         const carImages = await uploadDocs(req)
 
         // Getting userID
@@ -24,6 +24,11 @@ const uploadCar = async (req, res) => {
 
         return car
 
+    } catch (err) {
+        throw new ApiError(404, err)
+        logger.error('ERROR INSIDE uploadCar SERVICE')
+        console.log('ERROR INSIDE uploadCar SERVICE')
+    }
 }
 
 const getCarByID = async (req, res) => {

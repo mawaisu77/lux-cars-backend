@@ -25,23 +25,13 @@ const User = sequelize.define('user',
       unique:true,
       type: Sequelize.STRING
     },
-    address: {
-      type: Sequelize.STRING
-    },
-    phone: {
-      type: Sequelize.STRING
-    },
     password: {
-      type: Sequelize.STRING,
       allowNull: false,
-      set(value) {
-        const hashedPassword = bcrypt.hashSync(value, bcrypt.genSaltSync(10));
-        this.setDataValue('password', hashedPassword);
-      },
+      type: Sequelize.STRING
     },
     isEmailVerified: {
       type: Sequelize.BOOLEAN,
-      defaultValue : false
+      defaultValue: false
     },
     emailVerificationToken: {
       type: Sequelize.STRING
@@ -60,25 +50,24 @@ const User = sequelize.define('user',
       defaultValue: 'user'
     },
     profilePicture: {
+      type: Sequelize.STRING,
+    },
+    address: {
+      type: Sequelize.STRING
+    },
+    phone: {
       type: Sequelize.STRING
     },
     documents: {
       type: Sequelize.TEXT, // Store URLs as JSON string
       allowNull: true,
-      get() {
-        const documents = this.getDataValue('documents');
-        return documents ? JSON.parse(documents) : [];
-      },
-      set(value) {
-        this.setDataValue('documents', JSON.stringify(value));
-      }
     },
     documentVerified: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     },
     documentVerificationStatus: {
-      type: Sequelize.ENUM('pending', 'approved', 'rejected'),
+      type: Sequelize.STRING,
       defaultValue: 'pending'
     },
     createdAt: {

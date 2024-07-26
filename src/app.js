@@ -10,7 +10,6 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL, // Your frontend's origin
 };
   
-
 app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))

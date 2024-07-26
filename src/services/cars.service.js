@@ -1,7 +1,7 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
-const logger = require('../utils/logger')
 const ApiError = require('../utils/ApiError')
+const logger = require('../utils/logger')
 
 const getAllCars = async (req, res) => {
     try {
@@ -40,9 +40,9 @@ const getAllCars = async (req, res) => {
         // return cars;
 
     } catch (err) {
+        throw new ApiError(404, err)
         logger.error('ERROR INSIDE GET CARS SERVICE')
         console.log('ERROR INSIDE GET CARS SERVICE')
-        throw new ApiError(404, err)
     }
 }
 

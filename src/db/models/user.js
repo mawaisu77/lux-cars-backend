@@ -8,7 +8,7 @@ const sequelize = require('../../config/database');
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 
-const User = sequelize.define('user', 
+const User = sequelize.define('user',
   {
     id: {
       allowNull: false,
@@ -25,13 +25,23 @@ const User = sequelize.define('user',
       unique:true,
       type: Sequelize.STRING
     },
-    password: {
-      allowNull: false,
+    address: {
       type: Sequelize.STRING
+    },
+    phone: {
+      type: Sequelize.STRING
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      set(value) {
+        const hashedPassword = bcrypt.hashSync(value, bcrypt.genSaltSync(10));
+        this.setDataValue('password', hashedPassword);
+      },
     },
     isEmailVerified: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false
+      defaultValue : false
     },
     emailVerificationToken: {
       type: Sequelize.STRING
@@ -50,24 +60,25 @@ const User = sequelize.define('user',
       defaultValue: 'user'
     },
     profilePicture: {
-      type: Sequelize.STRING,
-    },
-    address: {
-      type: Sequelize.STRING
-    },
-    phone: {
       type: Sequelize.STRING
     },
     documents: {
       type: Sequelize.TEXT, // Store URLs as JSON string
       allowNull: true,
+      get() {
+        const documents = this.getDataValue('documents');
+        return documents ? JSON.parse(documents) : [];
+      },
+      set(value) {
+        this.setDataValue('documents', JSON.stringify(value));
+      }
     },
     documentVerified: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     },
     documentVerificationStatus: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM('pending', 'approved', 'rejected'),
       defaultValue: 'pending'
     },
     createdAt: {
@@ -86,23 +97,17 @@ const User = sequelize.define('user',
     modelName: 'user',
   },
 )
-
-
 User.prototype.isPasswordCorrect = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
-
 // Method to generate reset password token
 User.prototype.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
-
   this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
   this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000); // Token valid for 10 minutes
   return resetToken;
 };
-
 module.exports = User

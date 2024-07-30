@@ -11,10 +11,10 @@ const crypto = require('crypto')
 const User = sequelize.define('user',
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     username: {
       allowNull: false,

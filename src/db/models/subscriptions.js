@@ -9,10 +9,10 @@ const sequelize = require('../../config/database');
 const Subscriptions = sequelize.define('subscriptions', 
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     name: {
       allowNull: false,

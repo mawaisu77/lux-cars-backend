@@ -9,14 +9,14 @@ const sequelize = require('../../config/database');
 const CarDealers = sequelize.define('carDealers', 
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     userID: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     buyerFeeDetails: {
       allowNull: false,

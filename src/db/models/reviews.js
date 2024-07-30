@@ -10,14 +10,14 @@ const Reviews = sequelize.define('reviews',
   {
 
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     userID:{
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     rating: {
       allowNull: false,

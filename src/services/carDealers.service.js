@@ -34,8 +34,7 @@ const registerCarDealer = async (req, res) => {
 
     }catch(err){
 
-        console.log(err)
-        throw new ApiError(404, err)
+        throw new ApiError(404, "Error while registring the Car Dealer.")
         
     }
 
@@ -53,7 +52,7 @@ const getDealerByUserID = async (req, res) => {
         return carDealer
     }
     catch(err){
-        throw new ApiError(404, err)
+        throw new ApiError(404, "Unable to find the Car Dealer data.")
     }
 }
 
@@ -89,7 +88,7 @@ const updateCarDealer = async (req, res) => {
 
     }catch(err){
 
-        throw new ApiError(404, err)
+        throw new ApiError(404, "Error while updating the data.")
         
     }
 

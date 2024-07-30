@@ -9,18 +9,18 @@ const sequelize = require('../../config/database');
 const Bids = sequelize.define('bids', 
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     userID: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     vehicleID: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     bidPrice: {
       allowNull: false,

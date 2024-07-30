@@ -9,18 +9,18 @@ const sequelize = require('../../config/database');
 const LocalCars = sequelize.define('localCars', 
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     userID: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     vin: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     year: {
       allowNull: false,

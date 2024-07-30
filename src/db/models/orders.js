@@ -9,14 +9,14 @@ const sequelize = require('../../config/database');
 const Orders = sequelize.define('orders', 
   {
     id: {
+      type: Sequelize.UUID,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      defaultValue: Sequelize.UUIDV4,
     },
     bidID: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID
     },
     createdAt: {
       allowNull: false,

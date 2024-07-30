@@ -4,14 +4,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('funds', {
       id: {
+        type: Sequelize.UUID,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        defaultValue: Sequelize.UUIDV4,
       },
       userID: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       totalDeposits: {
         allowNull: false,

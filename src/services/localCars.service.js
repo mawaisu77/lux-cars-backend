@@ -78,17 +78,12 @@ const updateCar = async (req, res) => {
 }
 
 const getAllLocalCars = async (req, res) => {
-    try{
         const localCars = await localCarsRepository.getAllLocalCars(req.user.id)
-        if (localCars){
-            return localCars
+        if (localCars.length === 0){
+            throw new ApiError(404, "No cars found!")
         }
-
-        throw new ApiError(404, "No cars found!")
-
-    }catch(err){
-        throw new ApiError(404, "Server Error in finding user's LocalCars")
-    }
+        return localCars
+    
 }
 
 

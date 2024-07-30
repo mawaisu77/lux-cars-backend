@@ -7,6 +7,6 @@ const router = Router()
 router.post('/user/upload-documents',isAuthenticatedUser, upload.array('documents', 2), uploadDocuments);
 router.get('/user/profile', isAuthenticatedUser, getUserProfile);
 router.put('/user/edit-profile', isAuthenticatedUser, editProfile);
-router.put('/user/upload-profile-picture', isAuthenticatedUser, upload.array('profilePicture', 2), uplaodProfilePicture)
+router.put('/user/upload-profile-picture', isAuthenticatedUser, upload.array('profilePicture', 1), uplaodProfilePicture)
 
 module.exports =  router

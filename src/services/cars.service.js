@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError')
 const logger = require('../utils/logger')
 const { getCarsURL } = require('../utils/getCarsURL')
 const { carData } = require('../utils/carsData.js')
+const { getBidCarByLotID } = require('../repositories/bidCars.repository.js')
 
 const getAllCars = async (req, res) => {
     try {
@@ -38,20 +39,36 @@ const getAllCars = async (req, res) => {
 const getCarByLotID = async (req, res) => {
 
     try{
-        // const { lotID } = req.query
-        // // 'https://api.apicar.store/api/cars/39778890?site=2'
-        // const car = await axiosPrivate.get(`/api/cars/${lotID}`);
 
-        // if(car){
-        //     return car.data
-        // }
+        const { lot_id } = req.query
 
-        // throw new ApiError(404, "No data found for car!")
+        const bidCar = await getBidCarByLotID(lotID)
 
-        return carData.data[0]
+        if(!bidCar){
+
+            'https://api.apicar.store/api/cars/39778890?site=2'
+            const car = await axiosPrivate.get(`/api/cars/${lotID}`);
+            if(!car){
+
+                throw new ApiError(404, "No data found for car!")
+            
+            }
+
+            return {...car.data, currentBid: 0, noOfBids: 0 }
+
+        }
+
+        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+        const currentBid = bidCar.currentBid
+        const noOfBids = bidCar.noOfBids
+
+        return {...bidCar.carDetails, currentBid, noOfBids}
+
+        // console.log(lotID)
+        // return carData.data[0]
 
     }catch(err){
-        throw new ApiError(404, "Error while finding car data!")
+        throw new ApiError(404, err)
     }
 
 }

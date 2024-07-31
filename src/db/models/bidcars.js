@@ -6,25 +6,30 @@ const {
 const sequelize = require('../../config/database');
 
 
-const Bids = sequelize.define('bids', {
-
+const BidCars = sequelize.define('bidCars', 
+{
     id: {
       type: Sequelize.UUID,
       allowNull: false,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4,
     },
-    userID: {
-      allowNull: false,
-      type: Sequelize.UUID
-    },
     lot_id: {
       allowNull: false,
       type: Sequelize.STRING
     },
-    bidPrice: {
+    carDetails: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.TEXT
+    },
+    currentBid: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    noOfBids: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 1
     },
     createdAt: {
       allowNull: false,
@@ -35,8 +40,9 @@ const Bids = sequelize.define('bids', {
       allowNull: false,
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW
-    }
-  
+    } 
+
 });
 
-module.exports = Bids
+module.exports = BidCars
+

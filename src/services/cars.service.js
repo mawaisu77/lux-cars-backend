@@ -54,7 +54,7 @@ const getCarByLotID = async (req, res) => {
             
             }
 
-            return {...car.data, currentBid: 0, noOfBids: 0 }
+            return {...car.data, currentBid: 0, noOfBids: 0}
 
         }
 

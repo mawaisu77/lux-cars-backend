@@ -6,8 +6,8 @@ const {
 const sequelize = require('../../config/database');
 
 
-const Funds = sequelize.define('funds', 
-  {
+const Funds = sequelize.define('funds', {
+
     id: {
       type: Sequelize.UUID,
       allowNull: false,
@@ -45,7 +45,6 @@ const Funds = sequelize.define('funds',
       defaultValue: Sequelize.NOW
     }
   
-  }
-);
+});
 
 module.exports = Funds

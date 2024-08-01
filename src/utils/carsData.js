@@ -74,7 +74,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2401385~CA",
             "hash_data": "U2FsdGVkX19yp4v3g5vnsN/YO6Wlb7l+3he6qHTZpI1PhxlTJPJ76OLIhY0Sv2wdczA9JfyylarwQZpblsQ+8+tWdEm19nwUIHfn2vgx5MRBgaaXQHgdvSw46pHrsqTcfIe3cwGMgyDFWfoA+l9PEfS0wBzxJnesP2r1DPv0ibymFOPQgBTLM1F4Blycq57y",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:20:56.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -165,7 +165,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2389712~CA",
             "hash_data": "U2FsdGVkX1+gUjRED81trZs53nL7sGJ0GizyAhP6McJstDwp0GFP7O7Q0htl5j7yzdYvghCrb6s7qFYPML2VkIXMG0RqxFd2dIwVTK4dSqscCv6U4w6IPuyidLw866Bxtj/pTWwdCxbsbwFoZ86qQyPoIx6IGFG82Sn+APXvF/CN4f4GP9I6rewJO19PCpTBgDrgmS5M4IW5ZZZnIrqO/g==",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T23:55:20.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -255,7 +255,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2391239~CA",
             "hash_data": "U2FsdGVkX18YqkM5v/a2xpJSEG5wOzoJM2TdnUOnH1GW6rpkK9w/kAgFqOI2/YNHrxtRYJCRo5I5HLfosSZ7S+0cz9XrfQRDWB7SDngkFNPukqxmygdmCW9MwloM+l85u9pKMrGGmA8SaAQxteSJbPftR8RRxbEOfASxRoK326Kf8P8ZjgXhZ+NiP9J/iNCT",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:23:07.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -347,7 +347,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2393710~CA",
             "hash_data": "U2FsdGVkX1+XNccpniJ1MCSlUYIGosXFGvkibx5A3zBTvJuS3BSG25mL2v5huEs69xZCwLHVb6KuKJb+rmiNNCYxxECGWQsrp+7dSUB5HTtpSOAZ6YQhu39QC69r5WRCUZ6f+AzmcIHEuCIiaR16FqSO/t7PiDWmQiZspgymWeT3MuwRHwpOjUe0kiVYeplM",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:22:43.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -439,7 +439,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2401910~CA",
             "hash_data": "U2FsdGVkX19K/YkLL+piZ2GpfP21rMcroJviY9HMIBJZ6MV51eWZj0jQcLgszuOwX/dKZ+kKHLeaezLxnCwxbmKQAwuMhxKyALnCSCUiHrewFxjJdOaeUwDonamP7aEhGR9iAIMw2Aix8ZppOB/w9OX9leOsyf6d7wIp3+89EAAWw8smZfHrECXsgXXWqdx5",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:20:52.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -528,7 +528,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2386626~CA",
             "hash_data": "U2FsdGVkX19RtbAL+P8mAgFYHUxfxYjCt52qc2FfIVW7JwEVzgyajw6hqNHXQcIRXC+vYMinxE6HFc42l+2+0ADCV7d4egX/CSMVJWxU7IlLgGIoCEOs+F6we/rC7Ht4CAyapyQFvmtaIfcWv6zBy7Gbdci+oVgcJslDRsJ9WQj5HTpk2zT2ZjH8PoKAvdCe",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:24:26.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -618,7 +618,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2369249~CA",
             "hash_data": "U2FsdGVkX19cGDZM+KN3BRBsFeHYpG3o3Bzgtap0t0r4nOvjsBEno0eoSc4C8BTFhUxqDK76r8To9PmyzNg+oW2cCycI95c68nGN7QgYjEs44JVqb6uFkLQUDusowRKT7J+klBalEX4d6thl/nHt5ABm+UPbSRFfcENeoZqog8htunq9WuVMydDgy859ZKJW",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:25:38.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -710,7 +710,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2372338~CA",
             "hash_data": "U2FsdGVkX19fBalIaeurNWQfKpQw38ScjLtu7Q3FA5yxnlCgjQT95zgHA/xqUF38ETY46hMu19bkRX7ldtCHs6KySnzRsDRPikSXEZtucJ4b4amYc0fPbETaB2p+UMCJydCDiVd62cYfkNFrvGfpXo//uCLSqseL//AG9uY12MdLR90XWm0XO4ADpQb9tfWD",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:25:29.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -802,7 +802,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2282352~CA",
             "hash_data": "U2FsdGVkX19p1U5grbORZ/jq+amw4MrXl+Ga1PQu4njLGycOMJxVlTdQKL5f7tbPw2OGvG7eJ7hM8R5/OpHHzzUqQ7FE+2YEIKtErxsHyjZJ+xpQlgdhjTa32K0l7tpUzZDevwqYK1USXfv2QXEBUbsGsinjXKYJVHhcUN1RmmHFky3NlGIuxSWOOSqyT+ZE",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:16:16.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -892,7 +892,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2401314~CA",
             "hash_data": "U2FsdGVkX18wME1VFuDvWakudbsG0O3SMqvWCcI23gowmXUtHw8MTjPMszNqRFUJUVkjWokuIIg1El1lxzEvox/D2akZtjMnPduI7gql69GkN5HACglSUbFLX/wPoD7j46Ovag+r7kjegRMH36Kit6iTQAnbbDCnik/Ng0GAgumk+TyLiNr5Uj7x/ymgY/b2",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:23:26.000Z",
             "updated_at": "2024-07-30T11:13:04.000Z"
         },
@@ -984,7 +984,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2391281~CA",
             "hash_data": "U2FsdGVkX1+l4igpvq5uGiplSTmiDfI7HBfv2OTiBgQjCHTv2oqYrt3CrQvfVRge1u1hOhid1F36K7Xhz3TUVKxn6/Ujb09UllxtCRvATDkoZujtW+OVDCsyxE525KDozp74v/NcrxCqh5NlSttGEllL1vredWFYyDEUtr2pI03A12yV7BilN97Vxvq9kPMi",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:23:05.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -1074,7 +1074,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2389812~CA",
             "hash_data": "U2FsdGVkX1+X/HQQF0pxmugZ2wdvXnD0+HGRUOD21ejxKMkBsFpln2D+6qTDrcXOv9AE2QAaTD0bUgsK/YRPBUbV+pcE729lhH2RqXJxBC2pFF/cz+17BGU7H/NHD18WQDQLtU/bEPdtv8zdf/7qBLdFKB2TLAU838rV6+oCBPbugK+A5ybv/0G9jOlN35U8",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T19:56:42.000Z",
             "updated_at": "2024-07-30T11:13:01.000Z"
         },
@@ -1164,7 +1164,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2392594~CA",
             "hash_data": "U2FsdGVkX1+Q8w3+ErEVT/+tQGAcEdrhTBJaaBXv7Gp4ZuBzbRSN44HUVNb46z5dAIRJOBvf8TfWr8fTo6z0MkojAmig7rkR0N+2Ioa2Anfv9J3hjwv5jUyyq6DIM/6MA/H3r1UZH4Fi2W3Vlc5EwFUjeOTv7fo6DntMw38xvfJvEcVioD6dA7qVMrCGBQdo",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:24:08.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -1256,7 +1256,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2333010~CA",
             "hash_data": "U2FsdGVkX1/Sz7K5BN+uSCwHxOpn2uYZpW5JgXhv7wr5e0NoHIDiLIkNy9FEkizS78wIc9e/2cj+/smuthGTcd6OcFh9aHWEhBdGZGZW20qye+DxEE7zmaiGxaoYQ5Kr0w3po2u9nXbYpZVohqj8MJA//2OU3nSo8EWOdEOI3LLgtqjpr/LDganJS9fHCPFn",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:07:14.000Z",
             "updated_at": "2024-07-30T11:13:01.000Z"
         },
@@ -1348,7 +1348,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2402132~CA",
             "hash_data": "U2FsdGVkX19+IaZdwNYdshUGdbw/x6oRLFBmspFTvz3zQtcumUsyzl4R9hbbNOipwtOoO0nvvb/FzIfkyifmazDWkXmxL7YN99+N8HM4wwBpyimBtUCDyK7aF4x96ZUQfB11tDb3AFgy2JR5bb3Kn/Ojg37jcvv+k7BOH6s87fyA59t5RAYKW6EZImiOROJy",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:02:13.000Z",
             "updated_at": "2024-07-30T11:13:04.000Z"
         },
@@ -1426,7 +1426,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2401331~CA",
             "hash_data": "U2FsdGVkX19fsN/6iH4ZpuS7YY242rBXF0LKONohKHulQE/+NOMkNkf0nS5o3EGUBD6cJ7RIzZB5jzey/wxK938yiDl7pDb0zzDunrZOQOd/HEpnr24fn033Y1SVAhP9Ybx8mG6nKThKE1hVwIxEoqQCuBSiK+pVofP+waslO83p4D+EiDuakCZvO1jmTAt4",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:54:28.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -1516,7 +1516,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2400716~CA",
             "hash_data": "U2FsdGVkX19jPB2Jl2eIXZpOnD2/cRJXB8UYmxxayZT15+hioWC+CJCZ6EptEXHLvOIj3MNjVsAVtuFN5jDZ4pxAtP1YQX92DPxe6XzcwplPj4OIOe4gRhitFMBHKDokf5RD9c1wi3QN+IWHIM0JzeAqVvd/CbVnylWO3Bp/hvsBlkOScoBYS/lbDH31Btwu",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T01:03:24.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -1606,7 +1606,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2389888~CA",
             "hash_data": "U2FsdGVkX19Cwru1GemGIxAXK+Nduk6I1+zcz9wJCJxR5GkrG1ELdzga//TY3PRo+GglwH0vwewP7NUQtDCr8TxQp7AgEarLfDSFrj3f6M6N17FHVhoKokWnwGEI+BoH4BGDAQ0fJ/ZXeHT73Rcj0J3QQCNfIwPtIxW85bnQZCentG3fg2VXJeFaU92auF2i",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:33:13.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -1696,7 +1696,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2383147~CA",
             "hash_data": "U2FsdGVkX1/ilUFDctwl346xvL2SbqXjHNl0dfkDVqZ94CvpOB5NdFM0jKLC7GUGUPum99fL7iryE7yQOZnaW8ok/K1L9CFPfcsg/+ODo+5gxOncJ87MISFLJKWUendq0VM1uewweGvKb3hRiIN3uJ4OX3caCdTOXh0j5Xx2rWpbdZqBnAlG5KipD4FGZEbI",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:11:18.000Z",
             "updated_at": "2024-07-30T11:13:02.000Z"
         },
@@ -1788,7 +1788,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2369935~CA",
             "hash_data": "U2FsdGVkX18hoYE9RQup12Uhgo9efRgWf7jYrafggOB93xOyYpyiptROG10ss9s8ikI9zcM1vu78n6Hc3KYzi890WN7BEPiGm5zrfwPuaRuFtS7omdSWRkSScNYWREQlP4pds0zkI+TNxQqDmvgKLfj6BCYbmO7+VNhXD2ZDJFwJmrA02/3EZ9TZeYBAuGZ21eyNCJ7c2OQyZBRWIPAz5g==",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T21:03:42.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -1878,7 +1878,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2397091~CA",
             "hash_data": "U2FsdGVkX1/kBRsUpAaxYoO4C2Qo1vEoyYAWBD4e7PV0doEO22CYJH+1oe7uQE00PsaDywM0H4/gDb5oaIjGkp4WNI6FgParWivpqqWuFclhHs50mIzAJIFChDNV+LKpFlKri5UgMIHKf9d+T92IN8TGzc4qfYB2VUZy90wPtl0lxVIG1uGxu09r1lfVusl5",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:45:59.000Z",
             "updated_at": "2024-07-30T11:13:01.000Z"
         },
@@ -1970,7 +1970,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2338687~CA",
             "hash_data": "U2FsdGVkX1929LyWcSNRHi7upfO+if2OtCFk/rFSUAUZkBlMaCnnsicMC6N98LnY3T1rDZXOByFBZvBCfVqqWmkeuNhPCZTWC7J9eJTiux2tbBYmOpSIqBv3KIZfwoIcENgwn3t33e8sxgaM7T7182T1ZGhgXrrOSzmXrZ0kPTqR2+MEXbxEzYTw9dUC/vvS",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T19:50:33.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -2062,7 +2062,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2398127~CA",
             "hash_data": "U2FsdGVkX1+hHC1JXAZlBAWOyXlfJafak2Acmv78xfUSYIJ3T3QZd3BHHMamUIWFrRfd2gtizKH895NQCjT6FIQQw5JvtGgGVK26qD1qkzAqCZR0mhpoXQBW3f6YwJ1WXaZn8JCVjrFfbDiImoMo+VC1j/qe/1Nqq/8+/X14PVdjdgXdu/gjBdBJ/qXycFy4",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T19:56:15.000Z",
             "updated_at": "2024-07-30T11:10:21.000Z"
         },
@@ -2152,7 +2152,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2395301~CA",
             "hash_data": "U2FsdGVkX18h40aJZaAvMicH9xupv+tv+9NMo9kH2d5j0z/MSnS5e3NdHrYOa9xq8DfRrH4pYHFirsrCtSQ0YTF3AoDcLysa7PZsLrpmCkEyAXXMD1HISuI+kxPdkiW6WMJ3UR422qAdQ6n6a9SVThRWmaF4DSvYpY48s1IjxkMRvilXJtIlPtnbgw5z0wzQ",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:22:18.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -2242,7 +2242,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2403244~CA",
             "hash_data": "U2FsdGVkX1/KM6Cha9eDm6oGfDZTs2fp3bcYR/o82YYEO+bpvCj7lLk0Dn/o+f9FTph/VFP7K385x/JHlH8fx3NK5Ex6tJefq+D/KdPcz4kAljx0R0WvZmRP3e2kd1kiJtsFcNgbxgSOsNvn7KjqPI9ZW8/K0ngh2VtlpoXy19fazFeblWgWCvtXMSaEShZ1",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:19:53.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -2334,7 +2334,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2389944~CA",
             "hash_data": "U2FsdGVkX1+McX69zS8Rww6Z7rNzaUfgC83SQIrmHPQajoxV6GNe05m6XyEYCpyjXdUPDCrqVwitxfJX4/Wem/QSWCbne05/RQ86zDRd0TulDnTlA6Aq9MKoILs/MjOAHkHMcJpoXVEV6vNWwhWT1kuSdl+CNtwqvgk4e+UlWSHF+bNIS5oVZgBbl2/ix/Hy",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T18:41:56.000Z",
             "updated_at": "2024-07-30T11:13:01.000Z"
         },
@@ -2426,7 +2426,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2361544~CA",
             "hash_data": "U2FsdGVkX1827gb/n5gY0mRUH3mxXTO8nOn1KKdgzYaM6YfIdbwox6y2Xv6oSqe+lPFobXMrt6eBmaIEVvtlQL0Ohf/GQ6+SCKR221ZuNQWzftn+zd6YbR30InlmZvIe9Xa0mtQITU22QVqpk5AWtvxCcCH9jXIvvXihyzeIxecH3I5lDXzFQOrUQVqpRdDc",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-20T08:45:22.000Z",
             "updated_at": "2024-07-26T00:55:19.000Z"
         },
@@ -2518,7 +2518,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2320594~CA",
             "hash_data": "U2FsdGVkX18UzsdplxySt5z/crOvh+f8oAmBzl6pjGKCh9aUif6SATuavXmOx7exf27fTiE1Wu14f7+PHCtfAfQweNeTIcuGmcwxYDZuWyJrC/gtd47vZGd1lHpYi5C+Ts5SQvUNeIoMiMlRm8W0h9vT4/reRA6Mx4w7PobL7bn2YL3RvBtegZ30O4U+ViCd",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T23:30:20.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -2608,7 +2608,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2393387~CA",
             "hash_data": "U2FsdGVkX193ql6NYbHfGPZnyxBqaBjlXk4WzQy7HbKhCKIRKA/klO7OmwO9bg3TQWc7ewXEtFVLCdfHX50Kw8/F3M8FuzbuxiEDWCp5m6hoNJnEXAUAQBrcRmy1A0c+FwYHsrwTEjPFP8Qh/48+uY1GMHTgk6P/hq7z0c5DTGbhz4ZHFY0xEcGEYRM2bkqe",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T21:39:38.000Z",
             "updated_at": "2024-07-30T11:13:01.000Z"
         },
@@ -2698,7 +2698,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2399419~CA",
             "hash_data": "U2FsdGVkX1/c2+Yxkl49twqwz+sh54Ymk5MwOEaPIq7DG7L0lPZZz6g14FkVcVCG9z2UV4m2hs6tD0vWH7OvsBliId8JddCSQcqrkuK/Ef2Werr4Hmr5zJB+KlHOqTN2JBUttd5qJtSzIkCq9z9/ZCU1kHO6LhaGZvSlmigL0WGxwd5C9XO4ZU3soL+Pfz2g",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T01:02:24.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -2790,7 +2790,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2399850~CA",
             "hash_data": "U2FsdGVkX19DEOhLP55/eKiAuEKzFTyKYb7sHZtgeNMEtHV25R0J2paOFaLC0ulJBfFcUdTG6DzY9FNRwHHMJne52ipPsc/2M2DuW+pNLLbiBWF50HTfkacFPaYYsxLpP4MgX/poytmWLf7NbMNklgrUjn/Ww7cuWZI8CYpUraHTpt6Y1NTS4ZpUDfOC8J01",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:38:24.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -2880,7 +2880,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2395237~CA",
             "hash_data": "U2FsdGVkX183V+Z+W+QDxhbv677n8MPeQOkeFzAYRb2EkH0r0D/DNxmSmowlzJIzothU4dTrMOrrKl4apNvxP+i6DqlVprUlu5NA32O+fqcgriy5ViExj2hMG/DnHvPCIFCq/h9ld/dOoLG/Woyzofu5qaJzb3neQg5KOoYJb7AFuiSNy9PMHkpLEZMZmSEn",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:06:48.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -2970,7 +2970,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2395144~CA",
             "hash_data": "U2FsdGVkX19SCwIAqUC4Vze9AAZ5M+Oia+OtnbK0ire2PxWvx1NWlGThPhLkNQV2c164lDaJmtsAt2vrBYpuhrcQUUR7yxK7z7boSOdUhHX+ed0xHy9FxE9E/mHlZJwOLvPEEpWLseb+qOyEImjMyL/iBKwvdYZifVt+TTeOEJmlu/2s4KTh59tOs+SPUTnEgvJ+gyiDF0tJ0tHENf4+jg==",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:06:46.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -3060,7 +3060,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2388665~CA",
             "hash_data": "U2FsdGVkX19SWRLllgnjRWmQzEwuiA55nQu4nlTYqc6VIryL9B8vd1W8xdzyCJd88h6YZFQVTP561J83rxWS60d8+bHh7gCrUOR1CEriSkUvk8HYXOQOD0+zI+1o4ZSjsnWKY9IGIvvZK+dW0sDBTxgI7yrh5Vp+V+Tg0jlBS8SFJPPAHPPq4OdAJKsxnTbn",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:01:58.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -3152,7 +3152,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2367757~CA",
             "hash_data": "U2FsdGVkX1+htAZ7PmQ5QAojsBfX9deIQc8cLaEJDnK2JH24ttNX2rwQQDABhLg5YY5wMnlciDap5zE3TbMwoTlCBRPEBt5j9hr9zhNG+nM9nufvPxjr3lGngFx+OXtyACNUGmuDshNmLo0YMbMjYsVOXgWR6MfH2MI7uCHTJv3jbalLN3WtZJJzey1b4fCx",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:39:58.000Z",
             "updated_at": "2024-07-30T11:13:02.000Z"
         },
@@ -3244,7 +3244,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2389570~CA",
             "hash_data": "U2FsdGVkX1+xN1giX1N5uNK8QExd0kx6Q82kuqKuK804kDXvvvAZHaBTEpzHDTQgvaorerIGIHbnExQGQpQOJxDcboh6w8udp/dfFifI8346KGaPjvFYDNwm5qY+mnnrHBmt4rwSGaHCej0v3a/ggJB8s0VwKwHWWb/iUwOO8KIDXAh2sxNjjd08FQYErOsq",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-28T00:36:53.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -3336,7 +3336,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2395297~CA",
             "hash_data": "U2FsdGVkX1/qcC+nKc8M/whklMjfmwKz/3ZcxiSk3szfX1ySrcXRmWygj19C76E6YIZmmUeJWK83J3KUNkuqMfErekQA6cMUvKwl6/oMCvAJARufvCeGBcqkwBTbL9TzdSI1Im64pPwl1OA8Q7QgEM4UMCONaZgVGgJ4K+gSW+AWXFg1o+LuqtbvrRE+j5g3buEB0HhMLofVxvSX/LlqQQ==",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:46:29.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -3426,7 +3426,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2383959~CA",
             "hash_data": "U2FsdGVkX19lf95Vv6y5iQ/gg908p4iog9YVNYJ6kVj2KdbZgKcM+XAwK4qqOmevofDnxTKD6F/QI+4zEdyga+jFW8gONeaS5h/uJ+rfEA3yB4Rgfdgnt84UaQhvNYiWxP/JIW/DpUmU20YOxJrl8cOK1gU5GycYwq655uQj2A7VP6elh6tBJMT1lmIsmx1E",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T13:15:11.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -3516,7 +3516,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2321655~CA",
             "hash_data": "U2FsdGVkX1+YKmpUz0uvhbDk7CYeITHj3sQIghu3zfPZA5AapkY+MRHZCHBxmmERdxg6LJGMUJSskHgoLnerBaRX/aVAWzYZpi8lSP+i43wYNyYVfcKESa8xVbHD6gK7TVRF5OIhJzKP5halBbbPFvvWhRpbBFjhF6tEJ/oTyamVM8nJTkicc5igyA4EpXmN",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T21:01:24.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -3606,7 +3606,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2374135~CA",
             "hash_data": "U2FsdGVkX19dtwyJHOmgfPi7UEIOuSVQSZDkJh03iCr+UZ8BAdXUE4DKQnXK7HTRIRpbJVBZA0ax2rkIFDVMmmcjdv6gIyxeq6XLeVFz4CL+E08OdV6qbEcCv1Cp2Ul+8rL/J/uLSX5ZJa6OCUv6wME0dcGdcTu/I7DwrLcAv7+/lmN3VA/uRdxvF0CRPTAL",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:48:44.000Z",
             "updated_at": "2024-07-30T11:13:02.000Z"
         },
@@ -3698,7 +3698,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2398671~CA",
             "hash_data": "U2FsdGVkX1/zvut+F0cOSVPslKdq99t14lY17CLXo2pnjFozETOCcV11umfwlVnkVXKWWAb6T9aj+U0IQ5NSna1PJ8OEz0DuQPXb26QHlKW4OKLU5Rv8RvoMvkxcX09eSz7Sys38e5kaVis7mmlRPw3b92z5vUCnmUovnI1RIMHGHSBDAh330ZhDwdtTCBaQ",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:58:20.000Z",
             "updated_at": "2024-07-30T11:10:21.000Z"
         },
@@ -3776,7 +3776,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2272358~CA",
             "hash_data": "U2FsdGVkX1/Qlfn8+xXGnys3FAjIjS8C5Y5w6rkAbBD8IZqHVqCQaowkxh/C5FBY70zsNLnYL8YisekdK50A+ISpsAjz9ASxfbd9n22Iaq+A3j09UHmJ52NqCm4BOtG7b9s/omH5nUEaYSUfSV3P1hNExpVykjrj3kYnLOc8Htr+7VpKZzXOAWJUTVH4YG0i",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:56:59.000Z",
             "updated_at": "2024-07-30T11:13:05.000Z"
         },
@@ -3866,7 +3866,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2401427~CA",
             "hash_data": "U2FsdGVkX1+Lvf5zV5CqSKND4OC1D0dFreSR6dGIbFIwGy+wL5MLnARHPzl6+eyJq2MX08p5dx5b4QXPuHKrT/tNimMO0SRs9AEPykFo1PDebfSQHYxVvJBWWcaMyGNqqPIus/V7m4cUw1zqZrRWAQPVUg6ZhsOCavbNq5MofOwsGn00ikha47E/giJR51BD",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:54:31.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -3955,7 +3955,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2399360~CA",
             "hash_data": "U2FsdGVkX19JfqFXqRpHnBL3G2RWsZIceWzUa4H7DUCwlR1HedOIks62IghNkqS11r2QP0DmcRG31Jm7s7BsvPJ7smSJYQaBWiw3G4gR/i3YGCtY3DXIrBcPXyC6TAWMgaObN6wmt0xZiuNNK4krXxugt99XsmGbQ4sa3Ptc1/ihsrz05S6UMtotEGkirVUh",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:40:34.000Z",
             "updated_at": "2024-07-30T11:13:04.000Z"
         },
@@ -4045,7 +4045,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2396411~CA",
             "hash_data": "U2FsdGVkX197g8W91gpNRwkVdeRZeJDtrOf/jAefhfbxy4whlUxIDoC4X/+7yT5vPExRSC0rJZ2/vEEAduLxBv4BN2vimVNpsR0oi+lTQBCO11u6jDqjGQ0Otr9QvnJVKkobUkgOFdAG7MmXcOuBayl2WoQyLzKZ0e3kNolRbFGE6kajAB+YveZUy7qzsA9d",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:46:53.000Z",
             "updated_at": "2024-07-30T11:13:04.000Z"
         },
@@ -4135,7 +4135,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2400786~CA",
             "hash_data": "U2FsdGVkX19RUUvc0o7NOaeZ0WbKutNgnk/pb+iDE6ffRMjjupVQficjDhicEom5fRSWVlaoNJw69QuI9ZjOiL5wnQDu3ZU2EHgKXaqP3R2JMAoLcnyiahHy6iURJ2Jya3NuRJyUXolwZePlreCgJYa8G0TkvMMLMggmWDYDrkOUzOvcPdYq4eyIw5GAXdd3+ahoSRRTZrk6EedJwkkyVg==",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:39:17.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -4225,7 +4225,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2400093~CA",
             "hash_data": "U2FsdGVkX1+PMH02xbbTVv9OAKHuWS+y8KJigzETS+jQ16aJg5drzNwd4Fl+6jArxL2xg0GZ//qoFPomWq1F80/1du/dwvkhJxyJIVYv3YbzJNJMYESyRPXc0upl7hcgecEnJCSVbe7qVNQqVgfna5/oJqygcVq4edEMpEkHIDUY2gx8R+iCPSJoFJqhjLUE",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:36:18.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -4315,7 +4315,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2397902~CA",
             "hash_data": "U2FsdGVkX18XG0XqjGhde5RtqX6mjfDnOYynS0wzguTyv8MuDzkSsnp610CjugBzjCd5jYw/OK20V0piDNluRLKkSBB+5A7Vlo4NKN5V00SRc62TSukw9cTZ7BXBi8a6AeM5rr4hYf531a9L3t7iQqa8YKC4z2oP4FQDY1jNbqPhUY4QS1zM4cPEk6zrQJ8j",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:35:15.000Z",
             "updated_at": "2024-07-30T11:10:22.000Z"
         },
@@ -4405,7 +4405,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2379947~CA",
             "hash_data": "U2FsdGVkX1+l2y0mVxVfYn6mn0QdLtrRrCp1NSiKA9zBL/YqSb/CALw39TqU6lkMOirMj13U1LEurI7X17sHfLRqpobWGRI6t6SedozXbVzhX3FNOfM+cYHRkSQ/Ba51Nd8iCLNC6UkGDbLtkDG5ZRjHzEuYL0ZuMWBzvXfOr/WSd9gHNw5WugfUSk73REcB",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:02:47.000Z",
             "updated_at": "2024-07-30T11:13:03.000Z"
         },
@@ -4495,7 +4495,7 @@ const carData = {
             "location_offsite": null,
             "link": "https://www.iaai.com/VehicleDetail/Imp_2399641~CA",
             "hash_data": "U2FsdGVkX1+eX6JUlAnSlra6uFxxo+my81qQiPSXtCumgmDgOKA0uU4kJU40t5fRN8nfayA6+SBoOFLsi2Qy8Gz4YU58hOXYz0BDN0kiceWBgaFw4MH3tmtatKda5gL1R+BrHbM2uEg7G5oS40bA7sGDHtvtqoMRqpXDkKPbohfkdUd3QuOuT0/H6WDVlfiO",
-            "vehicle_score": null,
+            "vehicle_score": "45/50",
             "created_at": "2024-07-27T20:34:34.000Z",
             "updated_at": "2024-07-30T05:37:08.000Z"
         }

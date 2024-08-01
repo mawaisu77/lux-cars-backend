@@ -38,7 +38,7 @@ const getAllCars = async (req, res) => {
 const getCarByLotID = async (req, res) => {
 
     try{
-        // const { lotID } = req.query
+        const { lotID } = req.query
         // // 'https://api.apicar.store/api/cars/39778890?site=2'
         // const car = await axiosPrivate.get(`/api/cars/${lotID}`);
 
@@ -47,6 +47,9 @@ const getCarByLotID = async (req, res) => {
         // }
 
         // throw new ApiError(404, "No data found for car!")
+        if (lotID !== '1249363'){
+            throw new ApiError(404, "No data found for car!")
+        } 
 
         return carData.data[0]
 

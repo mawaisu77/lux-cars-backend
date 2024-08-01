@@ -40,32 +40,31 @@ const getCarByLotID = async (req, res) => {
 
     try{
 
-        const { lot_id } = req.query
+        // const { lot_id } = req.query
 
-        const bidCar = await getBidCarByLotID(lotID)
+        // const bidCar = await getBidCarByLotID(lot_id)
 
-        if(!bidCar){
+        // if(!bidCar){
 
-            'https://api.apicar.store/api/cars/39778890?site=2'
-            const car = await axiosPrivate.get(`/api/cars/${lotID}`);
-            if(!car){
+        //     'https://api.apicar.store/api/cars/39778890?site=2'
+        //     const car = await axiosPrivate.get(`/api/cars/${lot_id}`);
+        //     if(!car){
 
-                throw new ApiError(404, "No data found for car!")
+        //         throw new ApiError(404, "No data found for car!")
             
-            }
+        //     }
 
-            return {...car.data, currentBid: 0, noOfBids: 0}
+        //     return {...car.data, currentBid: 0, noOfBids: 0}
 
-        }
+        // }
 
-        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
-        const currentBid = bidCar.currentBid
-        const noOfBids = bidCar.noOfBids
+        // bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+        // const currentBid = bidCar.currentBid
+        // const noOfBids = bidCar.noOfBids
 
-        return {...bidCar.carDetails, currentBid, noOfBids}
+        // return {...bidCar.carDetails, currentBid, noOfBids}
 
-        // console.log(lotID)
-        // return carData.data[0]
+        return {...carData.data[0], currentBid: 0, noOfBids: 0}
 
     }catch(err){
         throw new ApiError(404, err)

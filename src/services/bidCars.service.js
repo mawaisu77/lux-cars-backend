@@ -20,6 +20,7 @@ const createBidCar = async (req, res) => {
 
         // getting car from third party API using lot_id        
         var carDetails = await getCarByLotID(req)
+
         // converting the JSON carData to String
         carDetails = JSON.stringify(carDetails)
 
@@ -34,6 +35,7 @@ const createBidCar = async (req, res) => {
         return {...bidCar.carDetails, currentBid, noOfBids: 1 }
 
     } catch (err) {
+        console.log(err)
         throw new ApiError(404, "Error while creating the BidCar....")
     }
 }
@@ -73,7 +75,7 @@ const placeBid = async (req, res) => {
 
     // getting data from body
     const { lot_id } = req.body
-
+console.log(req.body)
     // checking car against lot_id if already exists
     const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)
     var car = {}

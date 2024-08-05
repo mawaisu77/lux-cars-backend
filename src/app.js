@@ -21,8 +21,9 @@ const userRouter = require('./routes/user.route.js');
 const carsRouter = require('./routes/cars.route.js');
 const localCarsRouter = require('./routes/localCars.route.js')
 const carDealersRouter = require('./routes/carDealer.route.js')
-const reviews = require('./routes/reviews.route.js')
-const bidCars = require('./routes/bidCars.route.js')
+const reviewsRouter = require('./routes/reviews.route.js')
+const bidCarsRouter = require('./routes/bidCars.route.js')
+const bidsRouter = require('./routes/bids.route.js')
 const globalErrorHandler = require('./middlewares/errorHandler.js');
 
 app.use("/api/v1", authRouter)
@@ -30,8 +31,9 @@ app.use("/api/v1", userRouter)
 app.use("/api/v1", carsRouter)
 app.use("/api/v1", localCarsRouter)
 app.use("/api/v1", carDealersRouter)
-app.use("/api/v1", reviews)
-app.use("/api/v1", bidCars)
+app.use("/api/v1", reviewsRouter)
+app.use("/api/v1", bidCarsRouter)
+app.use("/api/v1", bidsRouter)
 
 
 app.use(

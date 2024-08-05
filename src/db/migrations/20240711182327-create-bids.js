@@ -13,17 +13,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID
       },
-      vehicleID: {
+      lot_id: {
         allowNull: false,
-        type: Sequelize.UUID
+        type: Sequelize.STRING
       },
       bidPrice: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      carDetails: {
+      isValid: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
@@ -34,7 +35,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-      }
+      }  
     });
   },
   async down(queryInterface, Sequelize) {

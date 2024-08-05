@@ -7,8 +7,18 @@ const getAllCars = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, cars, "Cars fetched successfully.", ));
 })
 
+const getAllCarsTesting = asyncHandler(async (req, res) => {
+    const cars = await carsService.getAllCarsTesting(req)
+    res.status(201).json(new ApiResponse(201, cars, "Cars fetched successfully.", ));
+})
+
 const getCarByLotID = asyncHandler(async (req, res) => {
     const car = await carsService.getCarByLotID(req)
+    res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
+})
+
+const getCarByLotIDTesting = asyncHandler(async (req, res) => {
+    const car = await carsService.getCarByLotIDTesting(req)
     res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
 })
 
@@ -20,5 +30,7 @@ const carsMakesModels = asyncHandler(async (req, res) => {
 module.exports = {
     getAllCars,
     getCarByLotID,
-    carsMakesModels
+    carsMakesModels,
+    getAllCarsTesting,
+    getCarByLotIDTesting
 }

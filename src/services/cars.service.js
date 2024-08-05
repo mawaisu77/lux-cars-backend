@@ -35,7 +35,7 @@ const getAllCars = async (req, res) => {
         //console.log(carsRequest.data)
         return { 
             cars,
-            size: carsRequest.data.size
+            totalLength: carsRequest.data.size
         };
 
     } catch (err) {
@@ -60,7 +60,10 @@ const getAllCarsTesting = async (req, res) => {
             
         })
         
-        return cars;
+        return { 
+            cars,
+            totalLength: 20
+        };;
 
     } catch (err) {
         console.log(err)

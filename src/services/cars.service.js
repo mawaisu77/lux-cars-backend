@@ -19,7 +19,7 @@ const getAllCars = async (req, res) => {
     
         const carsRequest = await axiosPrivate.get(carsURL);
 
-        const cars = carsRequest.data.data;
+        var cars = carsRequest.data.data;
 
         cars = cars.map((car) => {
             return {
@@ -32,8 +32,11 @@ const getAllCars = async (req, res) => {
             }
             
         })
-        
-        return cars;
+        //console.log(carsRequest.data)
+        return { 
+            cars,
+            size: carsRequest.data.size
+        };
 
     } catch (err) {
         console.log(err)

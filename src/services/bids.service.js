@@ -11,7 +11,7 @@ const saveBid = async (req, res) => {
     const bidData = {
         userID: userID,
         lot_id: lot_id,
-        bidPrice: currentBid
+        bidPrice: currentBid,
     }
 
     const bidToExpire = await expireBid(req)
@@ -33,12 +33,15 @@ const expireBid = async(req, res) => {
     const lot_it = req.body.lot_id
     const bidToExpire = await bidsRepository.getBidToExpireByLotID(lot_it)
 
-    bidToExpire.isValid = false
+    if (bidToExpire != null){    
+        
+        bidToExpire.isValid = false
+        bidToExpire.save()
+        return bidToExpire 
 
-    bidToExpire.save()
+    }
 
-
-    return bidToExpire 
+    return 1
 }
 
 

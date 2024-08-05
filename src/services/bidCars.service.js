@@ -17,7 +17,7 @@ const createBidCar = async (req, res) => {
         }
 
         // add lot_id to query to get the car from Third Party API
-        req.query.lotID = lot_id
+        req.query.lot_id = lot_id
 
         // getting car from third party API using lot_id        
         var carDetails = await getCarByLotID(req)
@@ -35,6 +35,7 @@ const createBidCar = async (req, res) => {
         return {...bidCar.carDetails, currentBid, noOfBids: 1 }
 
     } catch (err) {
+        console.log(err)
         throw new ApiError(404, "Error while creating the BidCar....")
     }
 }
@@ -49,6 +50,11 @@ const updateBidCar = async (req, res) => {
     const  bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
     if(!bidCar){
         throw new ApiError(409, "BidCar does not exists!" )
+    }
+
+
+    if(bidCar.currentBid > currentBid){
+        throw new ApiError(401, "Your bid amount is less than the current bid!")
     }
 
     // setting credentials of car to Update

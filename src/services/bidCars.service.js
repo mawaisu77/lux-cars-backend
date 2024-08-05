@@ -1,5 +1,6 @@
 const bidCarsRepository = require('../repositories/bidCars.repository.js');
 const ApiError = require('../utils/ApiError.js');
+const { saveBid } = require('./bids.service.js');
 const { getCarByLotID } = require('./cars.service.js')
 
 
@@ -86,6 +87,8 @@ console.log(req.body)
     else{
         car = await createBidCar(req)
     }
+
+    await saveBid(req)
 
     return car
 

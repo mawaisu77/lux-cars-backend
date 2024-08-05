@@ -26,6 +26,11 @@ const Bids = sequelize.define('bids', {
       allowNull: false,
       type: Sequelize.INTEGER
     },
+    isValid: {
+      allowNull: false,
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

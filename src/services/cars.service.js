@@ -63,7 +63,7 @@ const getAllCarsTesting = async (req, res) => {
         return { 
             cars,
             totalLength: 20
-        };;
+        };
 
     } catch (err) {
         console.log(err)
@@ -100,7 +100,7 @@ const getCarByLotID = async (req, res) => {
         return {...bidCar.carDetails, currentBid, noOfBids}
 
     }catch(err){
-        throw new ApiError(404, err)
+        throw new ApiError(404, "Car data not found!")
     }
 
 }

@@ -21,6 +21,9 @@ const createBidCar = async (req, res) => {
 
         // getting car from third party API using lot_id        
         var carDetails = await getCarByLotID(req)
+        if(!carDetails){
+            throw new ApiError(404, "Requested car not found!")
+        }
         // converting the JSON carData to String
         carDetails = JSON.stringify(carDetails)
 
@@ -35,7 +38,7 @@ const createBidCar = async (req, res) => {
         return {...bidCar.carDetails, currentBid, noOfBids: 1 }
 
     } catch (err) {
-        console.log(err)
+        //console.log(err)
         throw new ApiError(404, "Error while creating the BidCar....")
     }
 }
@@ -52,9 +55,9 @@ const updateBidCar = async (req, res) => {
         throw new ApiError(409, "BidCar does not exists!" )
     }
 
-
-    if(bidCar.currentBid > currentBid){
-        throw new ApiError(401, "Your bid amount is less than the current bid!")
+    // checking if the current bid is less than the coming bid or not
+    if(bidCar.currentBid >= currentBid){
+        throw new ApiError(403, "Place a higher bid than the existing one!")
     }
 
     // setting credentials of car to Update
@@ -77,6 +80,11 @@ const updateBidCar = async (req, res) => {
 }
 
 const placeBid = async (req, res) => {
+
+    // checking the users documents are verified or not 
+    if(!req.user.documentVerified){
+        throw new ApiError(403, "Please submit the required documents to place the Bid")
+    }
 
     // getting data from body
     const { lot_id } = req.body

@@ -22,15 +22,19 @@ const Funds = sequelize.define('funds', {
       allowNull: false,
       type: Sequelize.INTEGER
     },
-    avalaibleDeposits: {
+    avalaibleBidAmount: {
       allowNull: false,
       type: Sequelize.INTEGER
     },
-    bidAmount: {
+    usedBidAmount: {
       allowNull: false,
       type: Sequelize.INTEGER
     },
-    usedDeposits: {
+    avalaibleBids: {
+      allowNull: false,
+      type: Sequelize.INTEGER
+    },
+    activeBids:{
       allowNull: false,
       type: Sequelize.INTEGER
     },

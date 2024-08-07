@@ -1,6 +1,7 @@
 const bidCarsRepository = require('../repositories/bidCars.repository.js');
 const ApiError = require('../utils/ApiError.js');
 const { saveBid } = require('./bids.service.js');
+const { checkUserCanBid, updateFunds } = require('../services/funds.service.js')
 const { getCarByLotID } = require('./cars.service.js')
 
 
@@ -86,6 +87,11 @@ const placeBid = async (req, res) => {
         throw new ApiError(403, "Please submit the required documents to place the Bid")
     }
 
+    const canBid = await checkUserCanBid(req)
+    if(!canBid){
+        throw new ApiError(403, "You have insufficient funds to place the Bid")
+    }
+
     // getting data from body
     const { lot_id } = req.body
 
@@ -101,6 +107,8 @@ const placeBid = async (req, res) => {
     }
 
     await saveBid(req)
+    req.body.operation = 'remove'
+    await updateFunds(req)
 
     return car
 

@@ -1,5 +1,6 @@
 const bidsRepository = require('../repositories/bids.repository.js');
 const ApiError = require('../utils/ApiError.js');
+const { updateFunds } = require('./funds.service.js');
 
 
 
@@ -36,8 +37,18 @@ const expireBid = async(req, res) => {
     if (bidToExpire != null){    
         
         bidToExpire.isValid = false
-        bidToExpire.save()
-        return bidToExpire 
+        const expiredBid = await bidToExpire.save()
+        if(!expiredBid){ 
+            throw new ApiError(502, "Unable to expire the bid in DB")
+        }
+        req.body.expiredBidPrice = bidToExpire.bidPrice
+        req.body.operation = 'add'
+        req.body.user = bidToExpire.userID
+        const updatedFunds = await updateFunds(req)
+        if(!updatedFunds){
+            throw new ApiError(502, "Unable to update the funds in DB")
+        }
+        return expiredBid
 
     }
 

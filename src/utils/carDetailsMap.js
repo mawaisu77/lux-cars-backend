@@ -1,6 +1,6 @@
 
 const mapCarDetails = async(carsData) => {
-    console.log(carsData)
+    //console.log(carsData)
     const mapedCarData = carsData.map((car) => {
         return {
 
@@ -12,12 +12,18 @@ const mapCarDetails = async(carsData) => {
             base_site:car.base_site,
             auction_date:car.auction_date,
             vehicle_type:car.vehicle_type,
-            image: car.link_img_hd[0] || car.link_img_small[0] || null,
+            image:  car.link_img_hd ? 
+                    car.link_img_hd.length > 0 ? 
+                    car.link_img_hd[0] : 
+                    car.link_img_small ? 
+                    car.link_img_small.length > 0 ? 
+                    car.link_img_small[0] 
+                    : null : null : null,
 
             images: car.link_img_small ? 
-                        car.link_img_small.length > 0 ? 
-                        car.link_img_small : 
-                        car.link_img_hd || null 
+                    car.link_img_small.length > 0 ? 
+                    car.link_img_small : 
+                    car.link_img_hd || null 
                     : car.link_img_hd || null,
 
             sale_history:   car.sale_history ?

@@ -7,7 +7,7 @@ const getCarsURL = async (queryParameters) => {
     for (queries in queryParameters){
         if (Array.isArray(queryParameters[queries])){
             const _query = queryParameters[queries]
-            console.log(_query)
+            //console.log(_query)
             for (q in _query){
                 if (isFirst){
                     carsURL = carsURL + queries + "=" + `${encodeURIComponent(_query[q])}`

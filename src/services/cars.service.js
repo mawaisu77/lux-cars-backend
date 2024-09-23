@@ -55,7 +55,7 @@ const getAllCars = async (req, res) => {
     var cars = carsRequest.data.data;
 
     // mapping the cars to the required format
-    // cars = await mapCarDetails(cars)
+    cars = await mapCarDetails(cars)
 
     // returning the cars and the total length of the cars
     return { 

@@ -1,6 +1,6 @@
 const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
-const dealerRepository = require('../repositories/carDealers.repository');
+const authRepository = require('../repositories/auth.repository.js');
 const logger = require('../utils/logger');
 const localCarsRepository = require('../repositories/localCars.repository.js');
 const { uploadDocs } = require('../utils/uplaodDocument.js')
@@ -9,7 +9,7 @@ const ApiError = require('../utils/ApiError.js');
 
 const uploadCar = async (req, res) => {
     // Uplaoding car images
-    console.log(req.files)
+    //console.log(req.files)
     const carImages = await uploadDocs(req)
 
     // Getting userID
@@ -29,12 +29,20 @@ const uploadCar = async (req, res) => {
 const getCarByID = async (req, res) => {
     // getting the car from the database
     const car = await localCarsRepository.getCarByID(req.query.id)
+    let user 
     if (!car){
         throw new ApiError(404, "Car does not exists.")
     }
+    else{
+        user = await authRepository.findUserById(car.userID)
+        console.log(user)
+        if(!user){
+            throw new ApiError(404, "Car Owner does not exists!")
+        }
+    }
 
     // returning the car
-    return car
+    return { user, car}
 }
 
 

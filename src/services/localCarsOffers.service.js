@@ -54,8 +54,26 @@ const getAllOffersOfUser = async (req, res) => {
   return offersWithCarDetails;
 };
 
+const getCarsWithOffersByUser = async (req, res) => {
+  const userId = req.user.id;
+  const CarsWithOffers = await localCarsRepository.getUserAllLocalCars(userId);
+
+  const offersOnCar = await Promise.all(
+    CarsWithOffers.map(async (cars) => {
+      const offers = await localCarsOffersRepository.carsAllOffers(cars.id);
+      return {
+        carDetails: cars,
+        offersOnCars: offers,
+      };
+    })
+  );
+
+  return offersOnCar;
+};
+
 module.exports = {
   createOffer,
   carsAllOffers,
   getAllOffersOfUser,
+  getCarsWithOffersByUser,
 };

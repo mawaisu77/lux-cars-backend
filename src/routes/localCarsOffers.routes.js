@@ -3,6 +3,7 @@ const {
   createOffer,
   carsAllOffers,
   getAllOffersOfUser,
+  getCarsWithOffersByUser
 } = require("../controllers/localCarsOffers.controller.js");
 const { isAuthenticatedUser } = require("../middlewares/auth.js");
 const { upload } = require("../middlewares/multer.js");
@@ -19,6 +20,10 @@ router.get(
   isAuthenticatedUser,
   getAllOffersOfUser
 );
-// router.get("/local-cars-offers/get-all-cars-with-offers-by-user", isAuthenticatedUser, getCarsWithOffersByUser);
+router.get(
+  "/local-cars-offers/get-all-cars-with-offers-by-user",
+  isAuthenticatedUser,
+  getCarsWithOffersByUser
+);
 
 module.exports = router;

@@ -6,6 +6,34 @@ const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 
 
+const findBidCars = async(req, res) => {
+    const { make, model, transmission, drive, status, fuel, yearFrom, yearTo, limit = 10, page = 1 } = req.query;
+    const query = {}; // Initialize an empty query object
+
+    // Dynamically add filters to the query object
+    if (make) query.make = make;
+    if (model) query.model = model;
+    if (transmission) query.transmission = transmission;
+    if (drive) query.drive = drive;
+    if (status) query.status = status; // Added status filter
+    if (fuel) query.fuel = fuel; // Added fuel filter
+    if (yearFrom) query.yearFrom = yearFrom; // Added yearFrom filter
+    if (yearTo) query.yearTo = yearTo; // Added yearTo filter
+
+    // Convert limit and page to integers
+    const limitInt = parseInt(limit, 10);
+    const pageInt = parseInt(page, 10);
+    const offsetInt = (pageInt - 1) * limitInt; // Calculate offset
+
+    // Fetching bid cars from the database using the constructed query and pagination
+    const bidCars = await bidCarsRepository.findBidCars(query, limitInt, offsetInt);
+    if (!bidCars || bidCars.length === 0) {
+        throw new ApiError(404, "No bid cars found matching the criteria");
+    }
+
+    return bidCars
+}
+
 
 const createBidCar = async (req, res, options = {}) => {
     // getting data from body
@@ -214,6 +242,7 @@ module.exports = {
   createBidCar,
   updateBidCar,
   placeBid,
+  findBidCars,
   getAllBidCarsByAdmin,
   getCarDetailsByLotID
 };

@@ -5,9 +5,50 @@ const { addFundsToUser, removeFundsFromUser } = require('../services/funds.servi
 const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 
+const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
+    console.log(query)
+
+    const filteredBidCars = bidCars.filter(bidCar => {
+        const carDetails = JSON.parse(bidCar.carDetails); // Parse the carDetails string
+        // Check if each query parameter matches the carDetails
+        return Object.entries(query).every(([key, value]) => {
+            // Ensure the key exists in carDetails before comparing
+            if (carDetails.hasOwnProperty(key)) {
+                // Log the key and value for debugging
+                console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key]}`);
+                
+                // Check for range if value is an object with from and/or to
+                if (typeof value === 'object') {
+                    const carValue = parseFloat(carDetails[key]);
+                    const fromCheck = value.from != undefined ? carValue >= value.from : true; // Check from if defined
+                    const toCheck = value.to != undefined ? carValue <= value.to : true; // Check to if defined
+                    return fromCheck && toCheck; // Return true if both checks pass
+                }
+                // Check if carDetails[key] is not null before calling toString()
+                if (carDetails[key] !== null) {
+                    return carDetails[key].toString() === value.toString(); // Regular comparison
+                }   
+                return false         
+            }
+            return false; // Key does not exist
+        })
+    })
+
+    // Apply pagination to the filtered results
+    const paginatedBidCars = filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
+        const carDetail = JSON.parse(bidCar.carDetails);
+        const { currentBid, noOfBids, ...carDetails } = carDetail;
+        return {
+            ...bidCar.dataValues,
+            carDetails: carDetails // Parse carDetails to JSON
+        };
+    });
+
+    return paginatedBidCars; // Return paginated results
+}
 const findBidCars = async(req, res) => {
-    const { make, model, transmission, drive, status, fuel, yearFrom, yearTo, limit = 10, page = 1 } = req.query;
+    const { make, model, state, series, transmission, drive, status, fuel, yearFrom, yearTo, limit = 10, page = 1 } = req.query;
     const query = {}; // Initialize an empty query object
 
     // Dynamically add filters to the query object
@@ -19,6 +60,8 @@ const findBidCars = async(req, res) => {
     if (fuel) query.fuel = fuel; // Added fuel filter
     if (yearFrom) query.yearFrom = yearFrom; // Added yearFrom filter
     if (yearTo) query.yearTo = yearTo; // Added yearTo filter
+    if (state) query.state = state
+    if (series) query.series = series
 
     // Convert limit and page to integers
     const limitInt = parseInt(limit, 10);
@@ -26,12 +69,14 @@ const findBidCars = async(req, res) => {
     const offsetInt = (pageInt - 1) * limitInt; // Calculate offset
 
     // Fetching bid cars from the database using the constructed query and pagination
-    const bidCars = await bidCarsRepository.findBidCars(query, limitInt, offsetInt);
+    const bidCars = await bidCarsRepository.findBidCars();
     if (!bidCars || bidCars.length === 0) {
         throw new ApiError(404, "No bid cars found matching the criteria");
     }
 
-    return bidCars
+    const cars = filterBidCars(query, limitInt, offsetInt, bidCars)
+
+    return cars
 }
 
 

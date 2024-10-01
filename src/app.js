@@ -8,7 +8,7 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    process.env.FRONTEND_URL, 
+    process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_ADMIN,
     process.env.FRONTEND_URL_LOCAL,
     process.env.FRONTEND_URL_LOCAL_USER
@@ -31,7 +31,7 @@ const clearvinRouter = require("./routes/clearvin.route.js");
 const bidCarsRouter = require("./routes/bidCars.route.js");
 const bidsRouter = require("./routes/bids.route.js");
 const fundsRouter = require("./routes/funds.route.js");
-const savedCarsRouter = require("./routes/savedCars.route.js")
+const savedCarsRouter = require("./routes/savedCars.route.js");
 const partsRequestRouter = require("./routes/partsRequest.route.js");
 const loanApplicationRouter = require("./routes/loanApplications.route.js");
 const adminAuthRouter = require("./routes/admin/adminAuth.route.js");
@@ -42,6 +42,7 @@ const notificationRouter = require("./routes/admin/notificationEmail.route.js");
 const adminLoanApplicationRouter = require("./routes/admin/adminLoanApplication.route.js");
 const adminPartsRequestsRouter = require("./routes/admin/adminPartsRequest.route.js");
 const invoiceRouter = require("./routes/admin/invoice.route.js");
+const adminLocalCarsRouter = require("./routes/admin/adminLocalCars.route.js");
 
 const globalErrorHandler = require("./middlewares/errorHandler.js");
 
@@ -56,7 +57,7 @@ app.use("/api/v1", clearvinRouter);
 app.use("/api/v1", bidCarsRouter);
 app.use("/api/v1", bidsRouter);
 app.use("/api/v1", fundsRouter);
-app.use("/api/v1", savedCarsRouter)
+app.use("/api/v1", savedCarsRouter);
 app.use("/api/v1", partsRequestRouter);
 app.use("/api/v1", loanApplicationRouter);
 app.use("/api/v1/admin", adminAuthRouter);
@@ -67,6 +68,7 @@ app.use("/api/v1/admin", notificationRouter);
 app.use("/api/v1/admin", adminLoanApplicationRouter);
 app.use("/api/v1/admin", adminPartsRequestsRouter);
 app.use("/api/v1/admin", invoiceRouter);
+app.use("/api/v1/admin", adminLocalCarsRouter);
 
 app.use(
   "*",

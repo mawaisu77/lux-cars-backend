@@ -74,7 +74,11 @@ const getPartsRequestDetail = async (id) => {
   if (!partsRequest) {
     throw new ApiError(404, "No Request found");
   }
-  return partsRequest;
+  const user = await authRepository.findUserById(partsRequest.userID)
+  return {
+    user, 
+    partsRequest
+  };
 };
 
 const changePartsRequestStatus = async (id, status, reasonOfRejection) => {

@@ -53,7 +53,7 @@ const getAllCars = async (req, res) => {
     // getting the cars from the API
     const carsRequest = await axiosPrivate.get(carsURL);
     var cars = carsRequest.data.data;
-
+    
     // mapping the cars to the required format
     cars = await mapCarDetails(cars)
 

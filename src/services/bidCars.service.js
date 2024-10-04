@@ -5,6 +5,7 @@ const { addFundsToUser, removeFundsFromUser } = require('../services/funds.servi
 const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 
+
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
     console.log(query)
@@ -14,17 +15,29 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
         // Check if each query parameter matches the carDetails
         return Object.entries(query).every(([key, value]) => {
             // Ensure the key exists in carDetails before comparing
-            if (carDetails.hasOwnProperty(key)) {
+            if (carDetails.hasOwnProperty(key.replace('_from', '').replace('_to', ''))) {
                 // Log the key and value for debugging
-                console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key]}`);
+                console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key.replace('_from', '').replace('_to', '')]}`);
                 
-                // Check for range if value is an object with from and/or to
-                if (typeof value === 'object') {
-                    const carValue = parseFloat(carDetails[key]);
-                    const fromCheck = value.from != undefined ? carValue >= value.from : true; // Check from if defined
-                    const toCheck = value.to != undefined ? carValue <= value.to : true; // Check to if defined
-                    return fromCheck && toCheck; // Return true if both checks pass
+                // Check for range if key ends with _from or _to
+                if (key.endsWith('_from')) {
+                    if(key.replace('_from', '') === "auction_date"){
+                        const carValue = new Date(carDetails[key.replace('_from', '')]);
+                        const queryDate = new Date(value);
+                        return carValue >= queryDate; 
+                    }
+                    const carValue = parseFloat(carDetails[key.replace('_from', '')]);
+                    return carValue >= value; // Check if carValue is greater than or equal to the from value
+                } else if (key.endsWith('_to')) {
+                    if(key.replace('_to', '') === "auction_date"){
+                        const carValue = new Date(carDetails[key.replace('_to', '')]);
+                        const queryDate = new Date(value);
+                        return carValue <= queryDate; 
+                    }
+                    const carValue = parseFloat(carDetails[key.replace('_to', '')]);
+                    return carValue <= value; // Check if carValue is less than or equal to the to value
                 }
+
                 // Check if carDetails[key] is not null before calling toString()
                 if (carDetails[key] !== null) {
                     return carDetails[key].toString() === value.toString(); // Regular comparison
@@ -38,32 +51,21 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     // Apply pagination to the filtered results
     const paginatedBidCars = filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
         const carDetail = JSON.parse(bidCar.carDetails);
-        const { currentBid, noOfBids, ...carDetails } = carDetail;
+        const { current_bid, ...carDetails } = carDetail;
         return {
             ...bidCar.dataValues,
             carDetails: carDetails // Parse carDetails to JSON
         };
     });
 
-    return paginatedBidCars; // Return paginated results
+    return { cars: paginatedBidCars }; // Return paginated results
 }
+
+
 const findBidCars = async(req, res) => {
-    const { make, model, state, series, transmission, drive, status, fuel, yearFrom, yearTo, limit = 10, page = 1 } = req.query;
-    const query = {}; // Initialize an empty query object
+    const {limit = 10, page = 1, ...query} = {...req.query}
 
-    // Dynamically add filters to the query object
-    if (make) query.make = make;
-    if (model) query.model = model;
-    if (transmission) query.transmission = transmission;
-    if (drive) query.drive = drive;
-    if (status) query.status = status; // Added status filter
-    if (fuel) query.fuel = fuel; // Added fuel filter
-    if (yearFrom) query.yearFrom = yearFrom; // Added yearFrom filter
-    if (yearTo) query.yearTo = yearTo; // Added yearTo filter
-    if (state) query.state = state
-    if (series) query.series = series
-
-    // Convert limit and page to integers
+    //Convert limit and page to integers
     const limitInt = parseInt(limit, 10);
     const pageInt = parseInt(page, 10);
     const offsetInt = (pageInt - 1) * limitInt; // Calculate offset

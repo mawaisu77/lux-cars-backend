@@ -97,6 +97,16 @@ const LocalCars = sequelize.define('localCars',
       allowNull: false,
       defaultValue: "UnApproved"
     },
+    currentBid:{
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    noOfBids:{
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

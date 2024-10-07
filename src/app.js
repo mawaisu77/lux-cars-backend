@@ -30,6 +30,7 @@ const reviewsRouter = require("./routes/reviews.route.js");
 const clearvinRouter = require("./routes/clearvin.route.js");
 const bidCarsRouter = require("./routes/bidCars.route.js");
 const bidsRouter = require("./routes/bids.route.js");
+const localCarsBidsRouter = require("./routes/localCarsBids.routes.js")
 const fundsRouter = require("./routes/funds.route.js");
 const savedCarsRouter = require("./routes/savedCars.route.js");
 const partsRequestRouter = require("./routes/partsRequest.route.js");
@@ -60,6 +61,7 @@ app.use("/api/v1", fundsRouter);
 app.use("/api/v1", savedCarsRouter);
 app.use("/api/v1", partsRequestRouter);
 app.use("/api/v1", loanApplicationRouter);
+app.use("/api/v1", localCarsBidsRouter)
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
 app.use("/api/v1/admin", adminBidRouter);

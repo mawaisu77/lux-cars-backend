@@ -60,7 +60,10 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
         };
     });
     var cars = await mapCarDetails(paginatedBidCars)
-    return  cars ; // Return paginated results
+    return  { 
+        cars: cars, 
+        totalLength: filteredBidCars.length
+    } ; // Return paginated results
 }
 
 
@@ -80,9 +83,7 @@ const findBidCars = async(req, res) => {
 
     const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
 
-    return {
-        cars: cars, 
-        totalLength: bidCars.length}
+    return cars 
 }
 
 

@@ -4,6 +4,7 @@ const { saveBid, expireBid, checkUserCanBid } = require('./bids.service.js');
 const { addFundsToUser, removeFundsFromUser } = require('../services/funds.service.js')
 const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
+const { mapCarDetails } = require('../utils/carDetailsMap.js');
 
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
@@ -51,14 +52,15 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     // Apply pagination to the filtered results
     const paginatedBidCars = filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
         const carDetail = JSON.parse(bidCar.carDetails);
-        const { current_bid, ...carDetails } = carDetail;
+        const { id, current_bid, currentBid, noOfBids, ...carDetails } = carDetail;
+        bidCar.dataValues.carDetails = ""
         return {
             ...bidCar.dataValues,
-            carDetails: carDetails // Parse carDetails to JSON
+            ...carDetails // Parse carDetails to JSON
         };
     });
-
-    return { cars: paginatedBidCars }; // Return paginated results
+    var cars = await mapCarDetails(paginatedBidCars)
+    return { cars: cars }; // Return paginated results
 }
 
 

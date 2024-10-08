@@ -60,7 +60,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
         };
     });
     var cars = await mapCarDetails(paginatedBidCars)
-    return { cars: cars }; // Return paginated results
+    return  cars ; // Return paginated results
 }
 
 
@@ -78,9 +78,11 @@ const findBidCars = async(req, res) => {
         throw new ApiError(404, "No bid cars found matching the criteria");
     }
 
-    const cars = filterBidCars(query, limitInt, offsetInt, bidCars)
+    const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
 
-    return cars
+    return {
+        cars: cars, 
+        totalLength: bidCars.length}
 }
 
 

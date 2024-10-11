@@ -107,6 +107,10 @@ const LocalCars = sequelize.define('localCars',
       allowNull: false,
       defaultValue: 0
     },
+    auction_date:{
+      type: Sequelize.DATE,
+      allowNull: true
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

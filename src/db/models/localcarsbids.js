@@ -31,9 +31,6 @@ const LocalCarsBids = sequelize.define('localCarsBids', {
       type: Sequelize.BOOLEAN,
       defaultValue: true
     },
-    auctionDate: {
-      type: Sequelize.DATE,
-    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

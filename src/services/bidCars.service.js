@@ -186,7 +186,7 @@ const placeBid = async (req, res, options = {}) => {
 
     // getting data from body
     const { lot_id } = req.body
-    console.log(req.body)
+    //console.log(req.body)
 
     // checking car against lot_id if already exists
     const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)

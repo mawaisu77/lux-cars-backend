@@ -40,17 +40,20 @@ const getAllBidsOfUser = async (req) => {
     // getting the details of the respective car of each bid
     const bidsWithCarDetails = await Promise.all(bidsOfUser.map(async (bid) => {
         var carDetails = await bidCarsRepository.getBidCarByLotID(bid.lot_id)
-        carDetails = JSON.parse(carDetails.carDetails)
+        
+        carDetails.carDetails = JSON.parse(carDetails.carDetails)
         carDetails = {
-            title: carDetails.title,
-            lot_id: carDetails.lot_id,
-            vin: carDetails.vin,
-            status: carDetails.status,
-            location: carDetails.location,
-            base_site:carDetails.base_site,
-            auction_date:carDetails.auction_date,
-            vehicle_type:carDetails.vehicle_type,
-            image: carDetails.link_img_hd[0] || null,
+            title: carDetails.carDetails.title,
+            lot_id: carDetails.carDetails.lot_id,
+            vin: carDetails.carDetails.vin,
+            status: carDetails.carDetails.status,
+            location: carDetails.carDetails.location,
+            base_site:carDetails.carDetails.base_site,
+            auction_date:carDetails.carDetails.auction_date,
+            vehicle_type:carDetails.carDetails.vehicle_type,
+            image: carDetails.carDetails.link_img_hd[0] || null,
+            currentBid: carDetails.currentBid,
+            noOfBids: carDetails.noOfBids
         }
         return {
             // attaching the car details to the bid object

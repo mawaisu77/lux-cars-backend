@@ -2,6 +2,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // await queryInterface.addColumn('localCars', 'auction_date', {
+    //   type: Sequelize.DATE,
+    //   allowNull: true, // or false, depending on your requirements
+    // });
     await queryInterface.createTable('localCars', {
       id: {
         type: Sequelize.UUID,
@@ -101,6 +105,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
+      },    
+      auction_date:{
+        type: Sequelize.DATE,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

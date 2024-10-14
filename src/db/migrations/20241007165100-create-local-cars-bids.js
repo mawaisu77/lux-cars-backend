@@ -26,9 +26,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
-      auctionDate: {
-        type: Sequelize.DATE,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

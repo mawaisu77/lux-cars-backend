@@ -150,7 +150,7 @@ const getBidsOnCar = async (lot_id) => {
         bidsOnCar.map(async (bid) => {
         const userId = bid.userID;
         const user = await userService.getUserProfile(userId);
-        console.log("user", user);
+        //console.log("user", user);
 
         return {
             username: user.username,

@@ -22,7 +22,7 @@ const getAllBidsOfUser = asyncHandler(async (req, res) => {
 });
 
 const getAllBidsOnCar = asyncHandler(async (req, res) => {
-  console.log("req", req.params);
+  //console.log("req", req.params);
   const lot_id = req.params.lot_id;
   const bidsOnCar = await bidService.getBidsOnCar(lot_id);
   res

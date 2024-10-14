@@ -8,14 +8,14 @@ const ApiError = require('../utils/ApiError.js');
 
 const placeBid = async (req, res, options = {}) => {
 
+    const bidexpired =  await expireBid(req)
+    if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
+
     const updateLocalCar = await updateLocalCarBidData(req)
     if (!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
 
     const bidSaved = await saveBid(req)
     if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
-
-    const bidexpired =  await expireBid(req)
-    if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
 
     return updateLocalCar
 }
@@ -48,7 +48,7 @@ const expireBid = async (req, res) => {
     const localCarID = req.body.localCarID
 
     var bidToExpire = await localCarsBidsRepository.getActiveBidByLocalCarID(localCarID)
-    console.log(bidToExpire)
+    //console.log(bidToExpire)
     if (bidToExpire) {
 
         bidToExpire.isValid = false
@@ -98,8 +98,9 @@ const getAllBidsOnLocalCarWithUserDetails = async (req, res) => {
             throw new ApiError(404, "User not found for bid")
         }
         userDetails = {
-             username: userDetails.username,
+            username: userDetails.username,
             email: userDetails.email,
+            profilePicture: userDetails.profilePicture
             // add more user details as needed
         }
         return {

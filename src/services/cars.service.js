@@ -17,7 +17,7 @@ const getAllLatestCars = async (req, res) => {
 
     while (true) { // {{ edit_1 }}
         var queryParameters = { ...req.query, size, page }
-        console.log(queryParameters)
+        //console.log(queryParameters)
         
         // Construct the URL with the current page
         const carsURL = await getCarsURL(queryParameters); // Ensure to include the page in the query
@@ -67,7 +67,7 @@ const getAllCars = async (req, res) => {
 const getAllCarsTesting = async (req, res) => {
 
     // getting the cars from the carData
-    console.log(req.query)
+    //console.log(req.query)
 
     // mapping the cars to the required format
     var cars = carData.data

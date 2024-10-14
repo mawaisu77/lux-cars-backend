@@ -9,7 +9,7 @@ const { mapCarDetails } = require('../utils/carDetailsMap.js');
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
-    console.log(query)
+    //console.log(query)
 
     const filteredBidCars = bidCars.filter(bidCar => {
         const carDetails = JSON.parse(bidCar.carDetails); // Parse the carDetails string
@@ -18,7 +18,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
             // Ensure the key exists in carDetails before comparing
             if (carDetails.hasOwnProperty(key.replace('_from', '').replace('_to', ''))) {
                 // Log the key and value for debugging
-                console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key.replace('_from', '').replace('_to', '')]}`);
+                //console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key.replace('_from', '').replace('_to', '')]}`);
                 
                 // Check for range if key ends with _from or _to
                 if (key.endsWith('_from')) {

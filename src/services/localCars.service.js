@@ -32,7 +32,7 @@ const getCarByID = async (req, res) => {
     throw new ApiError(404, "Car does not exists.");
   } else {
     user = await authRepository.findUserById(car.userID);
-    console.log(user);
+    //console.log(user);
     if (!user) {
       throw new ApiError(404, "Car Owner does not exists!");
     }

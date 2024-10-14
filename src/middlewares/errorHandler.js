@@ -28,7 +28,7 @@ const sendErrorProd = (error, res) => {
     });
   }
 
-  console.log(error.name, error.message, stack);
+  //console.log(error.name, error.message, stack);
   logger.error(`${error.name} ${error.message} ${stack}`);
   return res.status(500).json({
     status: "error",

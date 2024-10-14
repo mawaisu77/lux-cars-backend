@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError.js');
 const placeReview = async (req, res) => {
     // Getting userID
     const userID = req.user.id
-    console.log(req.body)
+    //console.log(req.body)
 
     // Preparing CarData 
     const reviewData = {...req.body, userID}
@@ -21,7 +21,7 @@ const placeReview = async (req, res) => {
 const luxRatingData = async (req, res) => {
     // getting the rating data from the database
     const ratingData = await reviewsRepository.luxRatingData()
-    console.log(ratingData)
+    //console.log(ratingData)
     if(ratingData){
         const ratingsCount = ratingData.reduce((acc, review) => {
             acc[review.rating] = (acc[review.rating] || 0) + 1;

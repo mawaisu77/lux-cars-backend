@@ -26,7 +26,7 @@ const uploadSingleDoc = async (req, res) => {
   const localFile = req.file;
   const localFilePath = localFile.path;
 
-  console.log("LOCALFILEPATH>>", localFilePath);
+  //console.log("LOCALFILEPATH>>", localFilePath);
   const uploadResponse = await uploadOnCloudinary(localFilePath);
 
   return uploadResponse.secure_url;

@@ -169,7 +169,7 @@ const loginUser = async (req) => {
 
   const user = await authRepository.findByEmail(email, true) ;
   
-  console.log("awla check may agyaa", user)
+  //console.log("awla check may agyaa", user)
 
   if (!user) {
       throw new ApiError(401, 'Invalid email or password');
@@ -188,7 +188,7 @@ const loginUser = async (req) => {
   const token = generateToken(user);
      // Exclude the password from the final user object
      const { password: _, ...userWithoutPassword } = user.toJSON();
-     console.log(userWithoutPassword)
+     //console.log(userWithoutPassword)
      return { user: userWithoutPassword, token };
 
 };

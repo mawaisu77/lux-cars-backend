@@ -29,7 +29,7 @@ const getCarsURL = async (queryParameters) => {
             }
         }
     }
-    console.log((carsURL))
+    //console.log((carsURL))
     return carsURL
 }
 module.exports = {

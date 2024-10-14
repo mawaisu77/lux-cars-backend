@@ -60,15 +60,18 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
         };
     });
     var cars = await mapCarDetails(paginatedBidCars)
-    return { cars: cars }; // Return paginated results
+    return  { 
+        cars: cars, 
+        totalLength: filteredBidCars.length
+    } ; // Return paginated results
 }
 
 
 const findBidCars = async(req, res) => {
-    const {limit = 10, page = 1, ...query} = {...req.query}
+    const {size = 10, page = 1, ...query} = {...req.query}
 
     //Convert limit and page to integers
-    const limitInt = parseInt(limit, 10);
+    const limitInt = parseInt(size, 10);
     const pageInt = parseInt(page, 10);
     const offsetInt = (pageInt - 1) * limitInt; // Calculate offset
 
@@ -78,9 +81,9 @@ const findBidCars = async(req, res) => {
         throw new ApiError(404, "No bid cars found matching the criteria");
     }
 
-    const cars = filterBidCars(query, limitInt, offsetInt, bidCars)
+    const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
 
-    return cars
+    return cars 
 }
 
 
@@ -183,7 +186,7 @@ const placeBid = async (req, res, options = {}) => {
 
     // getting data from body
     const { lot_id } = req.body
-    console.log(req.body)
+    //console.log(req.body)
 
     // checking car against lot_id if already exists
     const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)

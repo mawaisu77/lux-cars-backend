@@ -67,7 +67,7 @@ const expireBid = async(req, res, options = {}) => {
 
     // getting the bid to expire
     const lot_it = req.body.lot_id
-    const bidToExpire = await bidsRepository.getBidToExpireByLotID(lot_it)
+    var bidToExpire = await bidsRepository.getBidToExpireByLotID(lot_it)
 
     if (bidToExpire != null){    
 

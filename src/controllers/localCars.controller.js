@@ -28,7 +28,7 @@ const getAllUnApprovedLocalCars = asyncHandler(async (req, res) => {
 });
 
 const getAllApprovedLocalCars = asyncHandler(async (req, res) => {
-  const cars = await localCars.getAllApprovedLocalCars();
+  const cars = await localCars.getAllApprovedLocalCars(req, res);
   res.status(201).json(new ApiResponse(201, cars, "Success...."));
 });
 

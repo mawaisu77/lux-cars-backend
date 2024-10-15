@@ -118,6 +118,11 @@ const getAllAdmins = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, data, "Admins fetched successfully"));
 });
 
+const getUserInformation = asyncHandler(async (req, res) => {
+  const userInformation = await userService.getUserInformation(req)
+  res.status(200).json(new ApiResponse(200, userInformation, "User Information fetched successfully"));
+})
+
 module.exports = {
   uploadDocuments,
   editProfile,
@@ -128,4 +133,5 @@ module.exports = {
   getAllUsersByAdmin,
   getUserDetailByAdmin,
   getAllAdmins,
+  getUserInformation
 };

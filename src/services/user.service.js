@@ -1,4 +1,8 @@
 const authRepository = require("../repositories/auth.repository.js");
+const fundsRepository = require("../repositories/funds.repository.js")
+const localCarsRepository = require("../repositories/localCars.repository.js")
+const bidService = require("./bids.service.js")
+
 const ApiError = require("../utils/ApiError");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 const { uploadDocs } = require("../utils/uplaodDocument.js");
@@ -191,6 +195,23 @@ const getAllAdmins = async () => {
   return admins;
 };
 
+const getUserInformation = async (req, res) => {
+  const userID = req.params.id
+  const userDetails = await authRepository.findUserById(userID)
+  const userFunds = await fundsRepository.getUserFunds(userID)
+  const userLocalCars = await localCarsRepository.getUserAllLocalCars(userID)
+  req.user = {}
+  req.user.id = userID
+  const userBiddingDetails = await bidService.getAllBidsOfUser(req)
+
+  return {
+    userDetails,
+    userFunds,
+    userLocalCars,
+    userBiddingDetails
+  }
+}
+
 module.exports = {
   uploadDocuments,
   editProfile,
@@ -200,4 +221,5 @@ module.exports = {
   changeDocumentStatusByAdmin,
   getAllUsersByAdmin,
   getAllAdmins,
+  getUserInformation
 };

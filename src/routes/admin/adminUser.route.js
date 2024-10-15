@@ -4,7 +4,8 @@ const {
   changeDocumentStatusByAdmin,
   getAllUsersByAdmin,
   getUserDetailByAdmin,
-  getAllAdmins
+  getAllAdmins,
+  getUserInformation
 } = require("../../controllers/user.controller");
 const { isAuthenticatedAdmin } = require("../../middlewares/auth");
 const router = Router();
@@ -28,4 +29,8 @@ router.get(
   getUserDetailByAdmin
 );
 
+router.get("/get-user-information/:id",
+
+  getUserInformation
+)
 module.exports = router;

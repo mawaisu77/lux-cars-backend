@@ -90,8 +90,10 @@ const getAllUnApprovedLocalCars = async (req, res) => {
   };
 };
 
-const getAllApprovedLocalCars = async () => {
-  const localCars = await localCarsRepository.getAllApprovedLocalCars();
+const getAllApprovedLocalCars = async (req, res) => {
+  const query = { ...req.query }
+  console.log(query)
+  const localCars = await localCarsRepository.getAllApprovedLocalCars(query);
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");
   }

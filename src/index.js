@@ -20,3 +20,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", function () {
    console.log('Server up and running', port);
 });
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f109435e-ad50-5af7-b738-e3118c755fc8")}catch(e){}}();
+//# debugId=f109435e-ad50-5af7-b738-e3118c755fc8

@@ -28,6 +28,7 @@ const getCarReportPDF = async (req, res) => {
         })
 
     }catch(error){
+        console.log(error)
         throw new ApiError(404, "No data found against this Car!")
     }
 
@@ -37,7 +38,7 @@ const getCarReportPDF = async (req, res) => {
     // res.setHeader('Content-Disposition', `attachment; filename="car_report_${vin}.pdf"`)
 
     // Send the PDF buffer data as the response
-    console.log(response)
+    //console.log(response)
     return response.data
 
 }

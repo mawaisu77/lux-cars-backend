@@ -8,12 +8,16 @@
     "prestart": "npm install && npm run migrate",
     "migrate": "sequelize db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org keepcodein-g1 --project node-express src/index.js && sentry-cli sourcemaps upload --org keepcodein-g1 --project node-express src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/cli": "^2.37.0",
+    "@sentry/node": "^8.34.0",
+    "@sentry/profiling-node": "^8.34.0",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "cheerio": "^1.0.0",

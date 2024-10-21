@@ -20,7 +20,7 @@ router.get(
 );
 
 router.post(
-  " ",
+  "/change_partsRequests_status",
   isAuthenticatedAdmin,
   changePartsRequestStatus
 );

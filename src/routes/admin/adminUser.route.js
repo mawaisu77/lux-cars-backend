@@ -30,7 +30,7 @@ router.get(
 );
 
 router.get("/get-user-information/:id",
-
+  isAuthenticatedAdmin,
   getUserInformation
 )
 module.exports = router;

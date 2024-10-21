@@ -6,7 +6,7 @@ module.exports =  {
         service: process.env.SMTP_SERVICE,
         auth: {
             user: process.env.SMTP_MAIL,
-            pass: "hdammbrjnalvzwtg",
+            pass: "jpdxkebulqewhiex",
         },
     },
 };

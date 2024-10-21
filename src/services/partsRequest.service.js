@@ -47,6 +47,10 @@ const getUserPartsRequest = async (userId) => {
 
 const getAllPartsRequests = async () => {
   const partsRequests = await partsRequestRepository.findAllPartsRequests();
+  console.log("===", partsRequests)
+  if (!partsRequests) {
+    throw new ApiError(404, "No Parts Requests found");
+  }
   const requests = await Promise.all(
     partsRequests.map(async (data) => {
       const userID = data.userID;
@@ -81,7 +85,7 @@ const getPartsRequestDetail = async (id) => {
   };
 };
 
-const changePartsRequestStatus = async (id, status, reasonOfRejection) => {
+const  changePartsRequestStatus = async (id, status, reasonOfRejection) => {
   const reasonOfRejection2 = reasonOfRejection;
 
   const partsRequest =

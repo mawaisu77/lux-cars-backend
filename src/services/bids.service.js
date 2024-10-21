@@ -35,29 +35,33 @@ const saveBid = async (req, res, options = {}) => {
 const getAllBidsOfUser = async (req) => {
     // getting the user ID from the request
     const userID = req.user.id
-    // getting all the bids of the user     
+    // getting all the bids of the user    
     const bidsOfUser = await bidsRepository.getAllBidsOfUser(userID)
+    console.log(bidsOfUser)
     // getting the details of the respective car of each bid
     const bidsWithCarDetails = await Promise.all(bidsOfUser.map(async (bid) => {
         var carDetails = await bidCarsRepository.getBidCarByLotID(bid.lot_id)
-        
-        carDetails.carDetails = JSON.parse(carDetails.carDetails)
-        carDetails = {
-            title: carDetails.carDetails.title,
-            lot_id: carDetails.carDetails.lot_id,
-            vin: carDetails.carDetails.vin,
-            status: carDetails.carDetails.status,
-            location: carDetails.carDetails.location,
-            base_site:carDetails.carDetails.base_site,
-            auction_date:carDetails.carDetails.auction_date,
-            vehicle_type:carDetails.carDetails.vehicle_type,
-            image: carDetails.carDetails.link_img_hd[0] || null,
-            currentBid: carDetails.currentBid,
-            noOfBids: carDetails.noOfBids
-        }
-        return {
-            // attaching the car details to the bid object
-            ...bid.dataValues, carDetails
+        if (carDetails){
+            carDetails.carDetails = JSON.parse(carDetails.carDetails)
+            carDetails = {
+                title: carDetails.carDetails.title,
+                lot_id: carDetails.carDetails.lot_id,
+                vin: carDetails.carDetails.vin,
+                status: carDetails.carDetails.status,
+                location: carDetails.carDetails.location,
+                base_site:carDetails.carDetails.base_site,
+                auction_date:carDetails.carDetails.auction_date,
+                vehicle_type:carDetails.carDetails.vehicle_type,
+                image: carDetails.carDetails.link_img_hd[0] || null,
+                currentBid: carDetails.currentBid,
+                noOfBids: carDetails.noOfBids
+            }
+            return {
+                // attaching the car details to the bid object
+                ...bid.dataValues, carDetails
+            }
+        }else{
+            return null
         }
     }))
     return bidsWithCarDetails

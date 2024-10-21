@@ -153,7 +153,7 @@ const getBidsOnCar = async (lot_id) => {
     const bidsOnCarData = await Promise.all(
         bidsOnCar.map(async (bid) => {
         const userId = bid.userID;
-        const user = await userService.getUserProfile(userId);
+        const user = await authRepository.findUserById(userId);
         //console.log("user", user);
 
         return {

@@ -6,7 +6,7 @@ const {
 const { isAuthenticatedAdmin } = require("../../middlewares/auth.js");
 const router = Router();
 
-router.put("/change-local-car-status",  changeCarStatus);
-router.get("/get-unapproved-local-cars", getAllUnApprovedLocalCars);
+router.put("/change-local-car-status", isAuthenticatedAdmin, changeCarStatus);
+router.get("/get-unapproved-local-cars", isAuthenticatedAdmin, getAllUnApprovedLocalCars);
 
 module.exports = router;

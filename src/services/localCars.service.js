@@ -103,12 +103,15 @@ const getAllApprovedLocalCars = async (req, res) => {
 };
 
 const changeCarStatus = async (req) => {
-  const { carId } = req.body;
+  const carId = req.query.carId;
+  const auction_date = req.body.auction_date
   const car = await localCarsRepository.getCarByID(carId);
   if (!car) {
     throw new ApiError(404, "Car does not exists.");
   }
-  const carStatus = await localCarsRepository.changeCarStatus(carId);
+  car.status = "Approved"
+  car.auction_date = auction_date
+  const carStatus = await car.save()
   return carStatus;
 };
 

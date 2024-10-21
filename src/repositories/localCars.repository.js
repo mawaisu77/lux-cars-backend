@@ -33,9 +33,12 @@ const getAllApprovedLocalCars = async () => {
   return await LocalCars.findAll({ where: { status: "Approved" } });
 };
 
-const changeCarStatus = async (carID) => {
+const changeCarStatus = async (carID, auction_date) => {
   return await LocalCars.update(
-    { status: "Approved" },
+    { 
+      status: "Approved",
+      auction_date: auction_date
+    },
     { where: { id: carID } }
   );
 };

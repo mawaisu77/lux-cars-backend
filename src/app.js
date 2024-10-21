@@ -1,3 +1,5 @@
+require("./utils/instrument.js")
+const Sentry = require("@sentry/node");
 const express = require("express");
 const morgan = require("morgan");
 const asyncHandler = require("express-async-handler");
@@ -79,6 +81,7 @@ app.use(
   })
 );
 
+Sentry.setupExpressErrorHandler(app);
 app.use(globalErrorHandler);
 
 module.exports = { app };

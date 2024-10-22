@@ -32,7 +32,7 @@ const BidCars = sequelize.define('bidCars',
       defaultValue: 1
     },
     auction_date:{
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     createdAt: {

@@ -69,7 +69,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
 const findBidCars = async(req, res) => {
     const {size = 10, page = 1, ...query} = {...req.query}
-
+    console.log(">>>>>>>>>",req.query)
     //Convert limit and page to integers
     const limitInt = parseInt(size, 10);
     const pageInt = parseInt(page, 10);

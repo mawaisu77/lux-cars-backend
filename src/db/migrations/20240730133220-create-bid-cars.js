@@ -27,7 +27,7 @@ module.exports = {
         defaultValue: 1
       },
       auction_date:{
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {

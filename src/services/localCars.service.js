@@ -108,14 +108,14 @@ const getAllApprovedLocalCars = async (req, res) => {
 
   // Add milage filter if milageFrom or milageTo is provided
   if (query.milageFrom || query.milageTo) {
-    query.milage = {};
+    query.mileage = {};
     if (query.milageFrom) {
-      query.milage[Op.gte] = parseInt(query.milageFrom);
+      query.mileage[Op.gte] = parseInt(query.milageFrom);
       delete query.milageFrom; // Exclude milageFrom from the query
 
     }
     if (query.milageTo) {
-      query.milage[Op.lte] = parseInt(query.milageTo);
+      query.mileage[Op.lte] = parseInt(query.milageTo);
       delete query.milageTo; 
     }
   }

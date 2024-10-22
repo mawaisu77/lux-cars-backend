@@ -39,10 +39,15 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
                     return carValue <= value; // Check if carValue is less than or equal to the to value
                 }
 
+                // Check if the title contains the substring from the query
+                if (key === 'title') {
+                    return carDetails.title.toString().toLowerCase().includes(value.toString().toLowerCase()); // Substring match
+                }
                 // Check if carDetails[key] is not null before calling toString()
                 if (carDetails[key] !== null) {
                     return carDetails[key].toString() === value.toString(); // Regular comparison
                 }   
+                
                 return false         
             }
             return false; // Key does not exist
@@ -50,7 +55,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     })
 
     // Apply pagination to the filtered results
-    const paginatedBidCars = filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
+    const paginatedBidCars = await filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
         const carDetail = JSON.parse(bidCar.carDetails);
         const { id, current_bid, currentBid, noOfBids, ...carDetails } = carDetail;
         bidCar.dataValues.carDetails = ""
@@ -68,6 +73,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
 
 const findBidCars = async(req, res) => {
+    console.log(req.query)
     const {size = 10, page = 1, ...query} = {...req.query}
     console.log(">>>>>>>>>",req.query)
     //Convert limit and page to integers
@@ -80,7 +86,7 @@ const findBidCars = async(req, res) => {
     if (!bidCars || bidCars.length === 0) {
         throw new ApiError(404, "No bid cars found matching the criteria");
     }
-
+    bidCars.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
 
     return cars 

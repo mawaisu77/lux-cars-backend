@@ -1,3 +1,4 @@
+const { Op } = require('sequelize'); // Import Sequelize Operators
 const { axiosPrivate } = require("../utils/axiosPrivate");
 const { shuffleArrays } = require("../utils/helperFunctions");
 const authRepository = require("../repositories/auth.repository.js");
@@ -91,7 +92,33 @@ const getAllUnApprovedLocalCars = async (req, res) => {
 };
 
 const getAllApprovedLocalCars = async (req, res) => {
-  const query = { ...req.query }
+  var query = { ...req.query }
+  if (query.yearFrom || query.yearTo) {
+    query.year = {};
+    if (query.yearFrom) {
+      query.year[Op.gte] = parseInt(query.yearFrom);
+      delete query.yearFrom; // Exclude milageFrom from the query
+    }
+    if (query.yearTo) {
+      query.year[Op.lte] = parseInt(query.yearTo);
+      delete query.yearTo; // Exclude milageFrom from the query
+
+    }
+  }
+
+  // Add milage filter if milageFrom or milageTo is provided
+  if (query.milageFrom || query.milageTo) {
+    query.mileage = {};
+    if (query.milageFrom) {
+      query.mileage[Op.gte] = parseInt(query.milageFrom);
+      delete query.milageFrom; // Exclude milageFrom from the query
+
+    }
+    if (query.milageTo) {
+      query.mileage[Op.lte] = parseInt(query.milageTo);
+      delete query.milageTo; 
+    }
+  }
   console.log(query)
   const localCars = await localCarsRepository.getAllApprovedLocalCars(query);
   if (localCars.length === 0) {
@@ -103,12 +130,15 @@ const getAllApprovedLocalCars = async (req, res) => {
 };
 
 const changeCarStatus = async (req) => {
-  const { carId } = req.body;
+  const carId = req.query.carId;
+  const auction_date = req.body.auction_date
   const car = await localCarsRepository.getCarByID(carId);
   if (!car) {
     throw new ApiError(404, "Car does not exists.");
   }
-  const carStatus = await localCarsRepository.changeCarStatus(carId);
+  car.status = "Approved"
+  car.auction_date = auction_date
+  const carStatus = await car.save()
   return carStatus;
 };
 

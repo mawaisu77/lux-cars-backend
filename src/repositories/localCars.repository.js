@@ -2,6 +2,7 @@ const { where } = require("sequelize");
 const { Op } = require("sequelize");
 
 const LocalCars = require("../db/models/localcars");
+const { query } = require("express");
 
 const createLocalCar = async (carData) => {
   // saving the car data to the database
@@ -29,13 +30,16 @@ const getAllUnApprovedLocalCars = async () => {
   return await LocalCars.findAll({ where: { status: "UnApproved" } });
 };
 
-const getAllApprovedLocalCars = async () => {
-  return await LocalCars.findAll({ where: { status: "Approved" } });
+const getAllApprovedLocalCars = async (query) => {
+  return await LocalCars.findAll({ where: { status: "Approved", ...query } });
 };
 
-const changeCarStatus = async (carID) => {
+const changeCarStatus = async (carID, auction_date) => {
   return await LocalCars.update(
-    { status: "Approved" },
+    { 
+      status: "Approved",
+      auction_date: auction_date
+    },
     { where: { id: carID } }
   );
 };

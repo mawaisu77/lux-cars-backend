@@ -1,7 +1,7 @@
 
 const mapCarDetails = async(carsData) => {
     const mapedCarData = carsData.map((car) => {
-        console.log(car)
+        //console.log(car)
 
         return {
 

@@ -47,7 +47,7 @@ const getUserPartsRequest = async (userId) => {
 
 const getAllPartsRequests = async () => {
   const partsRequests = await partsRequestRepository.findAllPartsRequests();
-  console.log("===", partsRequests)
+  //console.log("===", partsRequests)
   if (!partsRequests) {
     throw new ApiError(404, "No Parts Requests found");
   }

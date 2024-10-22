@@ -37,7 +37,7 @@ const getAllBidsOfUser = async (req) => {
     const userID = req.user.id
     // getting all the bids of the user    
     const bidsOfUser = await bidsRepository.getAllBidsOfUser(userID)
-    console.log(bidsOfUser)
+    //console.log(bidsOfUser)
     // getting the details of the respective car of each bid
     const bidsWithCarDetails = await Promise.all(bidsOfUser.map(async (bid) => {
         var carDetails = await bidCarsRepository.getBidCarByLotID(bid.lot_id)
@@ -153,7 +153,7 @@ const getBidsOnCar = async (lot_id) => {
     const bidsOnCarData = await Promise.all(
         bidsOnCar.map(async (bid) => {
         const userId = bid.userID;
-        const user = await userService.getUserProfile(userId);
+        const user = await authRepository.findUserById(userId);
         //console.log("user", user);
 
         return {

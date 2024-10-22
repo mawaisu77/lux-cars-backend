@@ -50,7 +50,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     })
 
     // Apply pagination to the filtered results
-    const paginatedBidCars = filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
+    const paginatedBidCars = await filteredBidCars.slice(offsetInt, offsetInt + limitInt).map(bidCar => {
         const carDetail = JSON.parse(bidCar.carDetails);
         const { id, current_bid, currentBid, noOfBids, ...carDetails } = carDetail;
         bidCar.dataValues.carDetails = ""
@@ -80,7 +80,7 @@ const findBidCars = async(req, res) => {
     if (!bidCars || bidCars.length === 0) {
         throw new ApiError(404, "No bid cars found matching the criteria");
     }
-
+    bidCars.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
 
     return cars 

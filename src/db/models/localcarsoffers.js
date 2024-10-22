@@ -14,10 +14,6 @@ const LocalCarsOffers = sequelize.define('localCarsOffers',
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4,
     },
-    userID: {
-      allowNull: false,
-      type: Sequelize.UUID
-    },
     localCarID: {
       allowNull: false,
       type: Sequelize.UUID
@@ -25,6 +21,11 @@ const LocalCarsOffers = sequelize.define('localCarsOffers',
     offerPrice: {
       allowNull: false,
       type: Sequelize.INTEGER
+    },
+    offerStatus: {
+      allowNull: false,
+      type: Sequelize.STRING,
+      defaultValue: "Pending"
     },
     createdAt: {
       allowNull: false,
@@ -36,7 +37,6 @@ const LocalCarsOffers = sequelize.define('localCarsOffers',
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW
     }
-  
   }
 );
 

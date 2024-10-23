@@ -91,8 +91,9 @@ const getAllUnApprovedLocalCars = async (req, res) => {
   };
 };
 
-const getAllApprovedLocalCars = async (req, res) => {
+const getAllLocalCars = async (req, res) => {
   var query = { ...req.query }
+  console.log(query)
   if (query.yearFrom || query.yearTo) {
     query.year = {};
     if (query.yearFrom) {
@@ -119,8 +120,20 @@ const getAllApprovedLocalCars = async (req, res) => {
       delete query.milageTo; 
     }
   }
+  if (query.auction_date_from || query.auction_date_to) {
+    query.auction_date = {};
+    if (query.auction_date_from) {
+      query.auction_date[Op.gte] = (query.auction_date_from);
+      delete query.auction_date_from; // Exclude milageFrom from the query
+
+    }
+    if (query.auction_date_to) {
+      query.auction_date[Op.lte] = (query.auction_date_to);
+      delete query.auction_date_to; 
+    }
+  }
   console.log(query)
-  const localCars = await localCarsRepository.getAllApprovedLocalCars(query);
+  const localCars = await localCarsRepository.getAllLocalCars(query);
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");
   }
@@ -148,6 +161,6 @@ module.exports = {
   updateCar,
   getUserAllLocalCars,
   getAllUnApprovedLocalCars,
-  getAllApprovedLocalCars,
+  getAllLocalCars,
   changeCarStatus,
 };

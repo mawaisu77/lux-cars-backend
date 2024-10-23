@@ -9,10 +9,12 @@ const ApiError = require("../utils/ApiError.js");
 
 const createOffer = async (req, res) => {
   const { localCarID, offerPrice } = req.body;
-  const userID = req.user.id;
 
   if (!localCarID) throw new ApiError(400, "LocalCarID in required!");
   if (!offerPrice) throw new ApiError(400, "OfferPrice is required!");
+  const localCar = await localCarsRepository.getCarByID(localCarID)
+  if (!localCar) throw new ApiError(400, "Not able to find the LocalCar against the provided CarID");
+  const userID = localCar.userID
   if (!userID) throw new ApiError(400, "Unable to get the UserID");
 
   const offerData = {

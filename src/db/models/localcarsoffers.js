@@ -22,6 +22,10 @@ const LocalCarsOffers = sequelize.define('localCarsOffers',
       allowNull: false,
       type: Sequelize.INTEGER
     },
+    userID: {
+      allowNull: false,
+      type: Sequelize.UUID
+    },
     offerStatus: {
       allowNull: false,
       type: Sequelize.STRING,
@@ -36,7 +40,7 @@ const LocalCarsOffers = sequelize.define('localCarsOffers',
       allowNull: false,
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW
-    }
+    }  
   }
 );
 

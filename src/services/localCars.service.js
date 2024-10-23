@@ -6,6 +6,7 @@ const logger = require("../utils/logger");
 const localCarsRepository = require("../repositories/localCars.repository.js");
 const { uploadDocs } = require("../utils/uplaodDocument.js");
 const ApiError = require("../utils/ApiError.js");
+const { query } = require('express');
 
 const uploadCar = async (req, res) => {
   // Uplaoding car images
@@ -91,9 +92,8 @@ const getAllUnApprovedLocalCars = async (req, res) => {
   };
 };
 
-const getAllLocalCars = async (req, res) => {
-  var query = { ...req.query }
-  console.log(query)
+const adjustQueryForFilters = async(_query) => {
+  var query = { ..._query }
   if (query.yearFrom || query.yearTo) {
     query.year = {};
     if (query.yearFrom) {
@@ -132,13 +132,20 @@ const getAllLocalCars = async (req, res) => {
       delete query.auction_date_to; 
     }
   }
-  console.log(query)
+
+  return query
+}
+
+const getAllLocalCars = async (req, res) => {
+  
+  const query = await adjustQueryForFilters(req.query)
   const localCars = await localCarsRepository.getAllLocalCars(query);
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");
   }
   return {
-    cars: localCars,
+    cars: localCars.cars,
+    totalLength: localCars.totalLength
   };
 };
 

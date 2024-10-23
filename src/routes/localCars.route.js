@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/local-cars/upload-car', isAuthenticatedUser, upload.array('carImages', 6),  uploadCar);
 router.put('/local-cars/update-car', isAuthenticatedUser, upload.array('carImages', 12), updateCar)
-router.get('/local-cars/get-car', isAuthenticatedUser, getCarByID)
+router.get('/local-cars/get-car', getCarByID)
 router.get('/local-cars/get-all-cars',isAuthenticatedUser, getUserAllLocalCars)
 router.get('/local-cars/get-all-unapproved-local-cars', getAllUnApprovedLocalCars)
 router.get('/local-cars/get-all-local-cars', getAllLocalCars)

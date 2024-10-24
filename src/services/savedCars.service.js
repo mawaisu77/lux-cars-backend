@@ -51,8 +51,11 @@ const deleteCar = async (req, res) => {
 
 const getUsersSavedCars = async (req, res) => {
     const userID = req.user.id;
+    if (!userID) throw new ApiError(401, "User does not exist against the provied UserID")
     const savedCarsLots = await savedCarsRepository.getUsersSavedCars(userID);
-    const savedCars = await carService.getCarsByLotIDs(savedCarsLots.lot_id)
+    var savedCars = []
+    if (!savedCarsLots) return savedCars
+    savedCars = await carService.getCarsByLotIDs(savedCarsLots.lot_id)
     return savedCars
 }
 

@@ -1,5 +1,4 @@
-const { where } = require("sequelize");
-const { Op } = require("sequelize");
+const { where, Op, col } = require("sequelize"); // Ensure only col is imported
 const LocalCars = require("../db/models/localcars");
 const { query } = require("express");
 const sequelize = require('../config/database.js');
@@ -32,10 +31,37 @@ const getAllUnApprovedLocalCars = async () => {
   return await LocalCars.findAll({ where: { status: "UnApproved" } });
 };
 
-const getAllLocalCars = async (query) => {
-  return await LocalCars.findAll({ 
-    where: { ...query }
+const getAllLocalCars = async (_query) => {
+
+  const { size = 10, page = 1, ...query } = {..._query};
+  console.log(query)
+  const cars = await LocalCars.findAll({ 
+    where: {      
+      [Op.and]: Object.keys(query).map(key => {
+        if (typeof query[key] === 'string' && query[key]) {
+          return { [key]: { [Op.iLike]: query[key].toLowerCase() } };
+        } else if (query[key] !== undefined) {
+          return { [key]: query[key] };
+        }
+        return null;
+      }).filter(Boolean),
+    },
+    limit: size,
+    offset: (page - 1) * size
   });
+  const totalLength = await LocalCars.count({
+    where: {      
+      [Op.and]: Object.keys(query).map(key => {
+        if (typeof query[key] === 'string' && query[key]) {
+          return { [key]: { [Op.iLike]: query[key].toLowerCase() } };
+        } else if (query[key] !== undefined) {
+          return { [key]: query[key] };
+        }
+        return null;
+      }).filter(Boolean),
+    }
+  });
+  return { cars, totalLength };
 };
 
 const changeCarStatus = async (carID, auction_date) => {

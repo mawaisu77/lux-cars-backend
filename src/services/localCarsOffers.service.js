@@ -18,7 +18,8 @@ const expireOffer = async (carID) => {
 }
 
 const createOffer = async (req, res) => {
-  const { localCarID, offerPrice } = req.body;
+  const { offerPrice } = req.body;
+  const { localCarID } = req.query
 
   if (!localCarID) throw new ApiError(400, "LocalCarID in required!");
   if (!offerPrice) throw new ApiError(400, "OfferPrice is required!");

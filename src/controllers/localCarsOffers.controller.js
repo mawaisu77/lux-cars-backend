@@ -9,6 +9,11 @@ const createOffer = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, offer, "Offer Created successfully."));
 });
 
+const updateOffer = asyncHandler(async (req, res) => {
+  const acceptedOffer = await localCarsOffers.updateOffer(req, res)
+  res.status(201).json(new ApiResponse(201, acceptedOffer, "Offer Updated successfully."));
+})
+
 const carsAllOffers = asyncHandler(async (req, res) => {
   const offers = await localCarsOffers.carsAllOffers(req);
   res
@@ -47,4 +52,5 @@ module.exports = {
   carsAllOffers,
   getAllOffersOfUser,
   getCarsWithOffersByUser,
+  updateOffer
 };

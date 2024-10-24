@@ -16,8 +16,19 @@ const getAllOffersOfUser = async (userId) => {
   return await LocalCarsOffers.findAll({ where: { userID: userId } });
 };
 
+const getOfferByID = async (offerID) => {
+  return await LocalCarsOffers.findByPk(offerID);
+}
+
+const getActiveOffers = async (carID) => {
+  return await LocalCarsOffers.findOne({ where: { localCarID: carID, offerStatus: { [Op.ne]: "Expired" } } });
+};
+
+
 module.exports = {
   createOffer,
   carsAllOffers,
   getAllOffersOfUser,
+  getOfferByID,
+  getActiveOffers
 };

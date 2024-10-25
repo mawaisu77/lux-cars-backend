@@ -16,7 +16,7 @@ const updateOffer = asyncHandler(async (req, res) => {
   if (!status) throw new ApiError(401, "Offer Status is not Provide!")
   var message = ""
   if (status === "OfferRejected") message = "You have Rejected the Offer from the LuxCars, An Admin from the LuxCars may contact you regargind further negotiation, Thanks!"
-  else if (status === "OfferAccetepd" ) message = "You have Accepted the offer from the LuxCars, An Admin from the LuxCars may contact you for the further proceedings, Thanks!"
+  else if (status === "OfferAccepted" ) message = "You have Accepted the offer from the LuxCars, An Admin from the LuxCars may contact you for the further proceedings, Thanks!"
   res.status(201).json(new ApiResponse(201, acceptedOffer, message));
 })
 

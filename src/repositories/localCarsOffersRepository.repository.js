@@ -16,6 +16,10 @@ const getAllOffersOfUser = async (userId) => {
   return await LocalCarsOffers.findAll({ where: { userID: userId } });
 };
 
+const getAllActiveOffers = async (userId) => {
+  return await LocalCarsOffers.findAll({ where: { userID: userId, offerStatus: { [Op.ne]: "Expired" } } });
+};
+
 const getOfferByID = async (offerID) => {
   return await LocalCarsOffers.findByPk(offerID);
 }
@@ -30,5 +34,6 @@ module.exports = {
   carsAllOffers,
   getAllOffersOfUser,
   getOfferByID,
-  getActiveOffers
+  getActiveOffers,
+  getAllActiveOffers
 };

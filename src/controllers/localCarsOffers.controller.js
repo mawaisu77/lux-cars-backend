@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { ApiResponse } = require("../utils/ApiResponse");
+const { ApiError } = require("../utils/ApiError.js")
 const localCarsOffers = require("../services/localCarsOffers.service.js");
 
 const createOffer = asyncHandler(async (req, res) => {
@@ -11,7 +12,12 @@ const createOffer = asyncHandler(async (req, res) => {
 
 const updateOffer = asyncHandler(async (req, res) => {
   const acceptedOffer = await localCarsOffers.updateOffer(req, res)
-  res.status(201).json(new ApiResponse(201, acceptedOffer, "Offer Updated successfully."));
+  const status = req.body.offerStatus
+  if (!status) throw new ApiError(401, "Offer Status is not Provide!")
+  var message = ""
+  if (status === "OfferRejected") message = "You have Rejected the Offer from the LuxCars, An Admin from the LuxCars may contact you regargind further negotiation, Thanks!"
+  else if (status === "OfferAccetepd" ) message = "You have Accepted the offer from the LuxCars, An Admin from the LuxCars may contact you for the further proceedings, Thanks!"
+  res.status(201).json(new ApiResponse(201, acceptedOffer, message));
 })
 
 const carsAllOffers = asyncHandler(async (req, res) => {

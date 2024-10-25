@@ -86,10 +86,16 @@ const getCarsByLotIDs = async (lot_ids) => {
     for (let i = 0; i < lot_ids.length; i++) {
         try {
             // Check for the car in bidCars first
-            const bidCar = await getBidCarByLotID(lot_ids[i]);
+            var bidCar = await getBidCarByLotID(lot_ids[i]);
 
             if (bidCar) {
-                cars.push(bidCar.carDetails); // Assuming carDetails contains the required car data
+                // converting the JSON carDetails to String
+                bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+
+                // getting the current bid and the number of bids
+                bidCar.carDetails.currentBid = bidCar.currentBid
+                bidCar.carDetails.noOfBids = bidCar.noOfBids
+                cars.push(bidCar.carDetails); 
             } else {
                 // If not found in bidCars, then hit the API
                 const car = await axiosPrivate.get(`/api/cars/${lot_ids[i]}`);

@@ -77,23 +77,23 @@ const carsAllOffers = async (req, res) => {
 const getAllOffersOfUser = async (req, res) => {
   const userId = req.user.id;
   if (!userId) throw new ApiError(401, "User Not Found")
-  const allOffersByUser = await localCarsOffersRepository.getAllOffersOfUser(userId);
+  const userAllActiveOffers = await localCarsOffersRepository.getAllActiveOffers(userId);
 
   const carOffersMap = {};
-  allOffersByUser.forEach((offer) => {
+  userAllActiveOffers.forEach((offer) => {
     const carId = offer.localCarID;
     if (!carOffersMap[carId]) {
-      carOffersMap[carId] = { carData: null, offers: [] };
+      carOffersMap[carId] = { carData: null, offer: null };
     }
-    carOffersMap[carId].offers.push(offer);
+    carOffersMap[carId].offer = offer;
   });
 
   const offersWithCarDetails = await Promise.all(
     Object.values(carOffersMap).map(async (carOffer) => {
-      const carDetail = await localCarsRepository.getCarByID(carOffer.carData ? carOffer.carData.id : carOffer.offers[0].localCarID);
+      const carDetail = await localCarsRepository.getCarByID(carOffer.offer.localCarID);
       return {
         carData: carDetail,
-        offers: carOffer.offers,
+        offer: carOffer.offer,
       };
     })
   );

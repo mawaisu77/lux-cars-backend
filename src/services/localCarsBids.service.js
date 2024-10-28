@@ -98,6 +98,7 @@ const getAllBidsOnLocalCarWithUserDetails = async (req, res) => {
             throw new ApiError(404, "User not found for bid")
         }
         userDetails = {
+            userID: userDetails.id,
             username: userDetails.username,
             email: userDetails.email,
             profilePicture: userDetails.profilePicture

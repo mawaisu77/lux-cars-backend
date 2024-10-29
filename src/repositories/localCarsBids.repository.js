@@ -27,8 +27,18 @@ const getAllBidsOnLocalCar = async(localCarID) => {
     })
 }
 
+
+const getAllBidsOfUser = async(userID) => {
+    return await LocalCarsBids.findAll({
+        where: {
+            userID: userID,
+        }
+    })
+}
+
 module.exports = {
     saveBid,
     getActiveBidByLocalCarID,
-    getAllBidsOnLocalCar
+    getAllBidsOnLocalCar,
+    getAllBidsOfUser
 };

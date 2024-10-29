@@ -115,10 +115,38 @@ const getAllBidsOnLocalCarWithUserDetails = async (req, res) => {
     return bidsWithUserDetails
 }
 
+const getUserAllBids = async (req, res) => {
+    const userID = req.user.id
+    if (!userID) throw new ApiError(401, "User ID is required!")
+    const userBids = await localCarsBidsRepository.getAllBidsOfUser(userID)
+    if (!userBids) return []
+    const userBidsWithCarDetails = await Promise.all(userBids.map(async (bid) => {
+        var carDetails = await localCarsRepository.getCarByID(bid.localCarID)
+        if (carDetails){
+            carDetails = {
+                title: carDetails.make + " " + carDetails.model + " " + carDetails.year,
+                vin: carDetails.vin,
+                location: carDetails.carLocation + " " + carDetails.carState,
+                auction_date: carDetails.auction_date,
+                image: carDetails.carImages || null,
+                currentBid: carDetails.currentBid,
+                noOfBids: carDetails.noOfBids
+            }
+            return {
+                ...bid.dataValues, carDetails
+            }
+        }else{
+            return null
+        }
+    }))
+    return userBidsWithCarDetails
+}
+
 
 
 
 module.exports = {
     placeBid,
-    getAllBidsOnLocalCarWithUserDetails
+    getAllBidsOnLocalCarWithUserDetails,
+    getUserAllBids
 };

@@ -12,8 +12,16 @@ const getAllBidsOnLocalCarWithUserDetails = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, bidsData, "BidData been fetched successfully."));
   });
 
+  
+
+const getUserAllBids = asyncHandler(async (req, res) => {
+  const bidsData = await localCarsBidsService.getUserAllBids(req);
+  res.status(201).json(new ApiResponse(201, bidsData, "BidData been fetched successfully."));
+});
+
 
 module.exports = {
     placeBid,
-    getAllBidsOnLocalCarWithUserDetails
+    getAllBidsOnLocalCarWithUserDetails,
+    getUserAllBids
 };

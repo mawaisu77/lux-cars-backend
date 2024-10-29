@@ -7,7 +7,7 @@ const { placeBid, getAllBidsOnLocalCarWithUserDetails } = require("../controller
 const router = Router()
 
 router.post('/local-cars-bids/place-bid', isAuthenticatedUser , placeBid)
-router.get('/local-cars-bids/get-all-bids', isAuthenticatedUser, getAllBidsOnLocalCarWithUserDetails)
+router.get('/local-cars-bids/get-all-bids', getAllBidsOnLocalCarWithUserDetails)
 
 
 module.exports = router

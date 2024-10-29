@@ -109,6 +109,11 @@ const getAllBidsOnLocalCarWithUserDetails = async (req, res) => {
             bid: bid.dataValues, userDetails
         }
     }))
+
+    // Sort bids by creation date (assuming bid has a 'createdAt' field)
+    
+    // Sort bids by creation date (assuming bid has a 'createdAt' field)
+    bidsWithUserDetails.sort((a, b) => new Date(b.bid.createdAt) - new Date(a.bid.createdAt));
     return bidsWithUserDetails
 }
 

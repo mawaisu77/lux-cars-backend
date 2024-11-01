@@ -53,10 +53,24 @@ const getCarsWithOffersByUser = asyncHandler(async (req, res) => {
     );
 });
 
+const getCarAllOffers = asyncHandler(async (req, res) => {
+  const carOffers = await localCarsOffers.getCarAllOffers(req);
+  res
+    .status(201)
+    .json(
+      new ApiResponse(
+        201,
+        carOffers,
+        "Car Offers fetched successfully."
+      )
+    );
+})
+
 module.exports = {
   createOffer,
   carsAllOffers,
   getAllOffersOfUser,
   getCarsWithOffersByUser,
-  updateOffer
+  updateOffer,
+  getCarAllOffers
 };

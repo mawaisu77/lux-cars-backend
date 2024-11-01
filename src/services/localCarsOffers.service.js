@@ -118,10 +118,27 @@ const getCarsWithOffersByUser = async (req, res) => {
   return offersOnCar;
 };
 
+const getCarAllOffers = async (req, res) => {
+  
+  const { localCarID } = req.query
+  if(!localCarID) throw new ApiError(401, "LocalCarID Required!")
+
+  const carOffers = await localCarsOffersRepository.getCarAllOffers(localCarID)
+  if (!carOffers) return []
+
+  return carOffers.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
+}
+
+
+
 module.exports = {
   createOffer,
   carsAllOffers,
   getAllOffersOfUser,
   getCarsWithOffersByUser,
-  updateOffer
+  updateOffer,
+  getCarAllOffers
 };

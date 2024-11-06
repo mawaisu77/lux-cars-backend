@@ -2,6 +2,10 @@ const { query } = require("express")
 const { uploadOnCloudinary } = require("../utils/cloudinary.js")
 const ApiError = require("./ApiError.js")
 const getCarsURL = async (queryParameters) => {
+    if (!queryParameters.auction_date_from) {
+        queryParameters.auction_date_from = new Date().toISOString();
+    }
+    //console.log(queryParameters.auction_date_from)
     var carsURL = '/api/cars?'
     var isFirst = true
     for (queries in queryParameters){

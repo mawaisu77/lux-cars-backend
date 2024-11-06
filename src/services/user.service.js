@@ -2,6 +2,8 @@ const authRepository = require("../repositories/auth.repository.js");
 const fundsRepository = require("../repositories/funds.repository.js")
 const localCarsRepository = require("../repositories/localCars.repository.js")
 const bidService = require("./bids.service.js")
+const localCarsBidsService = require("../services/localCarsBids.service.js")
+const localCarsOffersService = require("../services/localCarsOffers.service.js")
 
 const ApiError = require("../utils/ApiError");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
@@ -202,13 +204,19 @@ const getUserInformation = async (req, res) => {
   const userLocalCars = await localCarsRepository.getUserAllLocalCars(userID)
   req.user = {}
   req.user.id = userID
-  const userBiddingDetails = await bidService.getAllBidsOfUser(req)
+  const userBiddingDetails = await bidService.getAllBidsOfUser(req, res)
+  const localCarsBids = await localCarsBidsService.getUserAllBids(req, res)
+  const localCarOffers = await localCarsOffersService.getAllOffersOfUser(req, res)
+
+
 
   return {
     userDetails,
     userFunds,
     userLocalCars,
-    userBiddingDetails
+    userBiddingDetails,
+    localCarsBids,
+    localCarOffers
   }
 }
 

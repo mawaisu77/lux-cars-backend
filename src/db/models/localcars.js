@@ -44,7 +44,7 @@ const LocalCars = sequelize.define('localCars',
     },
     description: {
       allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     },
     modification: {
       type: Sequelize.STRING

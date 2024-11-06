@@ -7,6 +7,42 @@ const { carData } = require('../utils/carsData.js')
 const { getBidCarByLotID } = require('../repositories/bidCars.repository.js')
 const { mapCarDetails } = require('../utils/carDetailsMap.js')
 
+const getALLCategoriesVehichleCount = async(req, res) => {
+    const vehicleTypeOptions = [
+        { id: "automobile", label: "Automobile" },
+        { id: "motorcycle", label: "Motorcycle" },
+        { id: "atv", label: "ATV" },
+        { id: "watercraft", label: "Watercraft" },
+        { id: "jet_sky", label: "Jet Sky" },
+        { id: "boat", label: "Boat" },
+        { id: "trailers", label: "Trailers" },
+        { id: "mobile_home", label: "Mobile Home" },
+        { id: "emergency_equipment", label: "Emergency Equipment" },
+        { id: "industrial_equipment", label: "Industrial Equipment" },
+        { id: "truck", label: "Truck" },
+        { id: "bus", label: "Bus" },
+        { id: "other", label: "Other" },
+    ];
+    const vehicleCounts = await Promise.all(vehicleTypeOptions.map(async (vehicleType) => {
+        const queryParameters = { vehicle_type: vehicleType.id };
+        const carsURL = await getCarsURL(queryParameters);
+        const response = await axiosPrivate.get(carsURL);
+        return { label: vehicleType.label, count: response.data.count };
+    }));
+
+    //Reduce to accumulate the results into an object
+    const vehicleCountData = vehicleCounts.reduce((acc, curr) => {
+        acc[curr.label] = { 
+            label: curr.label,
+            count: curr.count
+        };
+        return acc;
+    }, {});
+
+    return vehicleCountData;
+
+}
+
 const getAllLatestCars = async (req, res) => {
     // ... existing code ...
 
@@ -198,5 +234,6 @@ module.exports = {
     getCarByLotIDTesting,
     carsMakesModels,
     getCarsByLotIDs,
-    getHistoryCars
+    getHistoryCars,
+    getALLCategoriesVehichleCount
 }

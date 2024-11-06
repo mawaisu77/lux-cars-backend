@@ -32,11 +32,18 @@ const getHistoryCars = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, historyCars, "History Cars fetched successfully."))
 })
 
+const getALLCategoriesVehichleCount = asyncHandler (async(req, res) => {
+    const carsCounts = await carsService.getALLCategoriesVehichleCount(req, res)
+    res.status(201).json(new ApiResponse(201, carsCounts, "Cars Counts fetched successfully."))
+
+})
+
 module.exports = {
     getAllCars,
     getCarByLotID,
     carsMakesModels,
     getAllCarsTesting,
     getCarByLotIDTesting,
-    getHistoryCars
+    getHistoryCars,
+    getALLCategoriesVehichleCount
 }

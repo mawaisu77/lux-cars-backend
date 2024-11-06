@@ -32,7 +32,7 @@ const saveBid = async (req, res, options = {}) => {
 }
 
 
-const getAllBidsOfUser = async (req) => {
+const getAllBidsOfUser = async (req, res) => {
     // getting the user ID from the request
     const userID = req.user.id
     // getting all the bids of the user    

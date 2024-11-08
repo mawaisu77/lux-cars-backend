@@ -18,9 +18,15 @@ const getUsersSavedCars = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, cars, "User's saved cars fetched successfully.", ));
 })
 
+const getUsersSavedCarsIDs = asyncHandler(async (req, res) => {
+    const usersSavedCarsIDs = await savedCars.getUsersSavedCarsIDs(req)
+    res.status(200).json(new ApiResponse(200, usersSavedCarsIDs, "User's saved cars fetched successfully.", ));
+})
+
 
 module.exports = {
     saveCar,
     deleteCar,
-    getUsersSavedCars
+    getUsersSavedCars,
+    getUsersSavedCarsIDs
 }

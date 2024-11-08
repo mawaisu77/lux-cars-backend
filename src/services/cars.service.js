@@ -57,7 +57,7 @@ const getAllLatestCars = async (req, res) => {
         
         // Construct the URL with the current page
         const carsURL = await getCarsURL(queryParameters); // Ensure to include the page in the query
-        console.log(carsURL)
+        //console.log(carsURL)
         // getting the cars from the API
         carsRequest = await axiosPrivate.get(carsURL);
         cars = carsRequest.data.data.filter(car => new Date(car.auction_date) > new Date()); // Filter for future auction dates
@@ -211,19 +211,65 @@ const carsMakesModels = async (req, res) => {
     return makesModels.data
 }
 
-const getHistoryCars = async (req, res) => {
-    const { make, model } = req.query
+const getHistoryCarsData = async (make, model, year, size = 30) => {
+
+    const year_from = year - 2
+    const year_to = year + 2
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const auction_date_from = oneYearAgo.toISOString().split('T')[0];
 
     // 'https://api.apicar.store/api/history-cars?make=Acura&model=CSX'
-    let cars = await axiosPrivate.get(`/api/history-cars?make=${make}&model=${model}`);
+    let cars = await axiosPrivate.get(`/api/history-cars?make=${make}&model=${model}&year_from=${year_from}&year_to=${year_to}&size=${size}&auction_date_from=${auction_date_from}`);
 
     // mapping the cars to the required format
     cars = await mapCarDetails(cars.data.data)
 
-    return { cars }
+    return cars
 
 
+}
 
+const getHistoryCars = async (req, res) => {
+
+    const { make, model, year, size = 30} = req.query
+    let cars = await getHistoryCarsData(make, model, year, size)
+
+    cars = cars.slice(0, 8)
+
+    return cars
+
+}
+
+const calculateEstimatedPriceForTheVehicle = async (req, res) => {
+
+    const car = await getCarByLotID(req)
+
+    const { make, model, year, size = 30} = car
+
+    console.log("Make : Model : Year => ", make, " : ", model, " : ", year)
+
+    let cars = await getHistoryCarsData(make, model, year, size)
+    console.log(cars)
+    // calculating the average purchase price
+    let purchasePrices = cars.map((car) => {
+        if (car.sale_history && car.sale_history.length > 0) {
+            return car.sale_history[0].purchase_price
+        }else{
+            return 0
+        }
+    });
+    console.log(purchasePrices)
+    let minPurchasePrice = Math.min(...purchasePrices);
+    let maxPurchasePrice = Math.max(...purchasePrices);
+    let totalPurchasePrice = purchasePrices.reduce((acc, curr) => acc + curr, 0);
+    let averagePurchasePrice = totalPurchasePrice / purchasePrices.length;
+    const purchasePriceRange = `${minPurchasePrice} - ${maxPurchasePrice}`;
+
+    return {
+        purchasePriceRange,
+        averagePurchasePrice
+    }
 }
 
 module.exports = {
@@ -235,5 +281,6 @@ module.exports = {
     carsMakesModels,
     getCarsByLotIDs,
     getHistoryCars,
-    getALLCategoriesVehichleCount
+    getALLCategoriesVehichleCount,
+    calculateEstimatedPriceForTheVehicle
 }

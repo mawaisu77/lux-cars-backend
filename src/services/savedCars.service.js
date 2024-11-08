@@ -9,7 +9,9 @@ const ApiError = require('../utils/ApiError.js');
 const saveCar = async (req, res) => {
 
     const userID = req.user.id;
-    const lotID = req.body.lot_id;
+    if(!req.body.lot_id) throw new ApiError(401, "Lot_ID Required!")
+    const lotID = req.body.lot_id.toString() 
+
     const existingCar = await savedCarsRepository.getUsersSavedCars(userID);
     if (existingCar) {
         // If the user already has a saved car, update the lot_id array
@@ -31,7 +33,8 @@ const saveCar = async (req, res) => {
 
 const deleteCar = async (req, res) => {
     const userID = req.user.id;
-    const lotID = req.body.lot_id;
+    if(!req.body.lot_id) throw new ApiError(401, "Lot_ID Required!")
+    const lotID = req.body.lot_id.toString() 
 
     let savedCars = await savedCarsRepository.getUsersSavedCars(userID);
     if (savedCars) {

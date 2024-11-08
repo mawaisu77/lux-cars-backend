@@ -33,12 +33,10 @@ const deleteCar = async (req, res) => {
     const userID = req.user.id;
     const lotID = req.body.lot_id;
 
-    const savedCars = await savedCarsRepository.getUsersSavedCars({ userID });
+    let savedCars = await savedCarsRepository.getUsersSavedCars(userID);
     if (savedCars) {
-        // If the user has a saved car, remove the lot_id from the array
-        const index = savedCars.lot_id.indexOf(lotID);
-        if (index !== -1) {
-            savedCars.lot_id.splice(index, 1);
+        if (savedCars.lot_id.includes(lotID)) {
+            savedCars.lot_id = savedCars.lot_id.filter(id => id !== lotID);
             await savedCars.save();
             return savedCars;
         } else {

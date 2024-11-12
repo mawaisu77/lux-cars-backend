@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusher Notifications</title>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+</head>
+<body>
+    <h1>Live Notifications</h1>
+    <div id="notifications"></div>
+
+    <script>
+        // Initialize Pusher
+        const pusher = new Pusher('6d700b541b1d83879b18', {
+            cluster: 'ap2'
+        });
+
+        // Subscribe to the private channel
+        const userId = "23897423reh92382382";  // Logged-in user's ID
+        const channel = pusher.subscribe(`public-notifications-${userId}`);
+
+        // Listen for events on the channel
+        channel.bind('new_notification', (data) => {
+            const notificationsDiv = document.getElementById('notifications');
+            notificationsDiv.innerHTML += `<p>New notification: ${data.message}</p>`;
+        });
+    </script>
+</body>
+</html>

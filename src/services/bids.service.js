@@ -5,6 +5,7 @@ const authRepository = require("../repositories/auth.repository.js");
 const userService = require("../services/user.service.js");
 const ApiError = require('../utils/ApiError.js');
 const moment = require('moment');
+const { pushNotification } = require('./pusher.service.js');
 
 
 const saveBid = async (req, res, options = {}) => {
@@ -84,6 +85,7 @@ const expireBid = async(req, res, options = {}) => {
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
 
+        pushNotification(bidToExpire.userID, `Your bid on Lot:${lot_it} has been expired, Someone has outbid you with higher bid than yours`, "Bid Expiration", "Bid Expiration", "private-notification")
         // returning the expired bid
         return expiredBid
 

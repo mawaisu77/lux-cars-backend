@@ -1,44 +1,13 @@
 const { Router } = require("express");
 const { isAuthenticatedUser } = require("../middlewares/auth.js");
+const { pushNotification, pusherAuth} = require('../controllers/pusher.controller.js')
 const router = Router()
-const Pusher = require('pusher');
-
-const pusher = new Pusher({
-   appId: "1894857",
-   key: "6d700b541b1d83879b18",
-   secret: "7892a31a240cbb7db87a",
-   cluster: "ap2",
-   useTLS: true
-});
 
 // Endpoint to send notifications
-router.post('/notifications/send', async (req, res) => {
-    const { userId, message, type } = req.body;
-
-    // Trigger a Pusher event on a user-specific channel
-    pusher.trigger(`public-notifications-${userId}`, 'new_notification', {
-        message,
-        type
-    });
-
-    res.status(200).json({ message: 'Notification sent successfully' });
-});
+router.post('/pusher/push-notifications', pushNotification)
 
 
-router.post('/pusher/auth', (req, res) => {
-    const socketId = req.body.socket_id;
-    const channel = req.body.channel_name;
-  
-    // Check if the user is authorized to subscribe to this channel
-    const userIdFromChannel = channel.split('-').pop();  // For example, private-notifications-123
-    if (user.id !== userIdFromChannel) {
-        return res.status(403).json({ error: 'Unauthorized' });
-    }
-    
-    // Verify the user's authorization to access this channel
-    const auth = pusher.authenticate(socketId, channel, { user_id: req.user.id }); // Added data parameter
-    res.send(auth);
-});
+router.post('/pusher/auth', pusherAuth)
 
 
 router.post('/notifications/mark-read', async (req, res) => {

@@ -5,6 +5,8 @@ const { addFundsToUser, removeFundsFromUser } = require('../services/funds.servi
 const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
+const { pushNotification } = require("../services/pusher.service.js")
+const bidsRepository = require("../repositories/bids.repository.js")
 
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
@@ -216,12 +218,6 @@ const placeBid = async (req, res, options = {}) => {
                 throw new ApiError(404, "Error in expiring the old bid!")
             }
 
-            // adding the funds of expired bid back to the userFunds // sequelize transaction   
-            const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice, { transaction: transaction })
-            if(!addFunds){
-                throw new ApiError(404, "Error in adding the funds!")
-            }
-
             // saving the new bid // sequelize transaction
             const bidToSave = await saveBid(req, { transaction: transaction })
             if(!bidToSave){
@@ -235,6 +231,14 @@ const placeBid = async (req, res, options = {}) => {
             }
 
             await transaction.commit()
+
+            // adding the funds of expired bid back to the userFunds  
+            const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice)
+            if(!addFunds){
+                throw new ApiError(404, "Error in adding the funds!")
+            }
+            pushNotification(req.user.id, "You have Sucessfully Place a Bid", "Bid Placement", "Bid Placement", "private-notification")
+
 
         }
         catch(error){
@@ -265,6 +269,8 @@ const placeBid = async (req, res, options = {}) => {
 
             // commiting the transaction on success
             await transaction.commit()
+            pushNotification(req.user.id, "You have Sucessfully Place a Bid", "Bid Placement", "Bid Placement", "private-notification")
+
 
         }
         catch(error){

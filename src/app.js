@@ -13,7 +13,8 @@ const corsOptions = {
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_ADMIN,
     process.env.FRONTEND_URL_LOCAL,
-    process.env.FRONTEND_URL_LOCAL_USER
+    process.env.FRONTEND_URL_LOCAL_USER,
+    '*'
   ] // Your frontend's origin
 };
 

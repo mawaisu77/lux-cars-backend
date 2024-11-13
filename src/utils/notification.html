@@ -13,12 +13,18 @@
     <script>
         // Initialize Pusher
         const pusher = new Pusher('6d700b541b1d83879b18', {
-            cluster: 'ap2'
+            authEndpoint: 'http://localhost:8000/api/v1/pusher/auth',
+            cluster: 'ap2',
+            auth: {
+                headers: {
+                   Authorization: `Bearer 283u32dcknksd2iu432o32u432uo432kcakwejewk382834jdkjdsbkcknsd`  // Optional, if you're using JWT
+                }
+            }
         });
 
         // Subscribe to the private channel
         const userId = "23897423reh92382382";  // Logged-in user's ID
-        const channel = pusher.subscribe(`public-notifications-${userId}`);
+        const channel = pusher.subscribe(`private-notifications-${userId}`);
 
         // Listen for events on the channel
         channel.bind('new_notification', (data) => {

@@ -6,6 +6,7 @@ const userService = require("../services/user.service.js");
 const ApiError = require('../utils/ApiError.js');
 const moment = require('moment');
 const { pushNotification } = require('./pusher.service.js');
+const { bidExpiration } = require("../utils/pusherNotifications.js")
 
 
 const saveBid = async (req, res, options = {}) => {
@@ -85,7 +86,8 @@ const expireBid = async(req, res, options = {}) => {
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
 
-        pushNotification(bidToExpire.userID, `Your bid on Lot:${lot_it} has been expired, Someone has outbid you with higher bid than yours`, "Bid Expiration", "Bid Expiration", "private-notification")
+        const message =  await bidExpiration(lot_it)
+        pushNotification(bidToExpire.userID, message, "Bid Expiration", "user-notifications", "public-notification")
         // returning the expired bid
         return expiredBid
 
@@ -113,11 +115,11 @@ const checkUserCanBid = async (req, res) => {
     const hasAvailableBids = userFunds.avalaibleBids > 0;
 
     // checking if the user can bid today
-    const canBidToday = await checkUserCanBidToday(userID)
+    //const canBidToday = await checkUserCanBidToday(userID)
 
-    if (!canBidToday) {
-        throw new ApiError(400, 'User already has an active bid today!');
-    }
+    // if (!canBidToday) {
+    //     throw new ApiError(400, 'User already has an active bid today!');
+    // }
 
     // checking if the user has enough funds
     if (!hasEnoughFunds) {

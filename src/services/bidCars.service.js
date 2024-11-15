@@ -6,8 +6,7 @@ const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
-const bidsRepository = require("../repositories/bids.repository.js")
-
+const { bidPlacement } = require("../utils/pusherNotifications.js")
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
@@ -237,8 +236,9 @@ const placeBid = async (req, res, options = {}) => {
             if(!addFunds){
                 throw new ApiError(404, "Error in adding the funds!")
             }
-            pushNotification(req.user.id, "You have Sucessfully Place a Bid", "Bid Placement", "Bid Placement", "private-notification")
-
+            
+            const message = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            pushNotification(req.user.id, message, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){
@@ -269,8 +269,8 @@ const placeBid = async (req, res, options = {}) => {
 
             // commiting the transaction on success
             await transaction.commit()
-            pushNotification(req.user.id, "You have Sucessfully Place a Bid", "Bid Placement", "Bid Placement", "private-notification")
-
+            const message = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            pushNotification(req.user.id, message, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){

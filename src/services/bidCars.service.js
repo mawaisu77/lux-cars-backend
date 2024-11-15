@@ -6,7 +6,7 @@ const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
-const { bidPlacement } = require("../utils/pusherNotifications.js")
+const { bidPlacement, newBidOnCar } = require("../utils/pusherNotifications.js")
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
@@ -237,8 +237,10 @@ const placeBid = async (req, res, options = {}) => {
                 throw new ApiError(404, "Error in adding the funds!")
             }
             
-            const message = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
-            pushNotification(req.user.id, message, "Bid Placement", "user-notifications", "public-notification")
+            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){
@@ -269,8 +271,10 @@ const placeBid = async (req, res, options = {}) => {
 
             // commiting the transaction on success
             await transaction.commit()
-            const message = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
-            pushNotification(req.user.id, message, "Bid Placement", "user-notifications", "public-notification")
+            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){

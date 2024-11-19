@@ -85,7 +85,7 @@ const findBidCars = async(req, res) => {
     // Fetching bid cars from the database using the constructed query and pagination
     const bidCars = await bidCarsRepository.findBidCars();
     if (!bidCars || bidCars.length === 0) {
-        throw new ApiError(404, "No bid cars found matching the criteria");
+        throw new ApiError(404, "No Bid Cars Found!");
     }
     bidCars.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)

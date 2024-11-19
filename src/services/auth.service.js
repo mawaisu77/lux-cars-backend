@@ -275,7 +275,7 @@ const registerAdmin = async (req) => {
       email,
       username,
       password,
-      role: "super-admin",
+      role: "admin",
     });
 
     const message = `Hello ${username},\n\nThese are your LUX CARS Admin Cradentials\n\nUser Name: ${username}\nEmail: ${email}\nPassword: ${password}`;

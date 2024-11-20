@@ -8,11 +8,11 @@ const {
 const { isAuthenticatedAdmin } = require("../../middlewares/auth");
 const router = Router();
 
-router.post("/generateOrder", generateOrderByAdmin);
+router.post("/generateOrder", isAuthenticatedAdmin, generateOrderByAdmin);
 
 router.get("/getAllOrders", isAuthenticatedAdmin, getAllOrdersByAdmin);
 
-router.put("/change-order-status", changeOrderStatus);
+router.put("/change-order-status", isAuthenticatedAdmin, changeOrderStatus);
 
 router.get("/get-order-details", isAuthenticatedAdmin, getOrderByID)
 

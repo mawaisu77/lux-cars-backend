@@ -11,7 +11,7 @@ const bidPackages = {
     },
     premium: {
         deposit: 5000,
-        bidAmount: 2000000,
+        bidAmount: 200000,
         noOfActiveBids: 20
     }
 }

@@ -2,7 +2,6 @@ const fundsRepository = require('../repositories/funds.repository.js');
 const bidCarsRepository = require('../repositories/bidCars.repository.js');
 const bidsRepository = require("../repositories/bids.repository.js");
 const authRepository = require("../repositories/auth.repository.js");
-const userService = require("../services/user.service.js");
 const ApiError = require('../utils/ApiError.js');
 const moment = require('moment');
 const { pushNotification } = require('./pusher.service.js');

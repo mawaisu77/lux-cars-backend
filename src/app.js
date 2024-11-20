@@ -13,7 +13,8 @@ const corsOptions = {
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_ADMIN,
     process.env.FRONTEND_URL_LOCAL,
-    process.env.FRONTEND_URL_LOCAL_USER
+    process.env.FRONTEND_URL_LOCAL_USER,
+    '*'
   ] // Your frontend's origin
 };
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(morgan("dev"));
 
+const pusherRuter = require('./routes/pusher.route.js')
 const authRouter = require("./routes/auth.route.js");
 const userRouter = require("./routes/user.route.js");
 const carsRouter = require("./routes/cars.route.js");
@@ -64,6 +66,7 @@ app.use("/api/v1", savedCarsRouter);
 app.use("/api/v1", partsRequestRouter);
 app.use("/api/v1", loanApplicationRouter);
 app.use("/api/v1", localCarsBidsRouter)
+app.use("/api/v1", pusherRuter)
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
 app.use("/api/v1/admin", adminBidRouter);

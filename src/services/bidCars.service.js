@@ -5,7 +5,8 @@ const { addFundsToUser, removeFundsFromUser } = require('../services/funds.servi
 const { getCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
-
+const { pushNotification } = require("../services/pusher.service.js")
+const { bidPlacement, newBidOnCar } = require("../utils/pusherNotifications.js")
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
@@ -84,7 +85,7 @@ const findBidCars = async(req, res) => {
     // Fetching bid cars from the database using the constructed query and pagination
     const bidCars = await bidCarsRepository.findBidCars();
     if (!bidCars || bidCars.length === 0) {
-        throw new ApiError(404, "No bid cars found matching the criteria");
+        throw new ApiError(404, "No Bid Cars Found!");
     }
     bidCars.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     const cars = await filterBidCars(query, limitInt, offsetInt, bidCars)
@@ -216,12 +217,6 @@ const placeBid = async (req, res, options = {}) => {
                 throw new ApiError(404, "Error in expiring the old bid!")
             }
 
-            // adding the funds of expired bid back to the userFunds // sequelize transaction   
-            const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice, { transaction: transaction })
-            if(!addFunds){
-                throw new ApiError(404, "Error in adding the funds!")
-            }
-
             // saving the new bid // sequelize transaction
             const bidToSave = await saveBid(req, { transaction: transaction })
             if(!bidToSave){
@@ -235,6 +230,17 @@ const placeBid = async (req, res, options = {}) => {
             }
 
             await transaction.commit()
+
+            // adding the funds of expired bid back to the userFunds  
+            const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice)
+            if(!addFunds){
+                throw new ApiError(404, "Error in adding the funds!")
+            }
+            
+            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){
@@ -265,6 +271,10 @@ const placeBid = async (req, res, options = {}) => {
 
             // commiting the transaction on success
             await transaction.commit()
+            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
 
         }
         catch(error){

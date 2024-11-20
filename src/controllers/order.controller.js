@@ -24,11 +24,11 @@ const getAllOrdersByAdmin = asyncHandler(async (req, res) => {
 });
 
 const changeOrderStatus = asyncHandler(async (req, res) => {
-  const { id, status, reasonOfRejection } = req.body;
+  const { orderID } = req.query
+  const { status } = req.body;
   const updatedOrderStatus = await orderService.changeOrderStatus(
-    id,
+    orderID,
     status,
-    reasonOfRejection
   );
   res
     .status(200)
@@ -46,9 +46,16 @@ const getOrderByID = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, order, "Order fetched successfully!"));
 })
 
+const getAllOrdersOfUser = asyncHandler(async (req, res) => {
+  const userID = req.user.id
+  const userOrders = await orderService.getAllOrdersOfUser(userID)
+  res.status(200).json(new ApiResponse(200, userOrders, "Order fetched successfully!"));
+})
+
 module.exports = {
   generateOrderByAdmin,
   getAllOrdersByAdmin,
   changeOrderStatus,
-  getOrderByID
+  getOrderByID,
+  getAllOrdersOfUser
 };

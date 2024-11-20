@@ -12,8 +12,8 @@ router.post("/generateOrder", generateOrderByAdmin);
 
 router.get("/getAllOrders", isAuthenticatedAdmin, getAllOrdersByAdmin);
 
-router.post("/changeOrderStatus", isAuthenticatedAdmin, changeOrderStatus);
+router.put("/change-order-status", isAuthenticatedAdmin, changeOrderStatus);
 
-router.get("/get-order-details", getOrderByID)
+router.get("/get-order-details", isAuthenticatedAdmin, getOrderByID)
 
 module.exports = router;

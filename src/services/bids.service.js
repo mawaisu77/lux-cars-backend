@@ -53,7 +53,8 @@ const getAllBidsOfUser = async (req, res) => {
                 base_site:carDetails.carDetails.base_site,
                 auction_date:carDetails.carDetails.auction_date,
                 vehicle_type:carDetails.carDetails.vehicle_type,
-                image: carDetails.carDetails.link_img_hd[0] || null,
+                image: carDetails.carDetails.link_img_hd ? carDetails.carDetails.link_img_hd[0] : 
+                carDetails.carDetails.link_img_small ? carDetails.carDetails.link_img_small[0] : null,
                 currentBid: carDetails.currentBid,
                 noOfBids: carDetails.noOfBids
             }

@@ -8,6 +8,7 @@ const bidCarsService = require("../services/bidCars.service");
 const bidCarsRepository = require("../repositories/bidCars.repository")
 const { or } = require("sequelize");
 const { query } = require("express");
+const { placeBid } = require("./localCarsBids.service");
 
 const generateOrderByAdmin = async (bidID) => {
   const order = await orderRepository.findOrderByBidId(bidID);
@@ -81,59 +82,54 @@ const getAllOrdersByAdmin = async () => {
   }
 };
 
-const changeOrderStatus = async (id, status, reasonOfRejection) => {
-  const reasonOfRejection2 = reasonOfRejection;
+const changeOrderStatus = async (orderID, status) => {
 
-  const order = await orderRepository.findOrderById(id);
+    let order = await orderRepository.findOrderById(orderID);
+    if (!order) throw new ApiError(404, "Order not found");
 
-  const bidId = order.bidID;
-  const user = await bidService.getUserByBidIdByAdmin(bidId);
-  const userName = user.username;
+    const bidId = order.bidID;
+    const user = await bidService.getUserByBidIdByAdmin(bidId);
+    if (!user) throw new ApiError(404, "User not found for bid");
 
-  order.status = status;
-  const newStatus = await order.save();
+    const userName = user.username;
+    const bid = await bidRepository.findUserByBidId(bidId);
+    if (!bid) throw new ApiError(404, "Bid not found");
 
-  if (status === "approved") {
-    const message = `Hello ${userName},\n\nIt is to inform you that your order for the  , For the approvel of your order`;
+    const lot_id = bid.lot_id;
+    const car = await bidCarsService.getCarDetailsByLotID(lot_id);
+    if (!car) throw new ApiError(404, "Car details not found");
 
-    order.status = status;
-    const newStatus = await order.save();
+    const carParsedData = JSON.parse(car.carDetails);
+    if (carParsedData === null) throw new ApiError(400, "Error parsing car details");
 
-    await sendEmail(
-      {
-        email: user.email,
-        subject: "LUX CARS Order Status",
-        message,
-      },
-      "text"
-    );
-    if (!newStatus) {
-      throw new ApiError(404, "Order Status not Updated Successfully");
-    } else {
-      return newStatus;
-    }
-  }
+    const carData = {
+      lot_id: carParsedData.lot_id,
+      title: carParsedData.title,
+      currentBid: car.currentBid,
+    };
 
-  if (status === "rejected") {
-    const message = `Hello ${userName},\n\nYour Order is rejected Due to following reasons\n\n${reasonOfRejection2}`;
 
     order.status = status;
     const newStatus = await order.save();
 
+    const message = `Hello ${userName},\n\nIt is to inform you that your order status for the car with below details has been updated to ${status}. \n\nOrder Details:\n\tCar Title: ${carData.title}\n\tCar Lot_ID: ${carData.lot_id}\n\tOrder Price: ${carData.currentBid}\n\nKindly Contact us for any further queries, Thanks`;
+
     await sendEmail(
-      {
-        email: user.email,
-        subject: "LUX CARS Order Status",
-        message,
-      },
-      "text"
+        {
+          email: user.email,
+          subject: "LUX CARS Order Status",
+          message,
+        },
+        "text"
     );
+    
     if (!newStatus) {
-      throw new ApiError(404, "Request Status not Updated Successfully");
+        throw new ApiError(404, "Order Status not Updated Successfully");
     } else {
-      return newStatus;
+        return newStatus;
     }
-  }
+
+
 };
 
 const getOrderByID = async (req) => {
@@ -172,9 +168,33 @@ const getOrderByID = async (req) => {
     }
 }
 
+const getAllOrdersOfUser = async (userID) => {
+    const orders = await orderRepository.getAllOrdersOfUser(userID);
+    const detailedOrders = await Promise.all(orders.map(async (order) => {
+        const bid = await bidRepository.findUserByBidId(order.bidID);
+        const user = await authRepository.findUserById(bid.userID);
+        const bidCar = await bidCarsRepository.getBidCarByLotID(bid.lot_id);
+        return {
+            title: bidCar.title,
+            lot_id: bidCar.lot_id,
+            image: bidCar.link_img_hd[0] ? bidCar.link_img_hd[0]:
+                   bidCar.link_img_small[0] ? bidCar.link_img_small[0] : null,
+            orderStatus: order.status,
+            orderPrice: order.bidPrice,
+            placedAt: order.createdAt,
+            locationFrom: bidCar.location,
+            locationTo: user.address
+        };
+    }));
+    return detailedOrders;
+}
+
+
+
 module.exports = {
   generateOrderByAdmin,
   getAllOrdersByAdmin,
   changeOrderStatus,
-  getOrderByID
+  getOrderByID,
+  getAllOrdersOfUser
 };

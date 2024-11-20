@@ -5,6 +5,9 @@ const bidRepository = require("../repositories/bids.repository");
 const authRepository = require("../repositories/auth.repository");
 const bidService = require("../services/bids.service");
 const bidCarsService = require("../services/bidCars.service");
+const bidCarsRepository = require("../repositories/bidCars.repository")
+const { or } = require("sequelize");
+const { query } = require("express");
 
 const generateOrderByAdmin = async (bidID) => {
   const order = await orderRepository.findOrderByBidId(bidID);
@@ -16,7 +19,7 @@ const generateOrderByAdmin = async (bidID) => {
   const userName = user.username;
   const email = user.email;
 
-  const status = "pending";
+  const status = "Pending";
 
   const orderData = {
     bidID,
@@ -57,14 +60,15 @@ const getAllOrdersByAdmin = async () => {
       const carParsedData = JSON.parse(car.carDetails);
 
       const CarData = {
-        ...carParsedData,
+        lot_id: carParsedData.lot_id,
+        title: carParsedData.title,
         currentBid: car.currentBid,
         noOfBids: car.noOfBids,
       };
 
       return {
         order: order,
-        user: { username: user.username, email: user.email, phone: user.phone },
+        user: { userID: user.id, username: user.username, email: user.email},
         car: CarData,
       };
     })
@@ -86,8 +90,11 @@ const changeOrderStatus = async (id, status, reasonOfRejection) => {
   const user = await bidService.getUserByBidIdByAdmin(bidId);
   const userName = user.username;
 
+  order.status = status;
+  const newStatus = await order.save();
+
   if (status === "approved") {
-    const message = `Hello ${userName},\n\nCongratulations, For the approvel of your order`;
+    const message = `Hello ${userName},\n\nIt is to inform you that your order for the  , For the approvel of your order`;
 
     order.status = status;
     const newStatus = await order.save();
@@ -129,8 +136,45 @@ const changeOrderStatus = async (id, status, reasonOfRejection) => {
   }
 };
 
+const getOrderByID = async (req) => {
+
+    const { orderID } = req.query
+    if(!orderID) throw new ApiError(401, "Order ID required!")
+    const order = await orderRepository.findOrderById(orderID);
+    if(!order) throw new ApiError(401, "No Order found against the provided ID")
+
+    const bidID = order.bidID
+    const bid = await bidRepository.findUserByBidId(bidID)
+    if(!bid) throw new ApiError(401, "No bid found against BidID")
+    
+    const userID = bid.userID
+    if (!userID) throw new ApiError(401, "No UserID Found")
+    const user = await authRepository.findUserById(userID)
+    if(!user) throw new ApiError(401, "No User Found")
+    
+    const lot_id = bid.lot_id
+    var bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
+    if(!bidCar) throw new ApiError(401, "No BidCar Found")
+    // converting the JSON carDetails to String
+    bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+    // getting the current bid and the number of bids
+    const currentBid = bidCar.currentBid
+    const noOfBids = bidCar.noOfBids
+    // returning the car and the current bid and the number of bids
+    bidCar =  {...bidCar.carDetails, currentBid, noOfBids}
+
+
+    return {
+      user,
+      order,
+      bid,
+      bidCar
+    }
+}
+
 module.exports = {
   generateOrderByAdmin,
   getAllOrdersByAdmin,
   changeOrderStatus,
+  getOrderByID
 };

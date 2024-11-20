@@ -3,8 +3,8 @@ const { ApiResponse } = require("../utils/ApiResponse");
 const orderService = require("../services/order.service");
 
 const generateOrderByAdmin = asyncHandler(async (req, res) => {
-  const bidId = req.body.bidID;
-  const order = await orderService.generateOrderByAdmin(bidId);
+  const { bidID }  = req.query;
+  const order = await orderService.generateOrderByAdmin(bidID);
   res
     .status(200)
     .json(
@@ -41,8 +41,14 @@ const changeOrderStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const getOrderByID = asyncHandler(async (req, res) => {
+  const order = await orderService.getOrderByID(req)
+  res.status(200).json(new ApiResponse(200, order, "Order fetched successfully!"));
+})
+
 module.exports = {
   generateOrderByAdmin,
   getAllOrdersByAdmin,
   changeOrderStatus,
+  getOrderByID
 };

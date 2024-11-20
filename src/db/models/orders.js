@@ -19,8 +19,8 @@ const Orders = sequelize.define('orders',
       type: Sequelize.UUID
     },
     status: {
-      type: Sequelize.ENUM("pending", "approved", "rejected"),
-      default: "pending",
+      type: Sequelize.ENUM("Pending", "Processing", "Shipped", "Delivered", "Complete"),
+      default: "Pending",
     },
     createdAt: {
       allowNull: false,

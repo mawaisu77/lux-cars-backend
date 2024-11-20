@@ -12,7 +12,7 @@ router.post("/generateOrder", generateOrderByAdmin);
 
 router.get("/getAllOrders", isAuthenticatedAdmin, getAllOrdersByAdmin);
 
-router.put("/change-order-status", isAuthenticatedAdmin, changeOrderStatus);
+router.put("/change-order-status", changeOrderStatus);
 
 router.get("/get-order-details", isAuthenticatedAdmin, getOrderByID)
 

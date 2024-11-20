@@ -82,7 +82,7 @@ app.use("/api/v1/admin", adminLocalCarsRouter);
 app.use(
   "*",
   asyncHandler(async (req, res, next) => {
-    throw new ApiError(`Can't find ${req.originalUrl} on this server`, 404);
+    throw new ApiError(404, `Can't find ${req.originalUrl} on this server`);
   })
 );
 

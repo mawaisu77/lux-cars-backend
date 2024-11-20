@@ -169,22 +169,33 @@ const getOrderByID = async (req) => {
 }
 
 const getAllOrdersOfUser = async (userID) => {
-    const orders = await orderRepository.getAllOrdersOfUser(userID);
+    const orders = await orderRepository.findOrders();
     const detailedOrders = await Promise.all(orders.map(async (order) => {
         const bid = await bidRepository.findUserByBidId(order.bidID);
-        const user = await authRepository.findUserById(bid.userID);
-        const bidCar = await bidCarsRepository.getBidCarByLotID(bid.lot_id);
-        return {
-            title: bidCar.title,
-            lot_id: bidCar.lot_id,
-            image: bidCar.link_img_hd[0] ? bidCar.link_img_hd[0]:
-                   bidCar.link_img_small[0] ? bidCar.link_img_small[0] : null,
-            orderStatus: order.status,
-            orderPrice: order.bidPrice,
-            placedAt: order.createdAt,
-            locationFrom: bidCar.location,
-            locationTo: user.address
-        };
+        if(userID === bid.userID){
+            const user = await authRepository.findUserById(bid.userID);
+            var bidCar = await bidCarsRepository.getBidCarByLotID(bid.lot_id);
+                // converting the JSON carDetails to String
+            bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+            // getting the current bid and the number of bids
+            const currentBid = bidCar.currentBid
+            const noOfBids = bidCar.noOfBids
+            // returning the car and the current bid and the number of bids
+            bidCar =  {...bidCar.carDetails, currentBid, noOfBids}
+
+            return {
+                title: bidCar.title,
+                lot_id: bidCar.lot_id,
+                image: bidCar.link_img_hd[0] ? bidCar.link_img_hd[0]:
+                      bidCar.link_img_small[0] ? bidCar.link_img_small[0] : null,
+                orderStatus: order.status,
+                orderPrice: bid.bidPrice,
+                placedAt: order.createdAt,
+                locationFrom: bidCar.location,
+                locationTo: user.address || "To be Decided!"
+            };
+        }
+
     }));
     return detailedOrders;
 }

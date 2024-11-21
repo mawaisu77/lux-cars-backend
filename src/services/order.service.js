@@ -170,7 +170,7 @@ const getOrderByID = async (req) => {
 
 const getAllOrdersOfUser = async (userID) => {
     const orders = await orderRepository.findOrders();
-    const detailedOrders = await Promise.all(orders.map(async (order) => {
+    var detailedOrders = await Promise.all(orders.map(async (order) => {
         const bid = await bidRepository.findUserByBidId(order.bidID);
         if(userID === bid.userID){
             const user = await authRepository.findUserById(bid.userID);
@@ -194,10 +194,14 @@ const getAllOrdersOfUser = async (userID) => {
                 locationFrom: bidCar.location,
                 locationTo: user.address || "To be Decided!"
             };
+        }else {
+          return null
         }
 
     }));
-    return detailedOrders.filter(order => order !== null);
+
+    detailedOrders = detailedOrders.filter(order => order !== null);
+    return detailedOrders
 }
 
 

@@ -197,7 +197,7 @@ const getAllOrdersOfUser = async (userID) => {
         }
 
     }));
-    return detailedOrders;
+    return detailedOrders.filter(order => order !== null);
 }
 
 

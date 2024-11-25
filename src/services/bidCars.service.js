@@ -46,7 +46,11 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
                 }
                 // Check if carDetails[key] is not null before calling toString()
                 if (carDetails[key] !== null) {
-                    return carDetails[key].toString() === value.toString(); // Regular comparison
+                    if (Array.isArray(value)) {
+                        return value.some(v => v.toLowerCase() === carDetails[key].toLowerCase());
+                    } else {
+                        return carDetails[key].toString().toLowerCase() === value.toString().toLowerCase(); // Regular comparison
+                    }
                 }   
                 
                 return false         

@@ -213,8 +213,8 @@ const carsMakesModels = async (req, res) => {
 
 const getHistoryCarsData = async (make, model, year, size = 30) => {
 
-    const year_from = year - 2
-    const year_to = year + 2
+    const year_from = parseInt(year) - 2
+    const year_to = parseInt(year) + 2
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const auction_date_from = oneYearAgo.toISOString().split('T')[0];
@@ -232,7 +232,7 @@ const getHistoryCarsData = async (make, model, year, size = 30) => {
 
 const getHistoryCars = async (req, res) => {
 
-    const { make, model, year, size = 30} = req.query
+    const { make, model, year, size = 10} = req.query
     let cars = await getHistoryCarsData(make, model, year, size)
 
     cars = cars.slice(0, 8)
@@ -247,10 +247,10 @@ const calculateEstimatedPriceForTheVehicle = async (req, res) => {
 
     const { make, model, year, size = 30} = car
 
-    console.log("Make : Model : Year => ", make, " : ", model, " : ", year)
+    //console.log("Make : Model : Year => ", make, " : ", model, " : ", year)
 
     let cars = await getHistoryCarsData(make, model, year, size)
-    console.log(cars)
+    //console.log(cars)
     // calculating the average purchase price
     let purchasePrices = cars.map((car) => {
         if (car.sale_history && car.sale_history.length > 0) {
@@ -259,7 +259,7 @@ const calculateEstimatedPriceForTheVehicle = async (req, res) => {
             return 0
         }
     });
-    console.log(purchasePrices)
+    //console.log(purchasePrices)
     let minPurchasePrice = Math.min(...purchasePrices);
     let maxPurchasePrice = Math.max(...purchasePrices);
     let totalPurchasePrice = purchasePrices.reduce((acc, curr) => acc + curr, 0);

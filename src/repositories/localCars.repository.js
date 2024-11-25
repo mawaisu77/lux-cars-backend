@@ -34,7 +34,7 @@ const getAllUnApprovedLocalCars = async () => {
 const getAllLocalCars = async (_query) => {
 
   const { size = 10, page = 1, ...query } = {..._query};
-  console.log(query)
+  //console.log(query)
   const cars = await LocalCars.findAll({ 
     where: {      
       [Op.and]: Object.keys(query).map(key => {

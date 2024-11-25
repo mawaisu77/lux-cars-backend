@@ -7,6 +7,7 @@ const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacement, newBidOnCar } = require("../utils/pusherNotifications.js")
+const carLocks = {}; // In-memory lock object
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
@@ -78,9 +79,9 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
 
 const findBidCars = async(req, res) => {
-    console.log(req.query)
+    //console.log(req.query)
     const {size = 10, page = 1, ...query} = {...req.query}
-    console.log(">>>>>>>>>",req.query)
+    //console.log(">>>>>>>>>",req.query)
     //Convert limit and page to integers
     const limitInt = parseInt(size, 10);
     const pageInt = parseInt(page, 10);
@@ -184,6 +185,8 @@ const updateBidCar = async (req, res, options = {}) => {
 
 const placeBid = async (req, res, options = {}) => {
 
+    console.log("Before Locking ===========", carLocks)
+
     // checking the users documents are verified or not 
     if(!req.user.documentVerified || req.user.documentVerificationStatus !== 'approved'){
         throw new ApiError(403, "Your document verification is pending")
@@ -199,98 +202,120 @@ const placeBid = async (req, res, options = {}) => {
     const { lot_id } = req.body
     //console.log(req.body)
 
-    // checking car against lot_id if already exists
-    const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)
-
-    var car = {}
-
-
-    // if the car already exists then updating the bidCar 
-    // if the car does not exists then creating a new bidCar
-    if(isCar){
-        // creating a transaction
-        const transaction = await sequelize.transaction();
-
-        try{
-            // updating the bidCar // sequelize transaction
-            car = await updateBidCar(req, { transaction: transaction })
-
-            // expiring the old bid // sequelize transaction    
-            const bidToExpire = await expireBid(req, { transaction: transaction })
-            if(!bidToExpire){
-                throw new ApiError(404, "Error in expiring the old bid!")
-            }
-
-            // saving the new bid // sequelize transaction
-            const bidToSave = await saveBid(req, { transaction: transaction })
-            if(!bidToSave){
-                throw new ApiError(404, "Error in saving the bid!")
-            }
-
-            // removing the funds of new bid from the userFunds // sequelize transaction    
-            const removeFunds = await removeFundsFromUser(bidToSave.userID, bidToSave.bidPrice, { transaction: transaction })
-            if(!removeFunds){
-                throw new ApiError(404, "Error in removing the funds!")
-            }
-
-            await transaction.commit()
-
-            // adding the funds of expired bid back to the userFunds  
-            const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice)
-            if(!addFunds){
-                throw new ApiError(404, "Error in adding the funds!")
-            }
-            
-            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
-            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
-            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
-            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+    // Check if the car is already locked
+    if (carLocks[lot_id]) {
+        while(carLocks[lot_id]){
 
         }
-        catch(error){
-            await transaction.rollback()
-            throw new ApiError(404, error.message)
-        }
-
-    }
-    else{
-
-        const transaction = await sequelize.transaction();
-        try{
-            
-            // creating a new bidCar // sequelize transaction
-            car = await createBidCar(req, { transaction: transaction })
-
-            // saving the new bid // sequelize transaction
-            const bidToSave = await saveBid(req, { transaction: transaction })
-            if(!bidToSave){
-                throw new ApiError(404, "Error in saving the bid!")
-            }
-
-            // removing the funds of new bid from the userFunds // sequelize transaction        
-            const removeFunds = await removeFundsFromUser(bidToSave.userID, bidToSave.bidPrice, { transaction: transaction })
-            if(!removeFunds){
-                throw new ApiError(404, "Error in removing the funds!")
-            }
-
-            // commiting the transaction on success
-            await transaction.commit()
-            const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
-            const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
-            pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
-            pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
-
-        }
-        catch(error){
-            // rolling back the transaction on error
-            await transaction.rollback()
-            throw new ApiError(404, error.message)
-        }
-
     }
 
-    return car
+    // Lock the car for processing
+    carLocks[lot_id] = true;
+    console.log("After Locking ===========", carLocks)
 
+    try {
+
+            
+        // checking car against lot_id if already exists
+        const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)
+
+        var car = {}
+
+
+        // if the car already exists then updating the bidCar 
+        // if the car does not exists then creating a new bidCar
+        if(isCar){
+            // creating a transaction
+            const transaction = await sequelize.transaction();
+
+            try{
+                // updating the bidCar // sequelize transaction
+                car = await updateBidCar(req, { transaction: transaction })
+
+                // expiring the old bid // sequelize transaction    
+                const bidToExpire = await expireBid(req, { transaction: transaction })
+                if(!bidToExpire){
+                    throw new ApiError(404, "Error in expiring the old bid!")
+                }
+
+                // saving the new bid // sequelize transaction
+                const bidToSave = await saveBid(req, { transaction: transaction })
+                if(!bidToSave){
+                    throw new ApiError(404, "Error in saving the bid!")
+                }
+
+                // removing the funds of new bid from the userFunds // sequelize transaction    
+                const removeFunds = await removeFundsFromUser(bidToSave.userID, bidToSave.bidPrice, { transaction: transaction })
+                if(!removeFunds){
+                    throw new ApiError(404, "Error in removing the funds!")
+                }
+
+                await transaction.commit()
+
+                // adding the funds of expired bid back to the userFunds  
+                const addFunds = await addFundsToUser(bidToExpire.userID, bidToExpire.bidPrice)
+                if(!addFunds){
+                    throw new ApiError(404, "Error in adding the funds!")
+                }
+                
+                const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+                const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+                pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+                pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+
+            }
+            catch(error){
+                await transaction.rollback()
+                throw new ApiError(404, error.message)
+            }
+
+        }
+        else{
+
+            const transaction = await sequelize.transaction();
+            try {
+                
+                // creating a new bidCar // sequelize transaction
+                car = await createBidCar(req, { transaction: transaction })
+
+                // saving the new bid // sequelize transaction
+                const bidToSave = await saveBid(req, { transaction: transaction })
+                if(!bidToSave){
+                    throw new ApiError(404, "Error in saving the bid!")
+                }
+
+                // removing the funds of new bid from the userFunds // sequelize transaction        
+                const removeFunds = await removeFundsFromUser(bidToSave.userID, bidToSave.bidPrice, { transaction: transaction })
+                if(!removeFunds){
+                    throw new ApiError(404, "Error in removing the funds!")
+                }
+
+                // commiting the transaction on success
+                await transaction.commit()
+                const userMessage = await bidPlacement(bidToSave.bidPrice, bidToSave.lot_id)
+                const carMessage = await newBidOnCar(req.body.currentBid, lot_id, car.noOfBids)
+                pushNotification(lot_id, carMessage, "New Bid On Car", "car-notifications", "public-notification" )
+                pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+
+            }
+            catch(error){
+                // rolling back the transaction on error
+                await transaction.rollback()
+                throw new ApiError(404, error.message)
+            }
+
+        }
+
+        return car
+
+
+    } finally {
+        // Release the lock after processing
+        delete carLocks[lot_id];
+        console.log("Releasing Lock ===========", carLocks)
+
+    }
+    
 }
 
 

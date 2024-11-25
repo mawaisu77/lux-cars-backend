@@ -28,7 +28,7 @@ const getCarReportPDF = async (req, res) => {
         })
 
     }catch(error){
-        console.log(error)
+        //console.log(error)
         throw new ApiError(404, "No data found against this Car!")
     }
 

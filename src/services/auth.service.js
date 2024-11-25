@@ -64,9 +64,11 @@ const registerUser = async (req) => {
         {
           email,
           subject: "LUX CAR Email Verification",
+          verificationUrl,
+          username,
           message,
         },
-        "text"
+        "html"
       );
 
       return updatedUser;
@@ -95,8 +97,10 @@ const registerUser = async (req) => {
         email,
         subject: "LUX CAR Email Verification",
         message,
+        verificationUrl,
+        username,
       },
-      "text"
+      "html"
     );
 
     return;

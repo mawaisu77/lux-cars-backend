@@ -7,7 +7,9 @@ const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacement, newBidOnCar } = require("../utils/pusherNotifications.js")
-const carLocks = {}; // In-memory lock object
+//const carLocks = {}; // In-memory lock object
+const AsyncLock = require("async-lock");
+const lock = new AsyncLock();
 
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
@@ -185,7 +187,7 @@ const updateBidCar = async (req, res, options = {}) => {
 
 const placeBid = async (req, res, options = {}) => {
 
-    console.log("Before Locking ===========", carLocks)
+    // console.log("Before Locking ===========", carLocks)
 
     // checking the users documents are verified or not 
     if(!req.user.documentVerified || req.user.documentVerificationStatus !== 'approved'){
@@ -202,19 +204,18 @@ const placeBid = async (req, res, options = {}) => {
     const { lot_id } = req.body
     //console.log(req.body)
 
-    // Check if the car is already locked
-    if (carLocks[lot_id]) {
-        while(carLocks[lot_id]){
+    // // Check if the car is already locked
+    // if (carLocks[lot_id]) {
+    //     while(carLocks[lot_id]){
 
-        }
-    }
+    //     }
+    // }
 
     // Lock the car for processing
-    carLocks[lot_id] = true;
-    console.log("After Locking ===========", carLocks)
+    // carLocks[lot_id] = true;
+    // console.log("After Locking ===========", carLocks)
 
-    try {
-
+    return lock.acquire(lot_id, async () => {
             
         // checking car against lot_id if already exists
         const isCar = await bidCarsRepository.getBidCarByLotID(lot_id)
@@ -309,12 +310,13 @@ const placeBid = async (req, res, options = {}) => {
         return car
 
 
-    } finally {
-        // Release the lock after processing
-        delete carLocks[lot_id];
-        console.log("Releasing Lock ===========", carLocks)
+    }) 
+    // finally {
+    //     // Release the lock after processing
+    //     delete carLocks[lot_id];
+    //     console.log("Releasing Lock ===========", carLocks)
 
-    }
+    // }
     
 }
 

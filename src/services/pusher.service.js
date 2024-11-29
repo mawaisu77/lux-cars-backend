@@ -14,20 +14,22 @@ const pushNotification =  async (Id, message, type, notificationName, notificati
 };
 
 
-const pusherAuth = async (req, res) => {
+const pusherAuthLiveBidding = async (req, res) => {
     const socketId = req.body.socket_id;
     const channel = req.body.channel_name;
-  
-    // Check if the user is authorized to subscribe to this channel
-    const userIdFromChannel = channel.split('-').pop();  // For example, private-notifications-123
-    const user = await authRepository.findUserById(userIdFromChannel)
-    if (user.id !== userIdFromChannel) {
-        return res.status(403).json({ error: 'Unauthorized' });
+    
+
+    const data = {
+        user_id: "83248238kbdbek938223",
+        user_info: {
+            name: "Shaheer"
+        }
     }
     
     // Verify the user's authorization to access this channel
-    const auth = pusher.authenticateUser(socketId, user); // Added data parameter
-    return auth
+    const auth = pusher.authorizeChannel(socketId, channel, data); // Added data parameter
+
+    res.send(auth)
 };
 
 
@@ -61,5 +63,5 @@ const pusherAuth = async (req, res) => {
                                         
 module.exports =  {
     pushNotification,
-    pusherAuth
+    pusherAuthLiveBidding
 }

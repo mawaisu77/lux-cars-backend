@@ -152,7 +152,7 @@ const adjustQueryForFilters = async (_query) => {
         { [Op.gt]: new Date(new Date().getTime() + 5 * 60 * 1000) } // and > 5 minutes from now
       ];
     } else if (query.type === 'live') {
-      query.auction_date[Op.between] = [new Date(), new Date(new Date().getTime() + 5 * 60 * 1000)]; // Cars for live bidding (auction date between now and 5 minutes from now)
+      query.auction_date[Op.between] = [new Date(), new Date(new Date().getTime() + 30 * 60 * 1000)]; // Cars for live bidding (auction date between now and 5 minutes from now)
     }
 
     // Apply additional filters if provided
@@ -213,7 +213,7 @@ const adjustQueryForFilters = async (_query) => {
 const getAllLocalCars = async (req, res) => {
   
   const query = await adjustQueryForFilters(req.query)
-  console.log(query)
+  console.log(query.auction_date)
   const localCars = await localCarsRepository.getAllLocalCars(query);
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");

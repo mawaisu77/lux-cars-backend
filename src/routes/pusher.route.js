@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const { isAuthenticatedUser } = require("../middlewares/auth.js");
-const { pushNotification, pusherAuth} = require('../controllers/pusher.controller.js')
+const { pushNotification, pusherAuthLiveBidding} = require('../controllers/pusher.controller.js')
 const router = Router()
 
 // Endpoint to send notifications
 router.post('/pusher/push-notifications', pushNotification)
 
 
-router.post('/pusher/auth', pusherAuth)
+router.post('/pusher/auth/live-bidding', pusherAuthLiveBidding)
 
 
 router.post('/notifications/mark-read', async (req, res) => {

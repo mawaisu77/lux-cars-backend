@@ -13,7 +13,7 @@
     <script>
         // Initialize Pusher
         const pusher = new Pusher('6d700b541b1d83879b18', {
-            authEndpoint: 'http://localhost:8000/api/v1/pusher/auth',
+            authEndpoint: 'http://localhost:8000/api/v1/pusher/auth/live-bidding',
             cluster: 'ap2',
             auth: {
                 headers: {
@@ -23,13 +23,27 @@
         });
 
         // Subscribe to the private channel
-        const userId = "23897423reh92382382";  // Logged-in user's ID
-        const channel = pusher.subscribe(`private-notifications-${userId}`);
+        let channel
+        const carID = "38262084-9c92-4231-9ec6-2505965c55bb";  // Logged-in user's ID
+        try{
+            channel = pusher.subscribe(`presence-car-${carID}`)
+        }catch(err){
+            console.log(err)
+        }
+        console.log(channel)
 
         // Listen for events on the channel
-        channel.bind('new_notification', (data) => {
+        channel.bind('local-car-bid', (data) => {
+
             const notificationsDiv = document.getElementById('notifications');
             notificationsDiv.innerHTML += `<p>New notification: ${data.message}</p>`;
+        });
+
+                // Bind to events
+        channel.bind('pusher:subscription_succeeded', (members) => {
+            const notificationsDiv = document.getElementById('notifications');
+            notificationsDiv.innerHTML += `<p>New notification: ${members}</p>`;
+
         });
     </script>
 </body>

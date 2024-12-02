@@ -2,6 +2,8 @@ const { axiosPrivate } = require('../utils/axiosPrivate')
 const ApiError = require('../utils/ApiError')
 const  bidsPackages  = require('../utils/bidPackagesConfig.js')
 const  fundsRepository  = require('../repositories/funds.repository.js')
+const { pushNotification } = require("../services/pusher.service.js")
+const { addFundMessage } = require("../utils/pusherNotifications.js")
 
 
 const addFunds = async (req, res) => {
@@ -26,6 +28,10 @@ const addFunds = async (req, res) => {
             avalaibleBids: packages[package].noOfActiveBids,
             activeBids: 0
         })
+
+        const userMessage = await addFundMessage(packages[package].deposit)
+        pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")
+
         // returning the funds
         return funds
         
@@ -43,6 +49,9 @@ const addFunds = async (req, res) => {
         userFunds.avalaibleBidAmount = packages[package].bidAmount - userFunds.usedBidAmount,
         userFunds.avalaibleBids = packages[package].noOfActiveBids - userFunds.activeBids,
         await userFunds.save()
+
+        const userMessage = await addFundMessage(packages[package].deposit)
+        pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")
 
         // returning the funds
         return userFunds

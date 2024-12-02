@@ -2,6 +2,7 @@ const localCarsBidsRepository = require("../repositories/localCarsBids.repositor
 const localCarsRepository = require("../repositories/localCars.repository.js")
 const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
+const { bidPlacementLocalCar, newBidOnCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 
 
 const ApiError = require('../utils/ApiError.js');
@@ -17,7 +18,19 @@ const placeBid = async (req, res, options = {}) => {
 
     const bidSaved = await saveBid(req)
     if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
-    pushNotification(req.query.localCarID, "News Bid On Local Car", "local-car-bid", "local-car-bid", "presence-car")
+
+    const title = updateLocalCar.make + " " + updateLocalCar.model
+    const carMessage = await newBidOnCar(updateLocalCar.currentBid, updateLocalCar.id, updateLocalCar.noOfBids) 
+    const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
+    
+    if(!(bidexpired === parseInt(1))){
+        const userMessageExpireBid = await bidExpirationLocalCar(title, updateLocalCar.id)
+        pushNotification(bidexpired.userID, userMessageExpireBid, "Bid Expiration", "user-notifications", "public-notification")
+    }
+
+    pushNotification(req.query.localCarID, carMessage, "New Bid On Car", "car-notifications", "presence-car")
+    pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+
     return updateLocalCar
 }
 
@@ -58,7 +71,7 @@ const expireBid = async (req, res) => {
         if (!expiredBid){
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
-        return expireBid
+        return bidToExpire
 
     }
 

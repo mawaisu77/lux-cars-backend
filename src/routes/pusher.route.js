@@ -7,7 +7,7 @@ const router = Router()
 router.post('/pusher/push-notifications', pushNotification)
 
 
-router.post('/pusher/auth/live-bidding', pusherAuthLiveBidding)
+router.post('/pusher/auth/live-bidding', isAuthenticatedUser, pusherAuthLiveBidding)
 
 
 router.post('/notifications/mark-read', async (req, res) => {

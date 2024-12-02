@@ -34,7 +34,6 @@
 
         // Listen for events on the channel
         channel.bind('local-car-bid', (data) => {
-
             const notificationsDiv = document.getElementById('notifications');
             notificationsDiv.innerHTML += `<p>New notification: ${data.message}</p>`;
         });

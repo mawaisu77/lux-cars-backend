@@ -43,8 +43,15 @@ const newBidOnCar = async (bid_price, lot_id, noOfBids) => {
 }
 
 
-const fundReleased = async (addedFunds) => {
-
+const addFundMessage = async (addedFunds) => {
+    
+    return {
+        title: "Successful Added Funds",
+        message: `You have successfully added funds of $${addedFunds}!`,
+        link: `vehicle-detail/`,
+        time: new Date()
+    }
+    
 }
 
 
@@ -160,5 +167,6 @@ module.exports = {
     bidPlacement,
     newBidOnCar,
     bidExpirationLocalCar,
-    bidPlacementLocalCar
+    bidPlacementLocalCar,
+    addFundMessage
 }

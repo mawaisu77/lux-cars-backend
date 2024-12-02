@@ -14,6 +14,7 @@ const corsOptions = {
     process.env.FRONTEND_URL_ADMIN,
     process.env.FRONTEND_URL_LOCAL,
     process.env.FRONTEND_URL_LOCAL_USER,
+    ///Users/apple/Desktop/lux-cars-backend/src/utils/notification.html,
     '*'
   ] // Your frontend's origin
 };
@@ -78,7 +79,9 @@ app.use("/api/v1/admin", adminLoanApplicationRouter);
 app.use("/api/v1/admin", adminPartsRequestsRouter);
 app.use("/api/v1/admin", invoiceRouter);
 app.use("/api/v1/admin", adminLocalCarsRouter);
-
+app.use("/", async (req, res) => {
+  res.send("Hello from LuxCars Backend Services!")
+})
 app.use(
   "*",
   asyncHandler(async (req, res, next) => {

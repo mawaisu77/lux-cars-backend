@@ -1,7 +1,8 @@
-
 const localCarsBidsRepository = require("../repositories/localCarsBids.repository.js");
 const localCarsRepository = require("../repositories/localCars.repository.js")
 const userRepository = require("../repositories/auth.repository.js")
+const { pushNotification } = require("../services/pusher.service.js")
+
 
 const ApiError = require('../utils/ApiError.js');
 
@@ -16,14 +17,15 @@ const placeBid = async (req, res, options = {}) => {
 
     const bidSaved = await saveBid(req)
     if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
-
+    pushNotification(req.query.localCarID, "News Bid On Local Car", "local-car-bid", "local-car-bid", "presence-car")
     return updateLocalCar
 }
 
 const saveBid = async (req, res) => {
 
     // getting info from the request
-    const { localCarID, currentBid } = req.body
+    const { currentBid } = req.body
+    const { localCarID } = req.query
     const userID = req.user.id
 
     // creating the bid object to be saved
@@ -45,7 +47,7 @@ const saveBid = async (req, res) => {
 }
 
 const expireBid = async (req, res) => {
-    const localCarID = req.body.localCarID
+    const localCarID = req.query.localCarID
 
     var bidToExpire = await localCarsBidsRepository.getActiveBidByLocalCarID(localCarID)
     //console.log(bidToExpire)
@@ -65,7 +67,8 @@ const expireBid = async (req, res) => {
 
 const updateLocalCarBidData = async (req, res) => {
 
-    const { localCarID, currentBid } = req.body
+    const { currentBid } = req.body
+    const { localCarID } = req.query
 
     var localCar = await localCarsRepository.getCarByID(localCarID)
     if (!localCar) throw new ApiError(404, "No Local Car found against the provided ID!")

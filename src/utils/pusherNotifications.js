@@ -1,7 +1,7 @@
 const bidExpiration = async (lot_id) => {
     return {
         title: "Bid Expiration",
-        message: `Your bid on car of lot_Id:${lot_id} has been expired, Someone else has outbid you with a higher bid! Thanks`,
+        message: `Your bid on car of Lot_Id: ${lot_id} has been expired, Someone else has outbid you with a higher bid! Thanks`,
         link: `vehicle-detail/${lot_id}`,
         time: new Date()
     }
@@ -10,8 +10,26 @@ const bidExpiration = async (lot_id) => {
 const bidPlacement = async (bid_price, lot_id) => {
     return {
         title: "Successful Bid Placement",
-        message: `You have successfully place a bid of price:${bid_price} on lot_Id:${lot_id}`,
+        message: `You have successfully place a bid of Price: ${bid_price} on Lot_Id: ${lot_id}`,
         link: `vehicle-detail/${lot_id}`,
+        time: new Date()
+    }
+}
+
+const bidExpirationLocalCar = async (title, carID) => {
+    return {
+        title: "Bid Expiration",
+        message: `Your bid on car ${title} has been expired, Someone else has outbid you with a higher bid! Thanks`,
+        link: `vehicle-detail/${carID}`,
+        time: new Date()
+    }
+}
+
+const bidPlacementLocalCar = async (bid_price, title, carID) => {
+    return {
+        title: "Successful Bid Placement",
+        message: `You have successfully place a bid of Price: ${bid_price} on ${title}`,
+        link: `vehicle-detail/${carID}`,
         time: new Date()
     }
 }
@@ -140,5 +158,7 @@ const newLike = (liker_name, lot_id) => {
 module.exports = {
     bidExpiration,
     bidPlacement,
-    newBidOnCar
+    newBidOnCar,
+    bidExpirationLocalCar,
+    bidPlacementLocalCar
 }

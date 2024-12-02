@@ -31,6 +31,7 @@
             console.log(err)
         }
         console.log(channel)
+        const count = channel.count
 
         // Listen for events on the channel
         channel.bind('local-car-bid', (data) => {

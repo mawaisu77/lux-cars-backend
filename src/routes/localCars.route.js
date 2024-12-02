@@ -5,7 +5,7 @@ const { upload } = require("../middlewares/multer.js");
 const router = Router()
 
 router.post('/local-cars/upload-car', isAuthenticatedUser, upload.array('carImages', 6),  uploadCar);
-router.put('/local-cars/update-car', isAuthenticatedUser, upload.array('carImages', 12), updateCar)
+router.put('/local-cars/update-car', upload.array('carImages', 12), updateCar)
 router.get('/local-cars/get-car', getCarByID)
 router.get('/local-cars/get-user-all-local-cars',isAuthenticatedUser, getUserAllLocalCars)
 router.get('/local-cars/get-all-unapproved-local-cars', getAllUnApprovedLocalCars)

@@ -60,14 +60,14 @@ const updateCar = async (req, res) => {
   }
 
   // Getting userID
-  const userID = req.user.id;
+  const userID = car.userID
 
   // Preparing CarData
   const carData = { ...req.body, userID, carImages };
 
   // Updating CarData
-  const UpdatedCar = await localCarsRepository.updateCar(carData, req.query.id);
-  return UpdatedCar;
+  const updatedCar = await localCarsRepository.updateCar(carData, req.query.id);
+  return updatedCar;
 };
 
 const getUserAllLocalCars = async (req, res) => {

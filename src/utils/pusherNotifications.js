@@ -42,6 +42,16 @@ const newBidOnCar = async (bid_price, lot_id, noOfBids) => {
     }
 }
 
+const newBidOnLocalCar = async (bid_price, noOfBids, userID, userName) => {
+    return {
+        message: `A new bid has been place on this Car!`,
+        bid_price: bid_price,
+        noOfBids: noOfBids,
+        userID: userID,
+        userName: userName
+    }
+}
+
 
 const addFundMessage = async (addedFunds) => {
     
@@ -168,5 +178,6 @@ module.exports = {
     newBidOnCar,
     bidExpirationLocalCar,
     bidPlacementLocalCar,
-    addFundMessage
+    addFundMessage,
+    newBidOnLocalCar
 }

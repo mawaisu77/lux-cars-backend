@@ -2,7 +2,7 @@ const localCarsBidsRepository = require("../repositories/localCarsBids.repositor
 const localCarsRepository = require("../repositories/localCars.repository.js")
 const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
-const { bidPlacementLocalCar, newBidOnCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
+const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 
 
 const ApiError = require('../utils/ApiError.js');
@@ -20,7 +20,7 @@ const placeBid = async (req, res, options = {}) => {
     if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
 
     const title = updateLocalCar.make + " " + updateLocalCar.model
-    const carMessage = await newBidOnCar(updateLocalCar.currentBid, updateLocalCar.id, updateLocalCar.noOfBids) 
+    const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, req.user.id, req.user.username) 
     const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
     
     if(!(bidexpired === parseInt(1))){

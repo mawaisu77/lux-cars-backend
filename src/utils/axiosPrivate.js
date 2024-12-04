@@ -34,4 +34,21 @@ axiosClearVin.interceptors.request.use(
     }
 );
 
-module.exports = { axiosPrivate, axiosClearVin };
+const axiosCRM = axios.create({
+    baseURL: process.env.CRM_BASE_URL,
+});
+
+axiosCRM.interceptors.request.use(
+    function (config) {
+        const bearerToken = process.env.CRM_BEARER_TOKEN; // Add this line
+        config.headers['Authorization'] = `Bearer ${bearerToken}`; // Add this line
+        config.headers['Content-Type'] = 'application/json';
+        return config;
+
+    },
+    function (error) {
+        throw new ApiError(404, "Data not found!")
+    }
+);
+
+module.exports = { axiosPrivate, axiosClearVin, axiosCRM };

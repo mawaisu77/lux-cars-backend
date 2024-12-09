@@ -20,7 +20,7 @@ const placeBid = async (req, res, options = {}) => {
     if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
 
     const title = updateLocalCar.make + " " + updateLocalCar.model
-    const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, req.user.id, req.user.username) 
+    const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
     const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
     
     if(!(bidexpired === parseInt(1))){
@@ -89,7 +89,15 @@ const updateLocalCarBidData = async (req, res) => {
     if (localCar.currentBid < currentBid){
         localCar.currentBid = currentBid
         localCar.noOfBids += 1
-    
+        
+        const auctionDate = new Date(localCar.auction_date);
+        const now = new Date();
+        const diff = auctionDate - now;
+        if (diff < 10000) { // 10 seconds in milliseconds
+            auctionDate.setSeconds(auctionDate.getSeconds() + 10);
+            localCar.auction_date = auctionDate;
+        }
+
         const updateLocalCar = await localCar.save()
         if(!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
         return updateLocalCar

@@ -166,9 +166,6 @@ const getUserAllBids = async (req, res) => {
     return userBidsWithCarDetails
 }
 
-
-
-
 module.exports = {
     placeBid,
     getAllBidsOnLocalCarWithUserDetails,

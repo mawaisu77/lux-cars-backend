@@ -17,15 +17,17 @@ const createCRMContact = async (user) => {
         companyName: "",
         website: "",
         tags: [
-            "Testing"
+            "DEV",
+            "Website-SignUp"
         ],
-        source: "public api",
-        customField: {
-            "__custom_field_id__": "exercitation"
-        }
+        source: "Website-SignUp",
+
     } 
 
     const contact = await axiosCRM.post("/v1/contacts/", body)
+    createCRMOpportunity(contact)
+
+    return contact
 }
 
 const createCRMOpportunity = async (contact) => {
@@ -33,10 +35,10 @@ const createCRMOpportunity = async (contact) => {
     const body = {
         "title": "Testing",
         "status": "Testing",
-        "stageId": "62363159-9710-469f-a011-dbc589287bb7",
+        "stageId": "80b8a69f-ae51-48ec-9c14-628fd0197466",
         //"email": contact.email,
         //"phone": contact.phone,
-        "assignedTo": "gZA5n2GA5cbLI82PQbEu",
+        "assignedTo": "aq1PFf11dBbCvidn3ywj",
         "monetaryValue": 122.22,
         //"source": contact.source,
         //"contactId": contact.id,
@@ -44,9 +46,10 @@ const createCRMOpportunity = async (contact) => {
         // "companyName": contact.companyName,
         // "tags": contact.tags
     }
-    const pipelineId = ""
+    const pipelineId = "hgEarlCLncaxRYMpEdki"
     const opportunity = await axiosCRM.post(`/v1/pipelines/:${pipelineId}/opportunities/`, body)
 
+    return opportunity
 
 }
 

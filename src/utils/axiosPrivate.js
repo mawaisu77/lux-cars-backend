@@ -43,6 +43,7 @@ axiosCRM.interceptors.request.use(
         const bearerToken = process.env.CRM_BEARER_TOKEN; // Add this line
         config.headers['Authorization'] = `Bearer ${bearerToken}`; // Add this line
         config.headers['Content-Type'] = 'application/json';
+        //config.headers['Version'] = '2021-07-28'
         return config;
 
     },

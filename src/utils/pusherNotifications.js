@@ -42,13 +42,14 @@ const newBidOnCar = async (bid_price, lot_id, noOfBids) => {
     }
 }
 
-const newBidOnLocalCar = async (bid_price, noOfBids, userID, userName) => {
+const newBidOnLocalCar = async (bid_price, noOfBids, auction_date, userID, userName) => {
     return {
         message: `A new bid has been place on this Car!`,
         bid_price: bid_price,
         noOfBids: noOfBids,
         userID: userID,
-        userName: userName
+        userName: userName,
+        auction_date: auction_date
     }
 }
 

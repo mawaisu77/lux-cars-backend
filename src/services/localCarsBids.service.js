@@ -93,7 +93,7 @@ const updateLocalCarBidData = async (req, res) => {
         const auctionDate = new Date(localCar.auction_date);
         const now = new Date();
         const diff = auctionDate - now;
-        if (diff < 10000) { // 10 seconds in milliseconds
+        if (0 < diff < 10000) { // 10 seconds in milliseconds
             auctionDate.setSeconds(auctionDate.getSeconds() + 10);
             localCar.auction_date = auctionDate;
         }

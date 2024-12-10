@@ -1,4 +1,13 @@
 const { axiosCRM } = require("../utils/axiosPrivate")
+const  ApiError  = require('../utils/ApiError')
+
+const searchContactInCRM = async (email) => {
+    const contact = await axiosCRM.get(`/v1/contacts/lookup?email=${email}`)
+    console.log(contact.data)
+    if (contact.data) return contact.data
+
+    return 0
+}
 
 const createCRMContact = async (user) => {
 
@@ -12,7 +21,7 @@ const createCRMContact = async (user) => {
         address1: user.address ? user.address : "",
         city: "",
         state: "",
-        country: "",
+        country: "US",
         postalCode: "",
         companyName: "",
         website: "",
@@ -23,37 +32,72 @@ const createCRMContact = async (user) => {
         source: "Website-SignUp",
 
     } 
+    //console.log(body)
+    let contact
+    try {
+        contact = await axiosCRM.post("/v1/contacts/", body)
+        console.log(contact.data)
 
-    const contact = await axiosCRM.post("/v1/contacts/", body)
-    createCRMOpportunity(contact)
-
-    return contact
+    }catch(error){
+        console.log(error)
+        throw new ApiError(404, error.message)
+    }
+    
+    const opportunity = await createCRMOpportunity(contact.data.contact)
+    console.log(opportunity)
+    return contact.data
 }
 
 const createCRMOpportunity = async (contact) => {
 
     const body = {
-        "title": "Testing",
-        "status": "Testing",
-        "stageId": "80b8a69f-ae51-48ec-9c14-628fd0197466",
-        //"email": contact.email,
-        //"phone": contact.phone,
-        "assignedTo": "aq1PFf11dBbCvidn3ywj",
-        "monetaryValue": 122.22,
-        //"source": contact.source,
-        //"contactId": contact.id,
-        // "name": contact.name,
-        // "companyName": contact.companyName,
-        // "tags": contact.tags
+        title: "Testing",
+        status: "open",
+        stageId: "80b8a69f-ae51-48ec-9c14-628fd0197466",
+        email: contact.email,
+        phone: contact.phone,
+        //assignedTo: "aq1PFf11dBbCvidn3ywj",
+        assignedTo: "gZA5n2GA5cbLI82PQbEu",
+        monetaryValue: 122.22,
+        source: contact.source,
+        contactId: contact.id,
+        name: contact.name,
+        companyName: contact.companyName,
+        tags: contact.tags
     }
     const pipelineId = "hgEarlCLncaxRYMpEdki"
-    const opportunity = await axiosCRM.post(`/v1/pipelines/:${pipelineId}/opportunities/`, body)
+    let opportunity
+    try {
+        opportunity = await axiosCRM.post(`/v1/pipelines/${pipelineId}/opportunities/`, body)
+        //console.log(opportunity.data)
 
-    return opportunity
+    }catch(error){
+        console.log(error.response)
+        throw new ApiError(404, error.message)
+    }
+    //console.log(opportunity.data)
 
+    return opportunity.data
+
+}
+
+const createNotesInCRMContacts = async (contactId, body) => {
+    let note
+    try {
+        note = await axiosCRM.post(`/v1/contacts/${contactId}/notes/`, body)
+        console.log(note.data)
+
+    }catch(error){
+        console.log(error.response)
+        throw new ApiError(404, error.message)
+    }
+
+    return note.data
 }
 
 module.exports = {
     createCRMContact,
-    createCRMOpportunity
+    createCRMOpportunity,
+    searchContactInCRM,
+    createNotesInCRMContacts
 }

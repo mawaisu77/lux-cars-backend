@@ -56,8 +56,12 @@ const createCRMOpportunity = async (contact) => {
         stageId: "80b8a69f-ae51-48ec-9c14-628fd0197466",
         email: contact.email,
         phone: contact.phone,
+        //ID for Assignment to Josh
         //assignedTo: "aq1PFf11dBbCvidn3ywj",
+
+        // Currently assigning to AwaisullahDev
         assignedTo: "gZA5n2GA5cbLI82PQbEu",
+        
         monetaryValue: 122.22,
         source: contact.source,
         contactId: contact.id,

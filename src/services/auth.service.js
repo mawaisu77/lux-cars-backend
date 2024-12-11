@@ -4,6 +4,7 @@ const sendEmail = require("../utils/sendMail");
 const { generateToken } = require("../utils/generateToken");
 var generator = require("generate-password");
 const ApiError = require("../utils/ApiError");
+const CRMService = require("../services/crm.service")
 
 const generateTokenAndExpiry = () => {
   const token = crypto.randomBytes(20).toString("hex");
@@ -121,6 +122,15 @@ const verifyEmail = async (req) => {
   user.emailVerificationToken = null;
   user.emailVerificationExpiry = null;
   user.isEmailVerified = true;
+
+  // CRM Contact Creation here, with ID of created Contact should be saved to the User as well
+  let contact
+  try{
+    contact = await CRMService.createCRMContact(user)
+  }catch(error){
+    console.log(error.response)
+  }
+
   await user.save();
 
   const message = `Hello ${user.username},\n\nYour email has been verified successfully.`;

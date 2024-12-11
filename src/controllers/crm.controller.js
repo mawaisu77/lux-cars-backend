@@ -12,8 +12,9 @@ const searchContactInCRM =  asyncHandler(async (req, res) => {
 
 const createCRMContact = asyncHandler(async (req, res) => {
     const user = {
-        email: "dev2@gmail.com",
-        username: "dev2"
+        email: "dev@gmail.com",
+        username: "dev",
+        phone: "+1928919209"
     }
     const contact = await CRMService.createCRMContact(user)
     res.status(201).json(new ApiResponse(201, contact, "Contact created successfully."));

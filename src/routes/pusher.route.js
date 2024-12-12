@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { isAuthenticatedUser } = require("../middlewares/auth.js");
+const { isAuthenticatedUser, isAuthenticatedAdmin } = require("../middlewares/auth.js");
 const { pushNotification, pusherAuthLiveBidding} = require('../controllers/pusher.controller.js')
 const router = Router()
 
@@ -8,6 +8,7 @@ router.post('/pusher/push-notifications', pushNotification)
 
 
 router.post('/pusher/auth/live-bidding', isAuthenticatedUser, pusherAuthLiveBidding)
+router.post('/admin/pusher/auth/live-bidding', isAuthenticatedAdmin, pusherAuthLiveBidding)
 
 
 router.post('/notifications/mark-read', async (req, res) => {

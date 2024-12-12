@@ -18,17 +18,31 @@ const pusherAuthLiveBidding = async (req, res) => {
     const socketId = req.body.socket_id;
     const channel = req.body.channel_name;
     
-    if(req.user){
-        const userData = {
-            user_id: req.user.id,
-            user_info: {
-                name: req.user.username,
-                email: req.user.email
+    if(req.user || req.admin){
+        let data
+        if(req.user){
+            data = {
+                user_id: req.user.id,
+                user_info: {
+                    name: req.user.username,
+                    email: req.user.email,
+                    role: "user"
+                }
+            }
+        }else{
+            data = {
+                user_id: req.admin.id,
+                user_info: {
+                    name: req.admin.username,
+                    email: req.admin.email,
+                    role: "admin"
+                }
             }
         }
+
         
         // Verify the user's authorization to access this channel
-        const auth = pusher.authorizeChannel(socketId, channel, userData); // Added data parameter
+        const auth = pusher.authorizeChannel(socketId, channel, data); // Added data parameter
     
         res.send(auth)
     }

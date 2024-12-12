@@ -40,6 +40,8 @@ const generateOrderByAdmin = async (bidID) => {
       },
       "text"
     );
+    // CRM Note in User Contact in the CRM will be created on 
+    // Order creation to further procceed the Order in the CRM
 
     return;
   } else {

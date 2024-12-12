@@ -61,7 +61,7 @@ const createCRMOpportunity = async (contact) => {
 
         // Currently assigning to AwaisullahDev
         assignedTo: "gZA5n2GA5cbLI82PQbEu",
-        
+
         monetaryValue: 122.22,
         source: contact.source,
         contactId: contact.id,

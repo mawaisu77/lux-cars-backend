@@ -150,6 +150,36 @@ const getCarsByLotIDs = async (lot_ids) => {
     return cars;
 }
 
+const getSyncedCarByLotID = async(req, res) => {
+
+    // getting the lotID from the query parameters
+    const { lot_id } = req.query
+
+    try {
+        // First, try to get the car from the API
+        const carResponse = await axiosPrivate.get(`/api/cars/${lot_id}`);
+        if (!carResponse || !carResponse.data) {
+            throw new ApiError(404, "No data found for car!");
+        }
+        const car = carResponse.data;
+
+        // Then, check for the bidCar
+        const bidCar = await getBidCarByLotID(lot_id);
+
+        // If bidCar is found, append its currentBid and noOfBids to the car data
+        if (bidCar) {
+            car.currentBid = bidCar.currentBid;
+            car.noOfBids = bidCar.noOfBids;
+        }else{
+            car.currentBid = 0
+            car.noOfBids = 0
+        }
+
+        return car;
+    } catch (error) {
+        throw new ApiError(404, "No data found for car!");
+    }
+}
 
 const getCarByLotID = async (req, res) => {
 
@@ -277,6 +307,7 @@ module.exports = {
     getAllLatestCars,
     getAllCarsTesting,
     getCarByLotID,
+    getSyncedCarByLotID,
     getCarByLotIDTesting,
     carsMakesModels,
     getCarsByLotIDs,

@@ -13,7 +13,7 @@ const getAllCarsTesting = asyncHandler(async (req, res) => {
 })
 
 const getCarByLotID = asyncHandler(async (req, res) => {
-    const car = await carsService.getCarByLotID(req)
+    const car = await carsService.getSyncedCarByLotID(req)
     res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
 })
 

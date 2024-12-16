@@ -14,7 +14,12 @@ const lock = new AsyncLock();
 const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
     //console.log(query)
+    
+    // Adding current date in auction_date_from is it doesn't exist to get the cars
+    // only whose auction_date is in future, cars that are still in auction process
+    if (!query.auction_date_from) query.auction_date_from = new Date()
 
+    console.log(query.auction_date_from)
     const filteredBidCars = bidCars.filter(bidCar => {
         const carDetails = JSON.parse(bidCar.carDetails); // Parse the carDetails string
         // Check if each query parameter matches the carDetails

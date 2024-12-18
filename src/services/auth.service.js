@@ -133,6 +133,7 @@ const verifyEmail = async (req) => {
     console.log(error.response)
   }
 
+  user.contactID = contact.id 
   await user.save();
 
   const message = `Hello ${user.username},\n\nYour email has been verified successfully.`;

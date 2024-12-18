@@ -1,5 +1,8 @@
 const { axiosCRM } = require("../utils/axiosPrivate")
 const  ApiError  = require('../utils/ApiError')
+const { bidExpirationNoteBidCar, auctionWinsNoteBidCar } = require("../utils/CRMNotesMessages")
+const authRepository = require("../repositories/auth.repository")
+const bidCarsRepository = require("../repositories/bidCars.repository")
 
 const searchContactInCRM = async (email) => {
     const contact = await axiosCRM.get(`/v1/contacts/lookup?email=${email}`)
@@ -24,7 +27,7 @@ const createCRMContact = async (user) => {
         country: "US",
         postalCode: "",
         companyName: "",
-        website: "",
+        website: "LUXCARS",
         tags: [
             "DEV",
             "Website-SignUp"
@@ -51,18 +54,19 @@ const createCRMContact = async (user) => {
 const createCRMOpportunity = async (contact) => {
 
     const body = {
-        title: "Testing",
+        title: "Website-SignUp",
         status: "open",
         stageId: "80b8a69f-ae51-48ec-9c14-628fd0197466",
         email: contact.email,
         phone: contact.phone,
+
         //ID for Assignment to Josh
-             // assignedTo: "aq1PFf11dBbCvidn3ywj",
+        // assignedTo: "aq1PFf11dBbCvidn3ywj",
 
         // Currently assigning to AwaisullahDev
         assignedTo: "gZA5n2GA5cbLI82PQbEu",
 
-        monetaryValue: 122.22,
+        monetaryValue: 0,
         source: contact.source,
         contactId: contact.id,
         name: contact.name,
@@ -99,9 +103,48 @@ const createNotesInCRMContacts = async (contactId, body) => {
     return note.data
 }
 
+const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) => {
+    try{
+        const user = await authRepository.findUserById(userID)
+
+        let bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
+        bidCar = bidCar.dataValues
+        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+        // getting the current bid and the number of bids
+        bidCar.carDetails.currentBid = bidCar.currentBid
+        bidCar.carDetails.noOfBids = bidCar.noOfBids
+        bidCar = (bidCar.carDetails)
+        //console.log("---------------------------------",bidCar)
+    
+        let noteData
+        if(type == "ExpireBid"){
+            noteData = await bidExpirationNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+        }else{
+            noteData = await auctionWinsNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+        }
+
+        // need contactID, if no contact exist for the User
+        // first create Contact for User then Note in User Contact
+        let contactID = user.contactID
+        if(contactID == null){
+            const contact = await createCRMContact(user)
+            contactID = contact.id
+        }
+        console.log(noteData)
+        // Here to call the actual Function to create Note In CRM Contact of the User
+        await createNotesInCRMContacts(contactID, noteData)
+
+    }catch(error){
+        console.log(error)
+    }
+
+}
+
+
 module.exports = {
     createCRMContact,
     createCRMOpportunity,
     searchContactInCRM,
-    createNotesInCRMContacts
+    createNotesInCRMContacts,
+    createUserCRMContactNotes
 }

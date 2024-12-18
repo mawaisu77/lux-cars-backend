@@ -7,8 +7,7 @@ const ApiError = require('../utils/ApiError.js');
 const moment = require('moment');
 const { pushNotification } = require('./pusher.service.js');
 const { bidExpiration } = require("../utils/pusherNotifications.js");
-const { json } = require('sequelize');
-const { stringify } = require('uuid');
+
 
 
 const saveBid = async (req, res, options = {}) => {
@@ -91,8 +90,9 @@ const expireBid = async(req, res, options = {}) => {
 
         // CRM Note to be create here in the User's CRM Contact
         let note
+        const type = "ExpireBid"
         try{
-            note = await createUserCRMContactNotes(bidToExpire.userID, lot_id, bidToExpire.createdAt, bidToExpire.bidPrice)
+            note = await CRMService.createUserCRMContactNotes(bidToExpire.userID, lot_id, bidToExpire.createdAt, bidToExpire.bidPrice, type)
         }catch(error){
             console.log(error.response)
         }
@@ -106,49 +106,6 @@ const expireBid = async(req, res, options = {}) => {
     }
 
     return 1
-}
-
-const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice) => {
-    try{
-
-        let bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
-        bidCar = bidCar.dataValues
-        const user = await authRepository.findUserById(userID)
-        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
-        // getting the current bid and the number of bids
-        bidCar.carDetails.currentBid = bidCar.currentBid
-        bidCar.carDetails.noOfBids = bidCar.noOfBids
-        bidCar = (bidCar.carDetails)
-        //console.log("---------------------------------",bidCar)
-    
-        const noteData = {
-            body: `${user.username}'s bid is expired on the lot:${lot_id}, the bid was made for ${bidPrice}$ on ${date}
-            \n
-        Car Details: 
-            Make: ${bidCar.make}
-            Model: ${bidCar.model}
-            Year: ${bidCar.year}
-            Mileage: ${bidCar.mileage}
-            Transmission: ${bidCar.transmission}
-            Engine: ${bidCar.engine}
-            Fuel Type: ${bidCar.fuel_type}
-            Body Type: ${bidCar.body_type}
-            Color: ${bidCar.color}
-            Auction Date: ${bidCar.auction_date}
-            Current Bid: ${bidCar.currentBid}$
-            Number of Bids: ${bidCar.noOfBids}
-            Link: ${bidCar.link},
-            `
-        }
-
-        const devID = "3uX2h8N0As8OUbW2yzWf"
-        // Here to call the actual Function to create Note In CRM Contact of the User
-        await CRMService.createNotesInCRMContacts(devID, noteData)
-
-    }catch(error){
-        console.log(error)
-    }
-
 }
 
 

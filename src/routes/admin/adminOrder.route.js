@@ -8,7 +8,7 @@ const {
 const { isAuthenticatedAdmin } = require("../../middlewares/auth");
 const router = Router();
 
-router.post("/generateOrder", isAuthenticatedAdmin, generateOrderByAdmin);
+router.post("/generateOrder", generateOrderByAdmin);
 
 router.get("/getAllOrders", isAuthenticatedAdmin, getAllOrdersByAdmin);
 

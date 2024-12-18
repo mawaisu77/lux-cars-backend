@@ -6,9 +6,8 @@ const authRepository = require("../repositories/auth.repository");
 const bidService = require("../services/bids.service");
 const bidCarsService = require("../services/bidCars.service");
 const bidCarsRepository = require("../repositories/bidCars.repository")
-const { or } = require("sequelize");
-const { query } = require("express");
-const { placeBid } = require("./localCarsBids.service");
+const CRMService = require("../services/crm.service.js")
+
 
 const generateOrderByAdmin = async (bidID) => {
   const order = await orderRepository.findOrderByBidId(bidID);
@@ -40,8 +39,16 @@ const generateOrderByAdmin = async (bidID) => {
       },
       "text"
     );
+
     // CRM Note in User Contact in the CRM will be created on 
     // Order creation to further procceed the Order in the CRM
+    let note
+    const type = "AuctionWon"
+    try{
+        note = await CRMService.createUserCRMContactNotes(userId, bid.lot_id, bid.createdAt, bid.bidPrice, type)
+    }catch(error){
+        console.log(error.response)
+    }
 
     return;
   } else {

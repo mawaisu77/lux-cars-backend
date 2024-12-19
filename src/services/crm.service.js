@@ -81,6 +81,7 @@ const createCRMOpportunity = async (contact) => {
 
     }catch(error){
         console.log(error.response)
+        return
         //throw new ApiError(404, error.message)
     }
     //console.log(opportunity.data)
@@ -97,6 +98,7 @@ const createNotesInCRMContacts = async (contactId, body) => {
 
     }catch(error){
         console.log(error.response)
+        return
         //throw new ApiError(404, error.message)
     }
 
@@ -134,8 +136,8 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
         await user.save()
         console.log(noteData)
         // Here to call the actual Function to create Note In CRM Contact of the User
-        await createNotesInCRMContacts(contactID, noteData)
-
+        const note = await createNotesInCRMContacts(contactID, noteData)
+        console.log(note)
     }catch(error){
         console.log(error)
     }

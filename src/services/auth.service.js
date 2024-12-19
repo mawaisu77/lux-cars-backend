@@ -109,7 +109,6 @@ const registerUser = async (req) => {
 };
 
 const verifyEmail = async (req) => {
-  //const user = await authRepository.findUserById(req.query.id)
 
   const user = await authRepository.findByVerificationToken(req.params.token);
 

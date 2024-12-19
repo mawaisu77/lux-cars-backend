@@ -2,10 +2,12 @@ const fundsRepository = require('../repositories/funds.repository.js');
 const bidCarsRepository = require('../repositories/bidCars.repository.js');
 const bidsRepository = require("../repositories/bids.repository.js");
 const authRepository = require("../repositories/auth.repository.js");
+const CRMService = require("../services/crm.service.js")
 const ApiError = require('../utils/ApiError.js');
 const moment = require('moment');
 const { pushNotification } = require('./pusher.service.js');
-const { bidExpiration } = require("../utils/pusherNotifications.js")
+const { bidExpiration } = require("../utils/pusherNotifications.js");
+
 
 
 const saveBid = async (req, res, options = {}) => {
@@ -72,8 +74,8 @@ const getAllBidsOfUser = async (req, res) => {
 const expireBid = async(req, res, options = {}) => {
 
     // getting the bid to expire
-    const lot_it = req.body.lot_id
-    var bidToExpire = await bidsRepository.getBidToExpireByLotID(lot_it)
+    const lot_id = req.body.lot_id
+    var bidToExpire = await bidsRepository.getBidToExpireByLotID(lot_id)
 
     if (bidToExpire != null){    
 
@@ -86,7 +88,17 @@ const expireBid = async(req, res, options = {}) => {
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
 
-        const message =  await bidExpiration(lot_it)
+        // CRM Note to be create here in the User's CRM Contact
+        let note
+        const type = "ExpireBid"
+        try{
+            note = await CRMService.createUserCRMContactNotes(bidToExpire.userID, lot_id, bidToExpire.createdAt, bidToExpire.bidPrice, type)
+        }catch(error){
+            console.log(error.response)
+        }
+        
+        // Pusher Notification
+        const message =  await bidExpiration(lot_id)
         pushNotification(bidToExpire.userID, message, "Bid Expiration", "user-notifications", "public-notification")
         // returning the expired bid
         return expiredBid

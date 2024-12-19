@@ -81,6 +81,10 @@ const User = sequelize.define('user',
       type: Sequelize.ENUM('pending', 'approved', 'rejected'),
       defaultValue: 'pending'
     },
+    contactID: {
+      type: Sequelize.STRING, // Adjust type as necessary
+      allowNull: true // Set to false if it should be required
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

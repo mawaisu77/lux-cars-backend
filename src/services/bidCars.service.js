@@ -209,17 +209,6 @@ const placeBid = async (req, res, options = {}) => {
     const { lot_id } = req.body
     //console.log(req.body)
 
-    // // Check if the car is already locked
-    // if (carLocks[lot_id]) {
-    //     while(carLocks[lot_id]){
-
-    //     }
-    // }
-
-    // Lock the car for processing
-    // carLocks[lot_id] = true;
-    // console.log("After Locking ===========", carLocks)
-
     return lock.acquire(lot_id, async () => {
             
         // checking car against lot_id if already exists

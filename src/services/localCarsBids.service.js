@@ -71,6 +71,8 @@ const expireBid = async (req, res) => {
         if (!expiredBid){
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
+
+        // CRM Note create here for Local Cars Expired Bidsg
         return bidToExpire
 
     }

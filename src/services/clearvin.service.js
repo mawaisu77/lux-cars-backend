@@ -1,6 +1,5 @@
 const { axiosClearVin } = require('../utils/axiosPrivate')
 const  ApiError  = require('../utils/ApiError')
-const ApiResponse = require('../utils/ApiResponse')
 
 
 const getCarPreview = async (req, res) => {

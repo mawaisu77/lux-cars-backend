@@ -130,6 +130,8 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
             const contact = await createCRMContact(user)
             contactID = contact.id
         }
+        user.contactID = contactID
+        await user.save()
         console.log(noteData)
         // Here to call the actual Function to create Note In CRM Contact of the User
         await createNotesInCRMContacts(contactID, noteData)

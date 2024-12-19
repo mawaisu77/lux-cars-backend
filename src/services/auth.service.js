@@ -109,21 +109,21 @@ const registerUser = async (req) => {
 };
 
 const verifyEmail = async (req) => {
-  const user = await authRepository.findUserById(req.query.id)
+  //const user = await authRepository.findUserById(req.query.id)
 
-  // const user = await authRepository.findByVerificationToken(req.params.token);
+  const user = await authRepository.findByVerificationToken(req.params.token);
 
-  // if (!user) {
-  //   throw new ApiError(400, "Invalid or expired verification token ");
-  // }
+  if (!user) {
+    throw new ApiError(400, "Invalid or expired verification token ");
+  }
 
-  // if (user.isEmailVerified) {
-  //   throw new ApiError(400, "Email is Already verified");
-  // }
+  if (user.isEmailVerified) {
+    throw new ApiError(400, "Email is Already verified");
+  }
 
-  // user.emailVerificationToken = null;
-  // user.emailVerificationExpiry = null;
-  // user.isEmailVerified = true;
+  user.emailVerificationToken = null;
+  user.emailVerificationExpiry = null;
+  user.isEmailVerified = true;
 
   // CRM Contact Creation here, with ID of created Contact should be saved to the User as well
   let contact

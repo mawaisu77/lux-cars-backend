@@ -39,16 +39,16 @@ const createCRMContact = async (user) => {
     let contact
     try {
         contact = await axiosCRM.post("/v1/contacts/", body)
-        console.log(contact.data)
+        console.log(contact.data.contact)
 
     }catch(error){
-        console.log(error)
-        throw new ApiError(404, error.message)
+        console.log(error.message)
+        //throw new ApiError(404, error.message)
     }
     
     const opportunity = await createCRMOpportunity(contact.data.contact)
     console.log(opportunity)
-    return contact.data
+    return contact.data.contact
 }
 
 const createCRMOpportunity = async (contact) => {
@@ -81,7 +81,7 @@ const createCRMOpportunity = async (contact) => {
 
     }catch(error){
         console.log(error.response)
-        throw new ApiError(404, error.message)
+        //throw new ApiError(404, error.message)
     }
     //console.log(opportunity.data)
 
@@ -97,7 +97,7 @@ const createNotesInCRMContacts = async (contactId, body) => {
 
     }catch(error){
         console.log(error.response)
-        throw new ApiError(404, error.message)
+        //throw new ApiError(404, error.message)
     }
 
     return note.data

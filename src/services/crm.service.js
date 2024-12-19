@@ -125,8 +125,8 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
 
         // need contactID, if no contact exist for the User
         // first create Contact for User then Note in User Contact
-        let contactID = user.contactID
-        if(contactID == null){
+        let contactID
+        if(!user.contactID){
             const contact = await createCRMContact(user)
             contactID = contact.id
         }

@@ -1,6 +1,6 @@
 const { axiosCRM } = require("../utils/axiosPrivate")
 const  ApiError  = require('../utils/ApiError')
-const { bidExpirationNoteBidCar, auctionWinsNoteBidCar } = require("../utils/CRMNotesMessages")
+const { bidExpirationNoteBidCar, auctionWinsNoteBidCar, bidExpirationNoteLocalCar } = require("../utils/CRMNotesMessages")
 const authRepository = require("../repositories/auth.repository")
 const bidCarsRepository = require("../repositories/bidCars.repository")
 
@@ -121,6 +121,8 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
         let noteData
         if(type == "ExpireBid"){
             noteData = await bidExpirationNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+        // }else if(ExpireBidLocal){
+        //     noteData = await bidExpirationNoteLocalCar(user.username, bidPrice, date, bidCar)
         }else{
             noteData = await auctionWinsNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
         }

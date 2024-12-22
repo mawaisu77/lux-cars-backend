@@ -21,6 +21,9 @@ const mapCarDetails = async(carsData) => {
             vehicle_type: car.vehicle_type,
             body_type: car.body_type,
             make: car.make,
+            is_buynow: car.is_buynow,
+            fuel: car.fuel,
+            drive: car.drive,
             price_new: car.price_new ? car.price_new : null,
             image:  car.link_img_hd ? 
                     car.link_img_hd.length > 0 ? 

@@ -3,6 +3,7 @@ const localCarsRepository = require("../repositories/localCars.repository.js")
 const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
+const CRMService = require("../services/crm.service.js")
 
 
 const ApiError = require('../utils/ApiError.js');
@@ -72,7 +73,15 @@ const expireBid = async (req, res) => {
             throw new ApiError(502, "Unable to expire the bid in DB")
         }
 
-        // CRM Note create here for Local Cars Expired Bidsg
+        // CRM Note create here for Local Cars Expired Bids
+        // let note
+        // const type = "ExpireBid"
+        // try{
+        //     note = await CRMService.createUserCRMContactNotes(bidToExpire.userID, "", bidToExpire.createdAt, bidToExpire.bidPrice, type)
+        // }catch(error){
+        //     console.log(error.response)
+        // }
+
         return bidToExpire
 
     }

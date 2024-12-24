@@ -17,6 +17,11 @@ const getCarByLotID = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
 })
 
+const getCarByVIN = asyncHandler(async (req, res) => {
+    const car = await carsService.getCarByVIN(req)
+    res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
+})
+
 const getCarByLotIDTesting = asyncHandler(async (req, res) => {
     const car = await carsService.getCarByLotIDTesting(req)
     res.status(201).json(new ApiResponse(201, car, "Cars fetched successfully.", ));
@@ -47,6 +52,7 @@ const calculateEstimatedPriceForTheVehicle = asyncHandler (async(req, res) => {
 module.exports = {
     getAllCars,
     getCarByLotID,
+    getCarByVIN,
     carsMakesModels,
     getAllCarsTesting,
     getCarByLotIDTesting,

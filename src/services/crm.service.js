@@ -54,9 +54,9 @@ const createCRMContact = async (user) => {
 const createCRMOpportunity = async (contact) => {
 
     const body = {
-        title: "Website-SignUp",
+        title: contact.name,
         status: "open",
-        stageId: "80b8a69f-ae51-48ec-9c14-628fd0197466",
+        stageId: process.env.OPPORTUNITY_STAGE_ID,
         email: contact.email,
         phone: contact.phone,
 
@@ -64,7 +64,7 @@ const createCRMOpportunity = async (contact) => {
         // assignedTo: "aq1PFf11dBbCvidn3ywj",
 
         // Currently assigning to AwaisullahDev
-        assignedTo: "gZA5n2GA5cbLI82PQbEu",
+        assignedTo: process.env.ASSIGNED_TO,
 
         monetaryValue: 0,
         source: contact.source,
@@ -73,7 +73,7 @@ const createCRMOpportunity = async (contact) => {
         companyName: contact.companyName,
         tags: contact.tags
     }
-    const pipelineId = "hgEarlCLncaxRYMpEdki"
+    const pipelineId = process.env.PIPELINE_ID
     let opportunity
     try {
         opportunity = await axiosCRM.post(`/v1/pipelines/${pipelineId}/opportunities/`, body)

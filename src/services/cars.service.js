@@ -222,6 +222,28 @@ const getCarByLotID = async (req, res) => {
 
 }
 
+const getCarByVIN = async (req, res) => {
+
+    const { VIN } = req.query
+    // https://api.apicar.store/api/cars/vin/all
+    try{
+
+        // 'https://api.apicar.store/api/cars/39778890?site=2'
+        const car = await axiosPrivate.get(`/api/cars/vin/all?vin=${VIN}`);
+        if(!car){
+
+            throw new ApiError(404, "No data found for car!")
+        
+        }
+
+        return car.data
+
+    }catch(error){
+        console.log(error)
+        throw new ApiError(404, "No data found for car!")
+    }
+}
+
 const getCarByLotIDTesting = async (req, res) => {
 
     // returning the car and the current bid and the number of bids
@@ -307,6 +329,7 @@ module.exports = {
     getAllLatestCars,
     getAllCarsTesting,
     getCarByLotID,
+    getCarByVIN,
     getSyncedCarByLotID,
     getCarByLotIDTesting,
     carsMakesModels,

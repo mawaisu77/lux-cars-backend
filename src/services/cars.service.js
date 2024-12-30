@@ -156,6 +156,16 @@ const getSyncedCarByLotID = async(req, res) => {
     const { lot_id } = req.query
 
     try {
+        if (lot_id.length === 17) {
+            const car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
+            if(!car){
+
+                throw new ApiError(404, "No data found for car!")
+            
+            }
+
+            return car.data
+        }
         // First, try to get the car from the API
         const carResponse = await axiosPrivate.get(`/api/cars/${lot_id}`);
         if (!carResponse || !carResponse.data) {
@@ -228,7 +238,6 @@ const getCarByVIN = async (req, res) => {
     // https://api.apicar.store/api/cars/vin/all
     try{
 
-        // 'https://api.apicar.store/api/cars/39778890?site=2'
         const car = await axiosPrivate.get(`/api/cars/vin/all?vin=${VIN}`);
         if(!car){
 

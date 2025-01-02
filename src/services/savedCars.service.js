@@ -82,6 +82,25 @@ const deleteCar = async (req, res) => {
     }
 }
 
+const deleteLocalCar = async (req, res) => {
+    const userID = req.user.id;
+    if (!req.body.localCarsID) throw new ApiError(401, "LocalCarsID Required!")
+    const localCarsID = req.body.localCarsID.toString();
+
+    let savedCars = await savedCarsRepository.getUsersSavedCars(userID);
+    if (savedCars) {
+        if (savedCars.localCarsID.includes(localCarsID)) {
+            savedCars.localCarsID = savedCars.localCarsID.filter(id => id !== localCarsID);
+            await savedCars.save();
+            return savedCars;
+        } else {
+            throw new ApiError(404, "Car not found in saved local cars.");
+        }
+    } else {
+        throw new ApiError(404, "No saved local cars found for this user.");
+    }
+}
+
 const getUsersSavedCars = async (req, res) => {
     const userID = req.user.id;
     if (!userID) throw new ApiError(401, "User does not exist against the provied UserID")
@@ -126,5 +145,6 @@ module.exports = {
     deleteCar,
     getUsersSavedCars,
     getUsersSavedCarsIDs,
-    getUsersSavedLocalCarsIDs
+    getUsersSavedLocalCarsIDs,
+    deleteLocalCar
 }

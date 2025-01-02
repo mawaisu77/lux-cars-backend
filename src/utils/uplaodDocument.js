@@ -1,6 +1,24 @@
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 const ApiError = require("./ApiError.js");
 
+const uploadMultipleDocuments = async (documents) => {
+  if (documents.length === 0) {
+    throw new ApiError(400, "No document files provided");
+  }
+
+  const uploadResponses = [];
+  for (const doc of documents) {
+    const localFilePath = doc.path;
+    const uploadResponse = await uploadOnCloudinary(localFilePath);
+
+    if (uploadResponse) {
+      uploadResponses.push(uploadResponse.secure_url);
+    }
+  }
+
+  return uploadResponses;
+};
+
 const uploadDocs = async (req, res) => {
   if (!req.files || req.files.length === 0) {
     throw new ApiError(400, "No document files provided");
@@ -35,4 +53,5 @@ const uploadSingleDoc = async (req, res) => {
 module.exports = {
   uploadDocs,
   uploadSingleDoc,
+  uploadMultipleDocuments
 };

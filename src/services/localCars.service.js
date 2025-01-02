@@ -4,26 +4,28 @@ const { shuffleArrays } = require("../utils/helperFunctions");
 const authRepository = require("../repositories/auth.repository.js");
 const logger = require("../utils/logger");
 const localCarsRepository = require("../repositories/localCars.repository.js");
-const { uploadDocs } = require("../utils/uplaodDocument.js");
+const { uploadDocs, uploadMultipleDocuments } = require("../utils/uplaodDocument.js");
 const ApiError = require("../utils/ApiError.js");
 const { query } = require('express');
 
 const uploadCar = async (req, res) => {
-  // Uplaoding car images
+  //console.log(req.files.carImages)
+  //Uplaoding car images
   //console.log(req.files)
-  const carImages = await uploadDocs(req);
-
+  const carImages = await uploadMultipleDocuments(req.files.carImages);
+  const carDocuments = await uploadMultipleDocuments(req.files.carDocuments);
   // Getting userID
   const userID = req.user.id;
 
   // Preparing CarData
-  const carData = { ...req.body, userID, carImages };
+  const carData = { ...req.body, userID, carImages, carDocuments };
 
   // Sending Car to database
   const car = await localCarsRepository.createLocalCar(carData);
 
   // returning the car
   return car;
+  //return []
 };
 
 const getCarByID = async (req, res) => {

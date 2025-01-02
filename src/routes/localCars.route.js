@@ -4,7 +4,11 @@ const { isAuthenticatedUser } = require("../middlewares/auth.js");
 const { upload } = require("../middlewares/multer.js");
 const router = Router()
 
-router.post('/local-cars/upload-car', isAuthenticatedUser, upload.array('carImages', 6),  uploadCar);
+//router.post('/local-cars/upload-car', isAuthenticatedUser, upload.array('carImages', 6), upload.array('carDocuments', 6),  uploadCar);
+router.post('/local-cars/upload-car', isAuthenticatedUser, upload.fields([
+    { name: 'carImages', maxCount: 6 },
+    { name: 'carDocuments', maxCount: 6 }
+]), uploadCar);
 router.put('/local-cars/update-car', upload.array('carImages', 12), updateCar)
 router.get('/local-cars/get-car', getCarByID)
 router.get('/local-cars/get-user-all-local-cars',isAuthenticatedUser, getUserAllLocalCars)

@@ -30,10 +30,17 @@ const getUsersSavedCarsIDs = asyncHandler(async (req, res) => {
 })
 
 
+const getUsersSavedLocalCarsIDs = asyncHandler(async (req, res) => {
+    const usersSavedCarsIDs = await savedCars.getUsersSavedLocalCarsIDs(req)
+    res.status(200).json(new ApiResponse(200, usersSavedCarsIDs, "User's saved cars fetched successfully.", ));
+})
+
+
 module.exports = {
     saveCar,
     saveLocalCar,
     deleteCar,
     getUsersSavedCars,
-    getUsersSavedCarsIDs
+    getUsersSavedCarsIDs,
+    getUsersSavedLocalCarsIDs
 }

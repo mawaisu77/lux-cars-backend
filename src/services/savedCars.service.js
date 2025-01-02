@@ -107,6 +107,17 @@ const getUsersSavedCarsIDs = async (req) => {
     return savedCarsLots.lot_id
 }
 
+const getUsersSavedLocalCarsIDs = async (req) => {
+    const userID = req.user.id;
+    if (!userID) throw new ApiError(401, "User does not exist against the provied UserID")
+    const savedCarsLots = await savedCarsRepository.getUsersSavedCars(userID);
+    var savedCars = []
+    if (!savedCarsLots) return savedCars
+    return savedCarsLots.localCarsID
+}
+
+
+
 
 
 module.exports = {
@@ -114,5 +125,6 @@ module.exports = {
     saveLocalCar,
     deleteCar,
     getUsersSavedCars,
-    getUsersSavedCarsIDs
+    getUsersSavedCarsIDs,
+    getUsersSavedLocalCarsIDs
 }

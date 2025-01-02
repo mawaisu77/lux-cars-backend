@@ -34,7 +34,7 @@ const saveLocalCar = async (req, res) => {
 
     } else {
         // If the user does not have a saved car, create a new record
-        const newCar = await savedCarsRepository.saveCar({ userID, localCarsID: [localCarsID] });
+        const newCar = await savedCarsRepository.saveCar({ userID, localCarsID: [localCarsID], lot_id: [] });
         return newCar;
     }
 }

@@ -84,9 +84,17 @@ const LocalCars = sequelize.define('localCars',
       allowNull: false,
       type: Sequelize.STRING
     },
+    buyNowPrice: {
+      type: Sequelize.STRING, // Adjust precision and scale as needed
+      allowNull: true, // Set to false if this field is required
+    },
     carImages: {
       allowNull: false,
       type: Sequelize.ARRAY(Sequelize.STRING),
+    },
+    carDocuments: {
+      type: Sequelize.ARRAY(Sequelize.STRING), // Assuming carDocuments is an array of strings
+      allowNull: true, // Set to false if this field is required
     },
     referral: {
       allowNull: false,

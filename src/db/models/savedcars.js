@@ -22,6 +22,10 @@ const SavedCars = sequelize.define('savedCars',
       allowNull: false,
       type: Sequelize.ARRAY(Sequelize.STRING),      
     },
+    localCarsID: {
+      allowNull: true,
+      type: Sequelize.ARRAY(Sequelize.STRING),      
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

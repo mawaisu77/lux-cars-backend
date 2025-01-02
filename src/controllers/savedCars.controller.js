@@ -8,6 +8,12 @@ const saveCar = asyncHandler(async (req, res) => {
 
 })
 
+const saveLocalCar = asyncHandler(async (req, res) => {
+    const car = await savedCars.saveLocalCar(req)
+    res.status(201).json(new ApiResponse(201, car, "Car Saved successfully.", ));
+
+})
+
 const deleteCar = asyncHandler(async (req, res) => {
     const car = await savedCars.deleteCar(req)
     res.status(200).json(new ApiResponse(200, car, "Car deleted successfully.", ));
@@ -26,6 +32,7 @@ const getUsersSavedCarsIDs = asyncHandler(async (req, res) => {
 
 module.exports = {
     saveCar,
+    saveLocalCar,
     deleteCar,
     getUsersSavedCars,
     getUsersSavedCarsIDs

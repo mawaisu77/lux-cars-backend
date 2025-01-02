@@ -6,6 +6,39 @@ const { uploadDocuments } = require('../utils/uplaodDocument.js')
 const ApiError = require('../utils/ApiError.js');
 
 
+const saveLocalCar = async (req, res) => {
+    const userID = req.user.id;
+    if(!req.body.localCarsID) throw new ApiError(401, "LocalCarsID Required!")
+    const localCarsID = req.body.localCarsID.toString() 
+
+    const existingCar = await savedCarsRepository.getUsersSavedCars(userID);
+    console.log(existingCar)
+    if (existingCar) {
+        // If the user already has a saved car, update the localCarsID array
+        // Ensure localCarsID is unique before pushing
+        if(existingCar.localCarsID != null){
+            if (!existingCar.localCarsID.includes(localCarsID)) {
+                let carArray = existingCar.localCarsID
+                existingCar.localCarsID = [...carArray, localCarsID]
+                await existingCar.save();
+            }
+            return existingCar;
+        }else{
+            let carArray = []
+            carArray.push(localCarsID)
+            existingCar.localCarsID = carArray
+            await existingCar.save();
+
+            return existingCar;
+        }
+
+    } else {
+        // If the user does not have a saved car, create a new record
+        const newCar = await savedCarsRepository.saveCar({ userID, localCarsID: [localCarsID] });
+        return newCar;
+    }
+}
+
 const saveCar = async (req, res) => {
 
     const userID = req.user.id;
@@ -28,7 +61,6 @@ const saveCar = async (req, res) => {
         return newCar;
     }
     
-
 }
 
 const deleteCar = async (req, res) => {
@@ -79,6 +111,7 @@ const getUsersSavedCarsIDs = async (req) => {
 
 module.exports = {
     saveCar,
+    saveLocalCar,
     deleteCar,
     getUsersSavedCars,
     getUsersSavedCarsIDs

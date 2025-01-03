@@ -40,6 +40,10 @@ const getUsersSavedLocalCarsIDs = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, usersSavedCarsIDs, "User's saved cars fetched successfully.", ));
 })
 
+const getUsersSavedLocalCars = async (req, res) => {
+    const cars = await savedCars.getUsersSavedLocalCars(req);
+    res.status(201).json(new ApiResponse(201, cars, "Success...."));
+  }  
 
 module.exports = {
     saveCar,
@@ -48,5 +52,6 @@ module.exports = {
     getUsersSavedCars,
     getUsersSavedCarsIDs,
     getUsersSavedLocalCarsIDs,
+    getUsersSavedLocalCars,
     deleteLocalCar
 }

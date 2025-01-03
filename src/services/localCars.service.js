@@ -226,6 +226,32 @@ const getAllLocalCars = async (req, res) => {
   };
 };
 
+const getLocalCarsByIDs = async(car_ids) => {
+  let cars = [];
+
+  for (let i = 0; i < car_ids.length; i++) {
+      try {
+          // Check for the car in bidCars first
+          let car = await localCarsRepository.getCarByID(car_ids[i])
+
+          if (car) {
+
+              cars.push(car); 
+
+          }else{
+
+            continue;
+
+          }
+
+      } catch (error) {
+          continue;
+      }
+  }
+
+  return cars;
+}
+
 //=======================================================
 
 // const getAllLocalCars = async (req, res) => {
@@ -297,4 +323,5 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
+  getLocalCarsByIDs
 };

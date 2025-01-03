@@ -2,6 +2,7 @@ const { axiosPrivate } = require('../utils/axiosPrivate')
 const { shuffleArrays } = require('../utils/helperFunctions')
 const savedCarsRepository = require('../repositories/savedCarsRepository.repository.js');
 const carService = require('./cars.service.js')
+const localCarsService = require("./localCars.service.js")
 const { uploadDocuments } = require('../utils/uplaodDocument.js')
 const ApiError = require('../utils/ApiError.js');
 
@@ -111,10 +112,14 @@ const getUsersSavedCars = async (req, res) => {
     return savedCars
 }
 
-const getCarDetailsByLotID = async(req, lot_id) => {
-    req.query.lot_id = lot_id;
-    const carDetails = await carService.getCarByLotID(req);
-    return carDetails
+const getUsersSavedLocalCars = async (req, res) => {
+    const userID = req.user.id;
+    if (!userID) throw new ApiError(401, "User does not exist against the provied UserID")
+    const savedCarsLots = await savedCarsRepository.getUsersSavedCars(userID);
+    var savedCars = []
+    if (!savedCarsLots) return savedCars
+    savedCars = await localCarsService.getLocalCarsByIDs(savedCarsLots.localCarsID)
+    return savedCars
 }
 
 const getUsersSavedCarsIDs = async (req) => {
@@ -136,9 +141,6 @@ const getUsersSavedLocalCarsIDs = async (req) => {
 }
 
 
-
-
-
 module.exports = {
     saveCar,
     saveLocalCar,
@@ -146,5 +148,6 @@ module.exports = {
     getUsersSavedCars,
     getUsersSavedCarsIDs,
     getUsersSavedLocalCarsIDs,
+    getUsersSavedLocalCars,
     deleteLocalCar
 }

@@ -228,8 +228,8 @@ const getAllLocalCars = async (req, res) => {
 
 const getLocalCarsByIDs = async(car_ids) => {
   let cars = [];
-
-  for (let i = 0; i < car_ids.length; i++) {
+  if(car_ids && car_ids != []){
+    for (let i = 0; i < car_ids.length; i++) {
       try {
           // Check for the car in bidCars first
           let car = await localCarsRepository.getCarByID(car_ids[i])
@@ -247,6 +247,7 @@ const getLocalCarsByIDs = async(car_ids) => {
       } catch (error) {
           continue;
       }
+    }
   }
 
   return cars;
@@ -304,7 +305,7 @@ const getLocalCarsByIDs = async(car_ids) => {
 
 const changeCarStatus = async (req) => {
   const carId = req.query.carId;
-  const auction_date = req.body.auction_date
+  const auction_date = await getAuctionDate()
   const car = await localCarsRepository.getCarByID(carId);
   if (!car) {
     throw new ApiError(404, "Car does not exists.");
@@ -314,6 +315,50 @@ const changeCarStatus = async (req) => {
   const carStatus = await car.save()
   return carStatus;
 };
+
+
+const getAuctionDate = async() => {
+  const now = new Date();
+
+  const day = now.getDay();     // 0 = Sunday, 1 = Monday, 2 = Tuesday, etc.
+  const hour = now.getHours();  // 0–23
+
+  // Default: schedule for Wednesday of the week after next (Week N+2)
+  let weeksToAdd = 2;
+
+  // Condition: Monday or Tuesday (day === 1 || day === 2) AND before 11 AM
+  if ((day === 1 || day === 2) && hour < 11) {
+    // Then schedule for next Wednesday (Week N+1)
+    weeksToAdd = 1;
+  }
+
+  // Create a date for the scheduled auction
+  const scheduledDate = new Date(now);
+
+  // Move forward by the needed number of weeks
+  scheduledDate.setDate(scheduledDate.getDate() + 7 * weeksToAdd);
+
+  // Align it to Wednesday (day = 3)
+  // We'll calculate how far we are from Wednesday in that future week
+  const newDay = scheduledDate.getDay();
+  const daysUntilWednesday = (3 - newDay + 7) % 7;
+  scheduledDate.setDate(scheduledDate.getDate() + daysUntilWednesday);
+
+  // Optionally set the time to 11:00 AM (adjust to your preference)
+  scheduledDate.setHours(11, 0, 0, 0);
+
+  return scheduledDate;
+}
+
+// 2. Function to approve a car and set auction_date
+function approveCar(car) {
+  // Mark the car as approved (if you're tracking this in your system)
+  car.approved = true; 
+  // Assign the calculated auction date
+  car.auction_date = getAuctionDate();
+  console.log(`Car #${car.id} approved. Auction Date: ${car.auction_date}`);
+}
+
 
 module.exports = {
   uploadCar,

@@ -17,7 +17,11 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     
     // Adding current date in auction_date_from is it doesn't exist to get the cars
     // only whose auction_date is in future, cars that are still in auction process
-    if (!query.auction_date_from) query.auction_date_from = new Date()
+    if (!query.auction_date_from) {
+        let currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() + 1);
+        query.auction_date_from = currentDate;
+    }
 
     console.log(query.auction_date_from)
     const filteredBidCars = bidCars.filter(bidCar => {

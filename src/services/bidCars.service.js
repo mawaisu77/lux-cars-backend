@@ -108,6 +108,8 @@ const findBidCars = async(req, res) => {
             const auctionDate = new Date(bidCar.auction_date);
             return auctionDate >= new Date() && auctionDate <= oneHourFromNow;
         });
+        query.auction_date_from = {}
+        query.auction_date_from = new Date(Date.now() - 60 * 60 * 1000);
     }
 
     if (!bidCars || bidCars.length === 0) {

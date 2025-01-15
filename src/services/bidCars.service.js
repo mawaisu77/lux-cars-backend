@@ -23,7 +23,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
         query.auction_date_from = currentDate;
     }
 
-    console.log(query.auction_date_from)
+    //console.log(query.auction_date_from)
     const filteredBidCars = bidCars.filter(bidCar => {
         const carDetails = JSON.parse(bidCar.carDetails); // Parse the carDetails string
         // Check if each query parameter matches the carDetails
@@ -91,7 +91,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
 const findBidCars = async(req, res) => {
     //console.log(req.query)
-    const {size = 10, page = 1, ...query} = {...req.query}
+    let {size = 10, page = 1, ...query} = {...req.query}
     //console.log(">>>>>>>>>",req.query)
     //Convert limit and page to integers
     const limitInt = parseInt(size, 10);
@@ -108,9 +108,11 @@ const findBidCars = async(req, res) => {
             const auctionDate = new Date(bidCar.auction_date);
             return auctionDate >= new Date() && auctionDate <= oneHourFromNow;
         });
+        console.log(bidCars)
         query.auction_date_from = {}
-        query.auction_date_from = new Date(Date.now() - 60 * 60 * 1000);
+        query.auction_date_from = new Date(Date.now() - 24 * 60 * 60 * 1000);
     }
+
 
     if (!bidCars || bidCars.length === 0) {
         throw new ApiError(404, "No Bid Cars Found!");

@@ -95,7 +95,17 @@ const findBidCars = async(req, res) => {
     const offsetInt = (pageInt - 1) * limitInt; // Calculate offset
 
     // Fetching bid cars from the database using the constructed query and pagination
-    const bidCars = await bidCarsRepository.findBidCars();
+    let bidCars = await bidCarsRepository.findBidCars();
+
+    if(req.query.auction_ended === true){
+        const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
+            
+        bidCars = bidCars.filter(bidCar => {
+            const auctionDate = new Date(bidCar.auction_date);
+            return auctionDate >= new Date() && auctionDate <= oneHourFromNow;
+        });
+    }
+
     if (!bidCars || bidCars.length === 0) {
         throw new ApiError(404, "No Bid Cars Found!");
     }
@@ -105,6 +115,15 @@ const findBidCars = async(req, res) => {
     return cars 
 }
 
+const getCarsInOneHour = async () => {
+    const bidCars = await bidCarsRepository.findBidCars();
+    const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
+    const carsInOneHour = bidCars.filter(bidCar => {
+        const auctionDate = new Date(bidCar.auction_date);
+        return auctionDate >= new Date() && auctionDate <= oneHourFromNow;
+    });
+    return carsInOneHour;
+}
 
 const createBidCar = async (req, res, options = {}) => {
     // getting data from body
@@ -336,6 +355,7 @@ module.exports = {
   updateBidCar,
   placeBid,
   findBidCars,
+  getCarsInOneHour,
   getAllBidCarsByAdmin,
   getCarDetailsByLotID
 };

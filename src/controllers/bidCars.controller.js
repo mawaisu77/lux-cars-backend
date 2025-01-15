@@ -4,9 +4,7 @@ const bidCarsService = require("../services/bidCars.service.js");
 
 const findBidCars = asyncHandler(async (req, res) => {
   const bidCars = await bidCarsService.findBidCars(req)
-  res
-    .status(201)
-    .json(new ApiResponse(201, bidCars, "BidCars Fetched successfully.,"));
+  res.status(201).json(new ApiResponse(201, bidCars, "BidCars Fetched successfully.,"));
 })
 
 const createBidCar = asyncHandler(async (req, res) => {

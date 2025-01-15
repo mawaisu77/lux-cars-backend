@@ -101,7 +101,7 @@ const findBidCars = async(req, res) => {
     // Fetching bid cars from the database using the constructed query and pagination
     let bidCars = await bidCarsRepository.findBidCars();
 
-    if(req.query.auction_ended === true){
+    if(req.query.auction_ended == "true"){
         const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
             
         bidCars = bidCars.filter(bidCar => {

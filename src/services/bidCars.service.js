@@ -91,7 +91,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
 
 const findBidCars = async(req, res) => {
     //console.log(req.query)
-    let {size = 10, page = 1, ...query} = {...req.query}
+    let {size = 10, page = 1, auction_ended = "false", ...query} = {...req.query}
     //console.log(">>>>>>>>>",req.query)
     //Convert limit and page to integers
     const limitInt = parseInt(size, 10);
@@ -101,14 +101,14 @@ const findBidCars = async(req, res) => {
     // Fetching bid cars from the database using the constructed query and pagination
     let bidCars = await bidCarsRepository.findBidCars();
 
-    if(req.query.auction_ended == "true"){
+    if(auction_ended == "true"){
         const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
             
         bidCars = bidCars.filter(bidCar => {
             const auctionDate = new Date(bidCar.auction_date);
             return auctionDate >= new Date() && auctionDate <= oneHourFromNow;
         });
-        console.log(bidCars)
+
         query.auction_date_from = {}
         query.auction_date_from = new Date(Date.now() - 24 * 60 * 60 * 1000);
     }

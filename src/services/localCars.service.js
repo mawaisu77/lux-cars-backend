@@ -363,7 +363,7 @@ function approveCar(car) {
 const getFutureAuctionCars = async () => {
   const localCars = await localCarsRepository.getFutureAuctionCars();
   const categorizedCars = localCars.reduce((acc, car) => {
-    const auctionDate = car.auction_date;
+    const auctionDate = car.auction_date.toISOString();
     if (!acc[auctionDate]) {
       acc[auctionDate] = [];
     }

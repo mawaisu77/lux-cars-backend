@@ -38,7 +38,13 @@ const changeCarStatus = asyncHandler(async (req, res) => {
 });
 
 const getFutureAuctionCars = asyncHandler(async (req, res) => {
-  const cars = await localCars.getFutureAuctionCars(req);
+  const cars = await localCars.getFutureAuctionCars();
+  res.status(201).json(new ApiResponse(201, cars, "Success...."));
+})
+
+
+const getCurrentWeekWednesdayCars = asyncHandler(async (req, res) => {
+  const cars = await localCars.getCurrentWeekWednesdayCars(req);
   res.status(201).json(new ApiResponse(201, cars, "Success...."));
 })
 
@@ -50,5 +56,7 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
-  getFutureAuctionCars
+  getFutureAuctionCars,
+  getCurrentWeekWednesdayCars,
+  
 };

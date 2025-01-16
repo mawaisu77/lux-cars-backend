@@ -374,6 +374,32 @@ const getFutureAuctionCars = async () => {
 };
 
 
+const getCurrentWeekWednesdayCars = async (req, res) => {
+  const now = new Date();
+  const currentDay = now.getDay();
+  console.log(currentDay)
+  let daysUntilWednesday;
+  if (currentDay <= 3) {
+    daysUntilWednesday = 7 - (currentDay - 3);
+    console.log("after wednesday")
+  } else {
+    console.log("before wednesday")
+
+    daysUntilWednesday = 3 - currentDay;
+  }
+  const wednesdayDate = new Date(now.getTime() + daysUntilWednesday * 24 * 60 * 60 * 1000);
+  
+  wednesdayDate.setHours(0, 0, 0, 0);
+  req.query.auction_date_from = wednesdayDate
+  
+  wednesdayDate.setHours(23, 59, 59, 999);
+  req.query.auction_date_to = wednesdayDate;
+  
+  const localCars = await getAllLocalCars(req, res);
+  return localCars;
+};
+
+
 
 
 module.exports = {
@@ -385,5 +411,6 @@ module.exports = {
   getAllLocalCars,
   changeCarStatus,
   getLocalCarsByIDs,
-  getFutureAuctionCars
+  getFutureAuctionCars,
+  getCurrentWeekWednesdayCars
 };

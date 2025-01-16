@@ -43,6 +43,17 @@ const getDealerByUserID = async (req, res) => {
     return carDealer
 }
 
+const getDealerDataByUserID = async (req, res) => {
+
+    // Getting the dealer by userID
+    const carDealer = await dealerRepository.getDealerByUserID(req.query.userID)
+    if (!carDealer){
+        throw new ApiError(404, "Car Dealer does not exists.")
+    }
+
+    return carDealer
+}
+
 const updateCarDealer = async (req, res) => {
 
     // Getting userID
@@ -76,5 +87,6 @@ const updateCarDealer = async (req, res) => {
 module.exports = {
     registerCarDealer,
     getDealerByUserID,
-    updateCarDealer
+    updateCarDealer,
+    getDealerDataByUserID
 }

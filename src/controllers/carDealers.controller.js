@@ -20,9 +20,17 @@ const getDealerByUserID = asyncHandler(async (req, res) => {
 
 })
 
+
+const getDealerDataByUserID = asyncHandler(async (req, res) => {
+    const dealer = await carDealers.getDealerDataByUserID(req)
+    res.status(201).json(new ApiResponse(201, dealer, "Success...." ));
+
+})
+
 module.exports = {
     registerCarDealer,
     updateCarDealer,
-    getDealerByUserID
+    getDealerByUserID,
+    getDealerDataByUserID
 }
 

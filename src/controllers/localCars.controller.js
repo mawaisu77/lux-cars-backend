@@ -37,6 +37,11 @@ const changeCarStatus = asyncHandler(async (req, res) => {
   res.status(201).json(new ApiResponse(201, carStatus, "Success...."));
 });
 
+const getFutureAuctionCars = asyncHandler(async (req, res) => {
+  const cars = await localCars.getFutureAuctionCars(req);
+  res.status(201).json(new ApiResponse(201, cars, "Success...."));
+})
+
 module.exports = {
   uploadCar,
   getCarByID,
@@ -45,4 +50,5 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
+  getFutureAuctionCars
 };

@@ -7,7 +7,8 @@ const {
     getUserAllLocalCars, 
     getAllUnApprovedLocalCars, 
     getAllLocalCars,  
-    
+    getFutureAuctionCars
+
 } = require("../controllers/localCars.controller.js");
 
 const { isAuthenticatedUser } = require("../middlewares/auth.js");
@@ -23,6 +24,8 @@ router.get('/local-cars/get-car', getCarByID)
 router.get('/local-cars/get-user-all-local-cars',isAuthenticatedUser, getUserAllLocalCars)
 router.get('/local-cars/get-all-unapproved-local-cars', getAllUnApprovedLocalCars)
 router.get('/local-cars/get-all-local-cars', getAllLocalCars)
+router.get('/local-cars/get-future-auction-local-cars', getFutureAuctionCars)
 
 
 module.exports =  router
+ 

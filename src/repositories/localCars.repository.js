@@ -34,7 +34,7 @@ const getAllUnApprovedLocalCars = async () => {
 const getAllLocalCars = async (_query) => {
 
   const { size = 10, page = 1, ...query } = {..._query};
-  //console.log(query)
+  console.log(query)
   const cars = await LocalCars.findAll({ 
     where: {      
       [Op.and]: Object.keys(query).map(key => {
@@ -74,6 +74,16 @@ const changeCarStatus = async (carID, auction_date) => {
   );
 };
 
+const getFutureAuctionCars = async () => {
+  return await LocalCars.findAll({
+    where: {
+      auction_date: {
+        [Op.gte]: new Date()
+      }
+    }
+  });
+};
+
 module.exports = {
   createLocalCar,
   getCarByID,
@@ -82,4 +92,5 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
+  getFutureAuctionCars
 };

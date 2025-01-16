@@ -6,7 +6,6 @@ const logger = require("../utils/logger");
 const localCarsRepository = require("../repositories/localCars.repository.js");
 const { uploadDocs, uploadMultipleDocuments } = require("../utils/uplaodDocument.js");
 const ApiError = require("../utils/ApiError.js");
-const { query } = require('express');
 
 const uploadCar = async (req, res) => {
   //console.log(req.files.carImages)
@@ -142,6 +141,8 @@ const adjustQueryForFilters = async (_query) => {
   var query = { ..._query };
 
   // Initialize auction_date if any filters are present
+  if (query.auction_date) query.auction_date = { [Op.eq]: query.auction_date };
+
   if (query.auction_date_from || query.auction_date_to || query.type) {
     query.auction_date = {};
 
@@ -359,6 +360,21 @@ function approveCar(car) {
   console.log(`Car #${car.id} approved. Auction Date: ${car.auction_date}`);
 }
 
+const getFutureAuctionCars = async () => {
+  const localCars = await localCarsRepository.getFutureAuctionCars();
+  const categorizedCars = localCars.reduce((acc, car) => {
+    const auctionDate = car.auction_date;
+    if (!acc[auctionDate]) {
+      acc[auctionDate] = [];
+    }
+    acc[auctionDate].push(car);
+    return acc;
+  }, {});
+  return categorizedCars;
+};
+
+
+
 
 module.exports = {
   uploadCar,
@@ -368,5 +384,6 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
-  getLocalCarsByIDs
+  getLocalCarsByIDs,
+  getFutureAuctionCars
 };

@@ -317,6 +317,19 @@ const changeCarStatus = async (req) => {
   return carStatus;
 };
 
+const approveLocalCar = async (req) => {
+  const carId = req.query.carId;
+  const auction_date = await getAuctionDate()
+  const car = await localCarsRepository.getCarByID(carId);
+  if (!car) {
+    throw new ApiError(404, "Car does not exists.");
+  }
+  car.status = "Approved"
+  car.auction_date = auction_date
+  const carStatus = await car.save()
+  return carStatus;
+};
+
 
 const getAuctionDate = async() => {
   const now = new Date();
@@ -349,15 +362,6 @@ const getAuctionDate = async() => {
   scheduledDate.setHours(11, 0, 0, 0);
 
   return scheduledDate;
-}
-
-// 2. Function to approve a car and set auction_date
-function approveCar(car) {
-  // Mark the car as approved (if you're tracking this in your system)
-  car.approved = true; 
-  // Assign the calculated auction date
-  car.auction_date = getAuctionDate();
-  console.log(`Car #${car.id} approved. Auction Date: ${car.auction_date}`);
 }
 
 const getFutureAuctionCars = async () => {
@@ -409,6 +413,7 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
+  approveLocalCar,
   getLocalCarsByIDs,
   getFutureAuctionCars,
   getCurrentWeekWednesdayCars

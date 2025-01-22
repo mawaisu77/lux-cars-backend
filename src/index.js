@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: `${process.cwd()}/.env` });
 const { app } = require('./app.js');
 var bodyParser = require('body-parser')
+const { liveBiddingJob } = require('./services/localCarsBids.service.js')
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use PORT provided in environment or default to 3000
 const port = process.env.PORT || 3000;
 
+liveBiddingJob
 // Listen on `port` and 0.0.0.0
 app.listen(port, "0.0.0.0", function () {
    console.log('Server up and running', port);

@@ -84,6 +84,18 @@ const getFutureAuctionCars = async () => {
   });
 };
 
+const getCarsForAuctionToday = async () => {
+  const today = new Date();
+  const todayDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  return await LocalCars.findAll({
+    where: {
+      auction_date: todayDate
+    }
+  });
+};
+
+
+
 module.exports = {
   createLocalCar,
   getCarByID,
@@ -92,5 +104,6 @@ module.exports = {
   getAllUnApprovedLocalCars,
   getAllLocalCars,
   changeCarStatus,
-  getFutureAuctionCars
+  getFutureAuctionCars,
+  getCarsForAuctionToday
 };

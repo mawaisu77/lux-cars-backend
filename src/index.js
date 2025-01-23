@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use PORT provided in environment or default to 3000
 const port = process.env.PORT || 3000;
 
-liveBiddingJob
+//liveBiddingJob
 // Listen on `port` and 0.0.0.0
 app.listen(port, "0.0.0.0", function () {
    console.log('Server up and running', port);

@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(morgan("dev"));
 
+const liveAuctionRouter = require('./routes/liveAuction.route.js')
 const userOrderRouter = require("./routes/orders.routes.js")
 const pusherRuter = require('./routes/pusher.route.js')
 const CRMRouter = require('./routes/crm.route.js')
@@ -71,6 +72,8 @@ app.use("/api/v1", loanApplicationRouter);
 app.use("/api/v1", localCarsBidsRouter)
 app.use("/api/v1", pusherRuter)
 app.use("/api/v1", CRMRouter)
+app.use("/api/v1", liveAuctionRouter)
+
 app.use("/api/v1", userOrderRouter)
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
@@ -81,6 +84,7 @@ app.use("/api/v1/admin", adminLoanApplicationRouter);
 app.use("/api/v1/admin", adminPartsRequestsRouter);
 app.use("/api/v1/admin", invoiceRouter);
 app.use("/api/v1/admin", adminLocalCarsRouter);
+
 app.use("/", async (req, res) => {
   res.send("Hello from LuxCars Backend Services!")
 })

@@ -180,7 +180,8 @@ const liveCarListData = async(req, res ) => {
 // Schedule a job to run every Wednesday at 11 am
 // 0 11 * * 3
 
-const liveBiddingJob = schedule.scheduleJob('*/6 * * * *', async function(){
+const liveBiddingJob = schedule.scheduleJob('0 11 * * 3', async function(){
+    console.log("Live bidding job runs every 6 minutes.");
     // Your live bidding logic here
     carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 3);
 
@@ -196,6 +197,8 @@ const liveBiddingJob = schedule.scheduleJob('*/6 * * * *', async function(){
     if(carsForAuctionToday.length > 0) startAuction(carsForAuctionToday); // Start the timer initially for the first car
     else console.log("No Cars For Auction Today!")
 });
+
+liveBiddingJob.invoke();
 
 const updateLiveCarListData = async(req, res ) => {
     pusher.trigger('car-list-channel', 'updateCar', { message: { id: "05a82864-e6b1-4f83-9bba-13d07119e25b", currentBid: 1000, status: "Auction-Ended"} });

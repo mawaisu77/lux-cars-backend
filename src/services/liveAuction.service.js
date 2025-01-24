@@ -152,7 +152,10 @@ const checkForBonusTime = async () => {
 
 // Function to get the current state of the Liveauction
 const getCurrentAuctionState = async () => {
-    return carsForAuctionToday[currentCarIndex]
+    return {
+        car: carsForAuctionToday[currentCarIndex]
+
+    }
     
 }
 

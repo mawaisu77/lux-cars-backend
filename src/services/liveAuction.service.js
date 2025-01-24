@@ -1,14 +1,20 @@
+const localCarsRepository = require("../repositories/localCars.repository.js");
+
+const { pushNotification } = require("../services/pusher.service.js")
+const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
+
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
 
 var currentCarIndex = 0
-var timerDuration = 10000 // 10 seconds
-var bonusTime = 10000 // 10 seconds
+var timerDuration = 30000 // 10 seconds
+var bonusTime = 30000 // 10 seconds
 var biddingActive = true;
 var carsForAuctionToday = []
 var isBonusTime = true
 var isLiveAuction = false
+var timeLeft = 0
 
 const placeBidLive = async (req, res, options = {}) => {
 
@@ -21,7 +27,7 @@ const placeBidLive = async (req, res, options = {}) => {
     
     // sending new bid to client side
     const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
-    pushNotification(req.query.localCarID, carMessage, "New Bid On Car", "car-notifications", "presence-car")
+    pushNotification("", carMessage, "New Bid On Car", "new-bid", "presence-live-auction")
 
 
     const bidSaved = await saveBid(req)
@@ -41,12 +47,12 @@ const placeBidLive = async (req, res, options = {}) => {
 }
 
 const printState = async () => {
-    console.log("currentCarIndex: ", currentCarIndex )
-    console.log("timerDuration: ", timerDuration )
-    console.log("bonusTime: ", bonusTime )
-    console.log("biddingActive: ", biddingActive )
-    console.log("carsForAuctionToday: ", carsForAuctionToday )
-    console.log("isBonusTime: ", isBonusTime )
+    // console.log("currentCarIndex: ", currentCarIndex )
+    // console.log("timerDuration: ", timerDuration )
+    // console.log("bonusTime: ", bonusTime )
+    // console.log("biddingActive: ", biddingActive )
+    // console.log("carsForAuctionToday: ", carsForAuctionToday )
+    // console.log("isBonusTime: ", isBonusTime )
 }
 
 const startAuction = async () => {
@@ -58,7 +64,8 @@ const startAuction = async () => {
 
 const startTimer = async () => {
     printState()
-    let timeLeft = timerDuration;
+    isLiveAuction = true
+    timeLeft = timerDuration;
     const interval = setInterval( async () => {
         if (!biddingActive) {
             clearInterval(interval);
@@ -67,15 +74,23 @@ const startTimer = async () => {
             if (timeLeft <= 0) {
                 if (isBonusTime) {
                     clearInterval(interval);
+                    await pushNotification("", {
+                        bonusTime: "true"
+                    }, "Bonus Time Added", "bonus-time", "presence-live-auction")
                     isBonusTime = false
                     startTimer()
                 }else{
+                    await pushNotification("", {
+                        endAucion: "true",
+                        message: "Auction completed on this Car"
+                    }, "Auction-end-on-car", "end-auction", "presence-live-auction")
                     await endBidding();
                     clearInterval(interval);
                 }
 
                 if(!biddingActive){
                     // Move to the next car if there are more cars
+                    carsForAuctionToday.splice(currentCarIndex-1, 1);
                     if (currentCarIndex < carsForAuctionToday.length - 1) {
                         console.log("next car")
                         isBonusTime = true
@@ -84,13 +99,17 @@ const startTimer = async () => {
                         startTimer()
                     }
                     else{
+                        await pushNotification("", {
+                            auctionCompleted: "Today's Auction is Complete, Thanks"
+                        }, "Auction-completed-on-car-list", "auction-completed", "presence-live-auction")
                         currentCarIndex = 0
                         timerDuration = 10000 // 10 seconds
                         bonusTime = 10000 // 10 seconds
                         biddingActive = true;
                         carsForAuctionToday = []
                         isBonusTime = true     
-                        isLiveAuction = true                   
+                        isLiveAuction = false   
+                        timeLeft = 0                
                         console.log("Auction Ended")
                     }
 
@@ -99,7 +118,7 @@ const startTimer = async () => {
             } else {
                 console.log(`Time left for car ${currentCarIndex + 1}: ${timeLeft / 1000} seconds`);
                 // Use Pusher to sync the time with clients
-                pusher.trigger('live-bidding', 'time-left', { message: { timeLeft: timeLeft / 1000, carIndex: currentCarIndex} });
+                // pusher.trigger('live-bidding', 'time-left', { message: { timeLeft: timeLeft / 1000, carIndex: currentCarIndex} });
             }
         }
     }, 1000);
@@ -132,30 +151,51 @@ const checkForBonusTime = async () => {
 
 
 // Function to get the current state of the Liveauction
-const getCurrentAuctionState = () => {
-    return {
-        currentCar: carsForAuctionToday[currentCarIndex],
-        timeLeft: timerDuration,
-        biddingActive
-    };
+const getCurrentAuctionState = async () => {
+    return carsForAuctionToday[currentCarIndex]
+    
 }
 
-// Function to join the Liveauction at any time
+// Function to join the LiveAuction at any time
 const joinAuction = async () => {
     if (isLiveAuction) {
         // Get the current state of the auction
-        const currentState = getCurrentAuctionState();
+        const currentState = await getCurrentAuctionState();
         // Trigger event to notify the client of the current state
-        pusher.trigger('live-bidding', 'join-auction', currentState);
+        //pusher.trigger('live-bidding', 'join-auction', currentState);
+        return currentState
     } else {
         console.log("Auction is not active at the moment.");
+        return "Auction is not active at the moment."
     }
 }
 
+
+const liveCarListData = async(req, res ) => {
+    return carsForAuctionToday
+}
+
+
+
 // Schedule a job to run every Wednesday at 11 am
 // 0 11 * * 3
-// 
 
+const liveBiddingJob = schedule.scheduleJob('*/6 * * * *', async function(){
+    // Your live bidding logic here
+    carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 3);
+
+    // carsForAuctionToday = [
+    //     {
+    //         title: "Honda City"
+    //     },
+    //     {
+    //         title: "Honda Civic"
+    //     }
+    // ]
+    //console.log(`Cars for auction today: ${JSON.stringify(carsForAuctionToday)}`);
+    if(carsForAuctionToday.length > 0) startAuction(carsForAuctionToday); // Start the timer initially for the first car
+    else console.log("No Cars For Auction Today!")
+});
 
 const updateLiveCarListData = async(req, res ) => {
     pusher.trigger('car-list-channel', 'updateCar', { message: { id: "05a82864-e6b1-4f83-9bba-13d07119e25b", currentBid: 1000, status: "Auction-Ended"} });
@@ -165,13 +205,13 @@ const updateLiveCarListData = async(req, res ) => {
 
 
 
-
-
-
 module.exports = {
     joinAuction,
     updateLiveCarListData,
-//    liveBiddingJob
+    liveCarListData,
+    liveBiddingJob,
+    isBonusTime,
+
 }
 
 // channel = car-list-channel
@@ -181,4 +221,7 @@ module.exports = {
 //     status: ""
 // } 
 
+
+// biddingOver
+// bonusTime
 

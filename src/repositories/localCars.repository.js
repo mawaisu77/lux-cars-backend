@@ -4,6 +4,9 @@ const { query } = require("express");
 const sequelize = require('../config/database.js');
 
 
+const getAllCars = async() => {
+  return await LocalCars.findAll()
+}
 
 const createLocalCar = async (carData) => {
   // saving the car data to the database
@@ -105,5 +108,6 @@ module.exports = {
   getAllLocalCars,
   changeCarStatus,
   getFutureAuctionCars,
-  getCarsForAuctionToday
+  getCarsForAuctionToday,
+  getAllCars
 };

@@ -2,8 +2,9 @@ const { pusher } = require('../config/pusher');
 const authRepository = require("../repositories/auth.repository.js");
 
 // Endpoint to send notifications
-const pushNotification =  async (Id, message, type, notificationName, notificationChannal) => {
-    const channal = notificationChannal + `-${Id}`
+const pushNotification =  async (Id = "", message, type, notificationName, notificationChannal) => {
+    let channal = notificationChannal
+    if(Id != "") channal += `-${Id}`
     // Trigger a Pusher event on a user-specific channel
     const notification = await pusher.trigger(channal, notificationName, {
         message,

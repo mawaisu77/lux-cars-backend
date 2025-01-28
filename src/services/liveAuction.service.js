@@ -2,6 +2,7 @@ const localCarsRepository = require("../repositories/localCars.repository.js");
 
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
+const ApiError = require("../utils/ApiError");
 
 
 const schedule = require('node-schedule');

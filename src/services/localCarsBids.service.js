@@ -14,7 +14,10 @@ const ApiError = require('../utils/ApiError.js');
 const placeBid = async (req, res, options = {}) => {
 
     const type = "live"
-    if(type == "live") liveAuctionService.isBonusTime = false
+    if(type == "live") {
+        liveAuctionService.isBonusTime = false
+        liveAuctionService.timeLeft = 30000
+    }
 
     const bidexpired =  await expireBid(req)
     if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")

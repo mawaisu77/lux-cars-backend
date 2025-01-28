@@ -218,6 +218,7 @@ module.exports = {
     liveCarListData,
     liveBiddingJob,
     isBonusTime,
+    timeLeft
 
 }
 

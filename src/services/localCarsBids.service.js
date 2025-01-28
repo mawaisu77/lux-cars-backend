@@ -4,7 +4,7 @@ const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 const CRMService = require("../services/crm.service.js")
-const { setIsBonusTime, setTimeLeft } = require('../services/liveAuction.service.js')
+const { setIsBonusTime, setTimeLeft, updateCurrentBidData } = require('../services/liveAuction.service.js')
 
 
 
@@ -14,6 +14,8 @@ const ApiError = require('../utils/ApiError.js');
 const placeBid = async (req, res, options = {}) => {
 
     const type = "live"
+    const { currentBid } = req.body
+    if(!currentBid) throw new ApiError(404, "Bid Price not found!")
 
     const bidexpired =  await expireBid(req)
     if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
@@ -41,6 +43,7 @@ const placeBid = async (req, res, options = {}) => {
     if(type == "live") {
         setIsBonusTime(true)
         setTimeLeft(30000)
+        updateCurrentBidData(currentBid)
     }
 
     return updateLocalCar

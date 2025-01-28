@@ -25,6 +25,10 @@ const setTimeLeft = async (value) => {
     timeLeft = value
 }
 
+const updateCurrentBidData = async (bidPrice) => {
+    carsForAuctionToday[currentCarIndex].currentBid = bidPrice
+}
+
 const placeBidLive = async (req, res, options = {}) => {
 
     isBonusTime = false
@@ -99,7 +103,7 @@ const startTimer = async () => {
 
                 if(!biddingActive){
                     // Move to the next car if there are more cars
-                    carsForAuctionToday.splice(currentCarIndex-1, 1);
+                    // carsForAuctionToday.splice(currentCarIndex-1, 1);
                     if (currentCarIndex < carsForAuctionToday.length - 1) {
                         console.log("next car")
                         isBonusTime = true
@@ -183,7 +187,7 @@ const joinAuction = async () => {
 
 
 const liveCarListData = async(req, res ) => {
-    return carsForAuctionToday
+    return carsForAuctionToday.slice(currentCarIndex);
 }
 
 
@@ -224,6 +228,7 @@ module.exports = {
     updateLiveCarListData,
     liveCarListData,
     liveBiddingJob,
+    updateCurrentBidData,
     setIsBonusTime,
     setTimeLeft
 

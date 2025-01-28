@@ -6,7 +6,7 @@ const { placeBid, getAllBidsOnLocalCarWithUserDetails, getUserAllBids } = requir
 
 const router = Router()
 
-router.post('/local-cars-bids/place-bid', placeBid)
+router.post('/local-cars-bids/place-bid', isAuthenticatedUser , placeBid)
 router.get('/local-cars-bids/get-all-bids', getAllBidsOnLocalCarWithUserDetails)
 router.get('/local-cars-bids/get-user-all-bids', isAuthenticatedUser, getUserAllBids)
 

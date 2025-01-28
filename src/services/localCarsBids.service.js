@@ -4,6 +4,10 @@ const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 const CRMService = require("../services/crm.service.js")
+const sequelize = require('../config/database.js');
+
+const AsyncLock = require("async-lock");
+const lock = new AsyncLock();
 
 
 const ApiError = require('../utils/ApiError.js');
@@ -11,28 +15,36 @@ const ApiError = require('../utils/ApiError.js');
 
 const placeBid = async (req, res, options = {}) => {
 
-    const bidexpired =  await expireBid(req)
-    if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
+    const { localCarID } = req.query 
 
-    const updateLocalCar = await updateLocalCarBidData(req)
-    if (!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
+    return lock.acquire(localCarID, async () => {
 
-    const bidSaved = await saveBid(req)
-    if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
+        const transaction = await sequelize.transaction();
 
-    const title = updateLocalCar.make + " " + updateLocalCar.model
-    const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
-    const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
-    
-    if(!(bidexpired === parseInt(1))){
-        const userMessageExpireBid = await bidExpirationLocalCar(title, updateLocalCar.id)
-        pushNotification(bidexpired.userID, userMessageExpireBid, "Bid Expiration", "user-notifications", "public-notification")
-    }
+        const bidexpired =  await expireBid(req)
+        if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
 
-    pushNotification(req.query.localCarID, carMessage, "New Bid On Car", "car-notifications", "presence-car")
-    pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+        const updateLocalCar = await updateLocalCarBidData(req)
+        if (!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
 
-    return updateLocalCar
+        const bidSaved = await saveBid(req)
+        if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
+
+        const title = updateLocalCar.make + " " + updateLocalCar.model
+        const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
+        const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
+        
+        if(!(bidexpired === parseInt(1))){
+            const userMessageExpireBid = await bidExpirationLocalCar(title, updateLocalCar.id)
+            pushNotification(bidexpired.userID, userMessageExpireBid, "Bid Expiration", "user-notifications", "public-notification")
+        }
+
+        pushNotification(req.query.localCarID, carMessage, "New Bid On Car", "car-notifications", "presence-car")
+        pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
+
+        return updateLocalCar
+    })
+
 }
 
 const saveBid = async (req, res) => {
@@ -60,7 +72,7 @@ const saveBid = async (req, res) => {
 
 }
 
-const expireBid = async (req, res) => {
+const expireBid = async (req, res, options = {}) => {
     const localCarID = req.query.localCarID
 
     var bidToExpire = await localCarsBidsRepository.getActiveBidByLocalCarID(localCarID)

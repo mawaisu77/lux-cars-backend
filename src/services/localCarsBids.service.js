@@ -4,7 +4,7 @@ const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 const CRMService = require("../services/crm.service.js")
-const { isBonusTime } = require('../services/liveAuction.service.js')
+const liveAuctionService = require('../services/liveAuction.service.js')
 
 
 
@@ -14,7 +14,7 @@ const ApiError = require('../utils/ApiError.js');
 const placeBid = async (req, res, options = {}) => {
 
     const type = "live"
-    if(type == "live") isBonusTime = false
+    if(type == "live") liveAuctionService.isBonusTime = false
 
     const bidexpired =  await expireBid(req)
     if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")

@@ -169,7 +169,7 @@ const joinAuction = async () => {
         return currentState
     } else {
         console.log("Auction is not active at the moment.");
-        return "Auction is not active at the moment."
+        throw new ApiError(404, "Auction is not active at the moment!") 
     }
 }
 

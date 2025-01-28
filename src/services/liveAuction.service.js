@@ -163,7 +163,6 @@ const checkForBonusTime = async () => {
 const getCurrentAuctionState = async () => {
     return {
         car: carsForAuctionToday[currentCarIndex]
-
     }
     
 }

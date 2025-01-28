@@ -12,9 +12,7 @@ const updateLiveCarListData = asyncHandler(async (req, res) => {
 
 const joinAuction = asyncHandler(async (req, res) => {
     const data = await liveAuctionService.joinAuction(req);
-    res
-      .status(201)
-      .json(new ApiResponse(201, data, "Live-Auction Joined successfully!"));
+    res.status(201).json(new ApiResponse(201, data, "Live-Auction Joined successfully!"));
 });
 
 

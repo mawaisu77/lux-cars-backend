@@ -39,8 +39,8 @@ const placeBid = async (req, res, options = {}) => {
     pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
     
     if(type == "live") {
-        await setIsBonusTime(true)
-        await setTimeLeft(30000)
+        setIsBonusTime(true)
+        setTimeLeft(30000)
     }
 
     return updateLocalCar

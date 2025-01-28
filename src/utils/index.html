@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Bidding Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #e74c3c; /* Red color for the timer */
+        }
+
+        .bid-button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #3498db; /* Blue color for the button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .bid-button:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #2c3e50; /* Darker color for status */
+        }
+    </style>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Bidding Timer</h1>
+        <div id="timer" class="timer">Time remaining: 10 seconds</div>
+        <button id="bidButton" class="bid-button">Place Bid</button>
+        <div id="bidding-status" class="status"></div>
+    </div>
+
+    <script>
+        // Initialize Pusher with provided credentials
+        const pusher = new Pusher({
+            appId: "1894857",
+            key: "6d700b541b1d83879b18",
+            secret: "7892a31a240cbb7db87a",
+            cluster: "ap2",
+            useTLS: true
+        });
+
+        // Subscribe to the public channel
+        const channel = pusher.subscribe('timer-channel');
+
+        // Elements
+        const timerElement = document.getElementById('timer');
+        const biddingStatusElement = document.getElementById('bidding-status');
+        const bidButton = document.getElementById('bidButton');
+
+        // Listen for timer updates
+        channel.bind('timer-update', function(data) {
+            const remainingTime = Math.max(0, data.remaining);
+            timerElement.innerText = `Time remaining: ${Math.floor(remainingTime / 1000)} seconds`;
+        });
+
+        // Listen for bidding ended event
+        channel.bind('bidding-ended', function(data) {
+            biddingStatusElement.innerText = data.message;
+            bidButton.disabled = true; // Disable the bid button when bidding ends
+        });
+
+        // Place bid function
+        bidButton.addEventListener('click', function() {
+            // Send a bid placement request to the server
+            fetch('/place-bid', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        biddingStatusElement.innerText = "Bid placed successfully!";
+                    } else {
+                        biddingStatusElement.innerText = "Failed to place bid.";
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

@@ -12,8 +12,7 @@ const pushNotification = asyncHandler(async (req, res) => {
 
 const pusherAuthLiveBidding = asyncHandler(async (req, res) => {
     const auth = await pusherService.pusherAuthLiveBidding(req, res)
-    res.status(201).json(new ApiResponse(201, auth, "Authourized!", ));
-
+    //res.status(201).json(new ApiResponse(201, auth, "Authourized!", ));
 })
 
 module.exports = {

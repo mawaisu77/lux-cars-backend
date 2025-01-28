@@ -104,8 +104,8 @@ const startTimer = async () => {
                             auctionCompleted: "Today's Auction is Complete, Thanks"
                         }, "Auction-completed-on-car-list", "auction-completed", "presence-live-auction")
                         currentCarIndex = 0
-                        timerDuration = 10000 // 10 seconds
-                        bonusTime = 10000 // 10 seconds
+                        timerDuration = 30000 // 10 seconds
+                        bonusTime = 30000 // 10 seconds
                         biddingActive = true;
                         carsForAuctionToday = []
                         isBonusTime = true     

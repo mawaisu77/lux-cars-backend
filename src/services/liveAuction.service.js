@@ -17,6 +17,14 @@ var isBonusTime = true
 var isLiveAuction = false
 var timeLeft = 0
 
+const setIsBonusTime = async (value) => {
+    isBonusTime = value
+}
+
+const setTimeLeft = async (value) => {
+    timeLeft = value
+}
+
 const placeBidLive = async (req, res, options = {}) => {
 
     isBonusTime = false
@@ -217,8 +225,8 @@ module.exports = {
     updateLiveCarListData,
     liveCarListData,
     liveBiddingJob,
-    isBonusTime,
-    timeLeft
+    setIsBonusTime,
+    setTimeLeft
 
 }
 

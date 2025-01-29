@@ -7,7 +7,7 @@ const ApiError = require("../utils/ApiError");
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
-const time = 5000
+const time = 10000
 var currentCarIndex = 0
 var timerDuration = time // 10 seconds
 var bonusTime = time // 10 seconds
@@ -81,6 +81,7 @@ const startAuction = async () => {
 const startTimer = async () => {
     isLiveAuction = true
     timeLeft = timerDuration;
+    let exit = false
     const interval = setInterval( async () => {
         if (!biddingActive) {
             clearInterval(interval);
@@ -90,6 +91,8 @@ const startTimer = async () => {
                 if (isBonusTime) {
                     await assignBonusTime()
                     clearInterval(interval);
+                    exit = true
+                    return
                 }else{
                     await endBidding();
                     clearInterval(interval);
@@ -98,10 +101,14 @@ const startTimer = async () => {
                         if (currentCarIndex < carsForAuctionToday.length) {
                             console.log("next car")
                             await moveToNextCar()
+                            exit = true
+                            return
                         }
                         else{
                             await endAucion()
                             clearInterval(interval);
+                            exit = true
+                            return
                         }
                     }
 
@@ -112,6 +119,10 @@ const startTimer = async () => {
             }
         }
     }, 1000);
+
+    if(exit){
+        return
+    }
 }
 
 
@@ -159,6 +170,7 @@ const assignBonusTime = async () => {
 // End the bid on a specific Car
 const endBidding = async () => {
     biddingActive = false;
+    if(currentCarIndex == (carsForAuctionToday.length - 1)) isLiveAuction = false
     await pushNotification("", {
         endAucion: "true",
         message: "Auction completed on this Car"

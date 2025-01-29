@@ -7,7 +7,7 @@ const ApiError = require("../utils/ApiError");
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
-const time = 10000
+const time = 30000
 var currentCarIndex = 0
 var timerDuration = time // 10 seconds
 var bonusTime = time // 10 seconds
@@ -170,7 +170,7 @@ const assignBonusTime = async () => {
 
 // End the bid on a specific Car
 const endBidding = async () => {
-    
+
     biddingActive = false;
     pushNotification("", {
         endAucion: "true",

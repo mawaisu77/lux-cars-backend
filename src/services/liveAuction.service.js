@@ -98,7 +98,7 @@ const startTimer = async () => {
                     clearInterval(interval);
                     if(!biddingActive){
                         // Move to the next car if there are more cars
-                        if (currentCarIndex < carsForAuctionToday.length) {
+                        if (currentCarIndex < carsForAuctionToday.length - 1) {
                             console.log("next car")
                             await moveToNextCar()
                             exit = true

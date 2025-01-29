@@ -4,7 +4,7 @@ const userRepository = require("../repositories/auth.repository.js")
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
 const CRMService = require("../services/crm.service.js")
-const { setIsBonusTime, setTimeLeft, updateCurrentBidData } = require('../services/liveAuction.service.js')
+const { setIsBonusTime, setTimeLeft, updateCurrentBidData, getTime } = require('../services/liveAuction.service.js')
 
 
 
@@ -42,7 +42,7 @@ const placeBid = async (req, res, options = {}) => {
     
     if(type == "live") {
         setIsBonusTime(true)
-        setTimeLeft(30000)
+        setTimeLeft(await getTime())
         updateCurrentBidData(currentBid)
     }
 

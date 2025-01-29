@@ -170,7 +170,6 @@ const assignBonusTime = async () => {
 // End the bid on a specific Car
 const endBidding = async () => {
     biddingActive = false;
-    if(currentCarIndex == (carsForAuctionToday.length - 2)) isLiveAuction = false
     await pushNotification("", {
         endAucion: "true",
         message: "Auction completed on this Car"
@@ -204,6 +203,7 @@ const joinAuction = async () => {
         const currentState = await getCurrentAuctionState();
         // Trigger event to notify the client of the current state
         //pusher.trigger('live-bidding', 'join-auction', currentState);
+        if (currentState == {}) throw new ApiError(404, "Auction is not active at the moment!") 
         return currentState
     } else {
         console.log("Auction is not active at the moment.");

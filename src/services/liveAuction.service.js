@@ -7,10 +7,10 @@ const ApiError = require("../utils/ApiError");
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
-
+const time = 5000
 var currentCarIndex = 0
-var timerDuration = 30000 // 10 seconds
-var bonusTime = 30000 // 10 seconds
+var timerDuration = time // 10 seconds
+var bonusTime = time // 10 seconds
 var biddingActive = true;
 var carsForAuctionToday = []
 var isBonusTime = true
@@ -27,6 +27,7 @@ const setTimeLeft = async (value) => {
 
 const updateCurrentBidData = async (bidPrice) => {
     carsForAuctionToday[currentCarIndex].currentBid = bidPrice
+    carsForAuctionToday[currentCarIndex].noOfBids += 1
 }
 
 const placeBidLive = async (req, res, options = {}) => {
@@ -104,7 +105,7 @@ const startTimer = async () => {
                 if(!biddingActive){
                     // Move to the next car if there are more cars
                     // carsForAuctionToday.splice(currentCarIndex-1, 1);
-                    if (currentCarIndex < carsForAuctionToday.length - 1) {
+                    if (currentCarIndex < carsForAuctionToday.length) {
                         console.log("next car")
                         isBonusTime = true
                         currentCarIndex++;
@@ -115,9 +116,10 @@ const startTimer = async () => {
                         await pushNotification("", {
                             auctionCompleted: "Today's Auction is Complete, Thanks"
                         }, "Auction-completed-on-car-list", "auction-completed", "presence-live-auction")
+                        clearInterval(interval);
                         currentCarIndex = 0
-                        timerDuration = 30000 // 10 seconds
-                        bonusTime = 30000 // 10 seconds
+                        timerDuration = time // 10 seconds
+                        bonusTime = time // 10 seconds
                         biddingActive = true;
                         carsForAuctionToday = []
                         isBonusTime = true     
@@ -196,7 +198,7 @@ const liveCarListData = async(req, res ) => {
 // 0 11 * * 3
 
 const liveBiddingJob = schedule.scheduleJob('0 11 * * 3', async function(){
-    console.log("Live bidding job runs every 6 minutes.");
+    // console.log("Live bidding job runs every 6 minutes.");
     // Your live bidding logic here
     carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 3);
 
@@ -209,7 +211,7 @@ const liveBiddingJob = schedule.scheduleJob('0 11 * * 3', async function(){
     //     }
     // ]
     //console.log(`Cars for auction today: ${JSON.stringify(carsForAuctionToday)}`);
-    if(carsForAuctionToday.length > 0) startAuction(carsForAuctionToday); // Start the timer initially for the first car
+    if(carsForAuctionToday.length > 0) await startAuction(carsForAuctionToday); // Start the timer initially for the first car
     else console.log("No Cars For Auction Today!")
 });
 

@@ -105,6 +105,7 @@ const startTimer = async () => {
                             return
                         }
                         else{
+                            currentCarIndex++
                             await endAucion()
                             clearInterval(interval);
                             exit = true

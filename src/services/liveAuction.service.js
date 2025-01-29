@@ -81,7 +81,6 @@ const startAuction = async () => {
 const startTimer = async () => {
     isLiveAuction = true
     timeLeft = timerDuration;
-    let exit = false
     const interval = setInterval( async () => {
         if (!biddingActive) {
             clearInterval(interval);
@@ -91,25 +90,18 @@ const startTimer = async () => {
                 if (isBonusTime) {
                     await assignBonusTime()
                     clearInterval(interval);
-                    exit = true
-                    return
                 }else{
                     await endBidding();
                     clearInterval(interval);
                     if(!biddingActive){
                         // Move to the next car if there are more cars
-                        if (currentCarIndex < carsForAuctionToday.length - 1) {
+                        if (currentCarIndex < carsForAuctionToday.length) {
                             console.log("next car")
                             await moveToNextCar()
-                            exit = true
-                            return
                         }
                         else{
-                            currentCarIndex++
                             await endAucion()
                             clearInterval(interval);
-                            exit = true
-                            return
                         }
                     }
 
@@ -120,10 +112,6 @@ const startTimer = async () => {
             }
         }
     }, 1000);
-
-    if(exit){
-        return
-    }
 }
 
 
@@ -204,7 +192,6 @@ const joinAuction = async () => {
         const currentState = await getCurrentAuctionState();
         // Trigger event to notify the client of the current state
         //pusher.trigger('live-bidding', 'join-auction', currentState);
-        if (currentState == {}) throw new ApiError(404, "Auction is not active at the moment!") 
         return currentState
     } else {
         console.log("Auction is not active at the moment.");

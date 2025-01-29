@@ -226,7 +226,7 @@ const liveCarListData = async(req, res ) => {
 const liveBiddingJob = schedule.scheduleJob('0 11 * * 3', async function(){
     // console.log("Live bidding job runs every 6 minutes.");
     // Your live bidding logic here
-    carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 3);
+    carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 10);
 
     // carsForAuctionToday = [
     //     {

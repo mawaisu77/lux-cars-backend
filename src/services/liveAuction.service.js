@@ -7,7 +7,7 @@ const ApiError = require("../utils/ApiError");
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
-const time = 5000
+const time = 30000
 var currentCarIndex = 0
 var timerDuration = time // 10 seconds
 var bonusTime = time // 10 seconds

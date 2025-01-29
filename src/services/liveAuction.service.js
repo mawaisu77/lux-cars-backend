@@ -133,7 +133,7 @@ const startTimer = async () => {
 // }
 
 const endAucion = async () => {
-    await pushNotification("", {
+    pushNotification("", {
         auctionCompleted: "Today's Auction is Complete, Thanks"
     }, "Auction-completed-on-car-list", "auction-completed", "presence-live-auction")
     currentCarIndex = 0
@@ -157,7 +157,7 @@ const moveToNextCar = async () => {
 const assignBonusTime = async () => {
     isBonusTime = false
     try{
-        await pushNotification("", {
+        pushNotification("", {
             bonusTime: "true"
         }, "Bonus Time Added", "bonus-time", "presence-live-auction")
     }catch(error){
@@ -170,8 +170,9 @@ const assignBonusTime = async () => {
 
 // End the bid on a specific Car
 const endBidding = async () => {
+    
     biddingActive = false;
-    await pushNotification("", {
+    pushNotification("", {
         endAucion: "true",
         message: "Auction completed on this Car"
     }, "Auction-end-on-car", "end-auction", "presence-live-auction")

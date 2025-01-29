@@ -170,7 +170,7 @@ const assignBonusTime = async () => {
 // End the bid on a specific Car
 const endBidding = async () => {
     biddingActive = false;
-    if(currentCarIndex == (carsForAuctionToday.length - 1)) isLiveAuction = false
+    if(currentCarIndex == (carsForAuctionToday.length - 2)) isLiveAuction = false
     await pushNotification("", {
         endAucion: "true",
         message: "Auction completed on this Car"

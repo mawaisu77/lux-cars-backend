@@ -7,7 +7,7 @@ const ApiError = require("../utils/ApiError");
 
 const schedule = require('node-schedule');
 const { pusher } = require('../config/pusher');
-const time = 90000
+const time = 30000
 var currentCarIndex = 0
 var timerDuration = time // 10 seconds
 var bonusTime = time // 10 seconds
@@ -170,7 +170,7 @@ const assignBonusTime = async () => {
 
 // End the bid on a specific Car
 const endBidding = async () => {
-    
+
     biddingActive = false;
     pushNotification("", {
         endAucion: "true",
@@ -215,7 +215,7 @@ const joinAuction = async () => {
 
 
 const liveCarListData = async(req, res ) => {
-    return carsForAuctionToday.slice(currentCarIndex);
+    return carsForAuctionToday.slice(currentCarIndex + 1);
 }
 
 
@@ -226,7 +226,7 @@ const liveCarListData = async(req, res ) => {
 const liveBiddingJob = schedule.scheduleJob('0 11 * * 3', async function(){
     // console.log("Live bidding job runs every 6 minutes.");
     // Your live bidding logic here
-    carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 3);
+    carsForAuctionToday = (await localCarsRepository.getAllCars()).slice(0, 10);
 
     // carsForAuctionToday = [
     //     {

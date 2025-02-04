@@ -17,11 +17,11 @@ exports.processPayment = async (req, res, next) => {
     "card_amount",
     "card_name",
     "email",
-    "card_address1",
-    "card_zip",
-    "card_city",
-    "card_state",
-    "card_country",
+    // "card_address1",
+    // "card_zip",
+    // "card_city",
+    // "card_state",
+    // "card_country",
   ];
 
   const missingFields = requiredFields.filter((field) => !req.body[field]);
@@ -47,19 +47,19 @@ exports.processPayment = async (req, res, next) => {
       "card-name": req.body.card_name,
       email: req.body.email,
       ipaddress: req.ip || "127.0.0.1",
-      "card-address1": req.body.card_address1,
-      "card-address2": req.body.card_address2 || "",
-      "card-zip": req.body.card_zip,
-      "card-city": req.body.card_city,
-      "card-state": req.body.card_state,
-      "card-country": req.body.card_country,
-      shipinfo: "1",
-      shipname: req.body.card_name,
-      address1: req.body.card_address1,
-      address2: req.body.card_address2 || "",
-      zip: req.body.card_zip,
-      state: req.body.card_state,
-      country: req.body.card_country,
+      // "card-address1": req.body.card_address1,
+      // "card-address2": req.body.card_address2 || "",
+      // "card-zip": req.body.card_zip,
+      // "card-city": req.body.card_city,
+      // "card-state": req.body.card_state,
+      // "card-country": req.body.card_country,
+      // shipinfo: "1",
+      // shipname: req.body.card_name,
+      // address1: req.body.card_address1,
+      // address2: req.body.card_address2 || "",
+      // zip: req.body.card_zip,
+      // state: req.body.card_state,
+      // country: req.body.card_country,
     };
 
     // Convert to URL-encoded string
@@ -83,8 +83,8 @@ exports.processPayment = async (req, res, next) => {
     // Handle response
     if (pnpTransactionArray["FinalStatus"] === "success") {
       req.paymentResult = pnpTransactionArray;
-      
-      // Save payment using repository
+      console.log(req.paymentResult)
+      //Save payment using repository
       await paymentRepository.createPayment({
         userID: req.user.id,
         paymentPurpose: req.body.paymentPurpose,

@@ -19,6 +19,6 @@ router.post(
   createOffer
 );
 router.get("/local-cars-offers/get-car-all-offers", getCarAllOffers)
-router.get("current-week-aunction-cars", getCurrentWeekAuctionCars)
+router.get("/current-week-aunction-cars", getCurrentWeekAuctionCars)
 
 module.exports = router;

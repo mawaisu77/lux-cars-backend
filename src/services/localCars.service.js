@@ -394,7 +394,10 @@ const getCurrentWeekAuctionCars = async (req, res) => {
   req.query.auction_date_to = to_date;
 
   const localCars = await getAllLocalCars(req, res);
-  return localCars;
+  return { 
+    cars: localCars,
+    message: "Current week Auction Cars" 
+  };
 };
 
 

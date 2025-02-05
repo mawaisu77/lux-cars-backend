@@ -149,10 +149,9 @@ const adjustQueryForFilters = async (_query) => {
     // Adjusting auction_date based on type
     if (query.type === 'user') {
       query.auction_date[Op.gt] = new Date(new Date().getTime() + 60 * 60 * 1000); // Cars for users (auction date > 1 hour from now)
-    } else if (query.type === 'admin') {
+    } else if (query.type === 'buffer') {
       query.auction_date[Op.and] = [
-        { [Op.lte]: new Date(new Date().getTime() + 60 * 60 * 1000) }, // Cars for admins (auction date <= 1 hour from now)
-        { [Op.gt]: new Date(new Date().getTime() + 5 * 60 * 1000) } // and > 5 minutes from now
+        { [Op.lte]: new Date(new Date().getTime() + 60 * 60 * 1000) } // Cars for admins (auction date <= 1 hour from now)
       ];
     } else if (query.type === 'live') {
       query.auction_date[Op.between] = [new Date(), new Date(new Date().getTime() + 30 * 60 * 1000)]; // Cars for live bidding (auction date between now and 5 minutes from now)
@@ -374,7 +373,7 @@ const getFutureAuctionCars = async () => {
 };
 
 
-const getCurrentWeekWednesdayCars = async (req, res) => {
+const getCurrentWeekAuctionCars = async (req, res) => {
   const now = new Date();
   const currentDay = now.getDay();
   console.log(currentDay)
@@ -411,5 +410,5 @@ module.exports = {
   changeCarStatus,
   getLocalCarsByIDs,
   getFutureAuctionCars,
-  getCurrentWeekWednesdayCars
+  getCurrentWeekAuctionCars
 };

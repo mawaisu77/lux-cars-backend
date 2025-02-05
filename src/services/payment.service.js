@@ -1,122 +1,110 @@
-const axios = require("axios");
-const qs = require("querystring");
+const ApiError = require('../utils/ApiError');
+const querystring = require('querystring');
+const axios = require('axios');
+const paymentRepository = require('../repositories/payment.repository');
 
-// Set your test (sandbox) credentials here
-const publisherName = "luxfirstch"; // Replace with your sandbox account username
-const publisherPassword = "9PMSZnRWt4gnbPzB"; // Replace with your sandbox Remote Client Password
+exports.processPayment = async (req, res, next) => {
+  console.log("Payment----------------")
+  // Check if payment is already successful
+  if (req.body.paymentStatus === "success") {
+    return next();
+  }
 
-// Set URL to the sandbox for testing transactions (PlugNPay Test URL)
-const pnpPostUrl = "https://pay1.plugnpay.com/payment/pnpremote.cgi";
+  // Validate required fields
+  const requiredFields = [
+    "card_number",
+    "card_cvv",
+    "card_exp",
+    "card_amount",
+    "card_name",
+    "email",
+    // "card_address1",
+    // "card_zip",
+    // "card_city",
+    // "card_state",
+    // "card_country",
+  ];
 
-// Default values for testing
-const testingData = {
-    defaultCardNumber: "4111111111111111", // Valid test card number
-    defaultCardCVV : "123", // Default CVV
-    defaultCardExp : "12/25", // Default expiration date (MM/YY)
-    defaultAmount : "10.00", // Default amount for the transaction
-    defaultCardName : "John Doe", // Default cardholder name
-    defaultEmail : "johndoe@example.com", // Default email address
-    defaultIpAddress : "127.0.0.1", // Default IP address
-    defaultBillingAddress : "123 Main St", // Default billing address
-    defaultBillingZip : "12345", // Default billing zip
-    defaultBillingCity : "Some City", // Default billing city
-    defaultBillingState : "CA", // Default billing state
-    defaultBillingCountry : "US", // Default billing country
-    defaultShippingName : "John Doe", // Default shipping name
-    defaultShippingZip : "12345", // Default shipping zip
-    defaultShippingCity : "Some City", // Default shipping city
-    defaultShippingState : "CA", // Default shipping state
-    defaultShippingCountry : "US", // Default shipping country
-}
+  const missingFields = requiredFields.filter((field) => !req.body[field]);
+  if (missingFields.length > 0) {
+    return next(new ApiError(400, "Missing required fields", { missingFields }));
+  }
 
+  // PlugNPay Configuration
 
-// Define the route to handle the transaction
-const makePayment = async (req, res) => {
+  const publisherName = process.env.PUBLISHER_NAME;
+  const publisherPassword = process.env.PUBLISHER_PASSWORD;
+  const pnpPostUrl = process.env.PNP_POST_URL;
+
   try {
-
-    const requiredFields = [
-        'card_number', 'card_cvv', 'card_exp', 'card_amount', 
-        'card_name', 'email', 'ip'
-    ];
-
-    const missingFields = requiredFields.filter(field => !req.body[field]);
-
-    if (missingFields.length > 0) {
-        throw new Error(`The following fields are not defined: ${missingFields.join(', ')}`);
-    }
-
-    const { card_number, card_cvv, card_exp, card_amount, 
-        card_name, email, ip  } = req.body;
-    // Prepare POST data to be sent to PlugNPay
+    // Prepare POST data
     const pnpPostValues = {
       "publisher-name": publisherName,
       "publisher-password": publisherPassword,
-      "publisher-email": testingData.publisherEmail,
-      "card-name": req.body.card_name || testingData.defaultCardName, // Use provided or default cardholder name
-      "card-number": req.body.card_number || testingData.defaultCardNumber, // Use provided or default card number
-      "card-cvv": req.body.card_cvv || testingData.defaultCardCVV, // Use provided or default CVV
-      "card-exp": req.body.card_exp || testingData.defaultCardExp, // Use provided or default expiration date
-      "card-amount": req.body.card_amount || testingData.defaultAmount, // Use provided or default amount
-      email: req.body.email || testingData.defaultEmail, // Use provided or default email
-      ipaddress: req.ip || testingData.defaultIpAddress, // Use IP address or default
-
-      // // // Billing address info
-      // // "card-address1": req.body.card_address1 || defaultBillingAddress,
-      // // "card-address2": req.body.card_address2 || "",
-      // // "card-zip": req.body.card_zip || defaultBillingZip,
-      // // "card-city": req.body.card_city || defaultBillingCity,
-      // // "card-state": req.body.card_state || defaultBillingState,
-      // // "card-country": req.body.card_country || defaultBillingCountry,
-      // // Shipping address info
+      "card-number": req.body.card_number,
+      "card-cvv": req.body.card_cvv,
+      "card-exp": req.body.card_exp,
+      "card-amount": req.body.card_amount,
+      "card-name": req.body.card_name,
+      email: req.body.email,
+      ipaddress: req.ip || "127.0.0.1",
+      // "card-address1": req.body.card_address1,
+      // "card-address2": req.body.card_address2 || "",
+      // "card-zip": req.body.card_zip,
+      // "card-city": req.body.card_city,
+      // "card-state": req.body.card_state,
+      // "card-country": req.body.card_country,
       // shipinfo: "1",
-      // shipname: req.body.shipname || defaultShippingName,
-      // address1: req.body.card_address1 || defaultBillingAddress,
+      // shipname: req.body.card_name,
+      // address1: req.body.card_address1,
       // address2: req.body.card_address2 || "",
-      // zip: req.body.card_zip || defaultShippingZip,
-      // state: req.body.card_state || defaultShippingState,
-      // country: req.body.card_country || defaultShippingCountry,
+      // zip: req.body.card_zip,
+      // state: req.body.card_state,
+      // country: req.body.card_country,
     };
 
-    // Convert the object into a URL-encoded string
-    const pnpPostData = qs.stringify(pnpPostValues);
+    // Convert to URL-encoded string
+    const pnpPostData = querystring.stringify(pnpPostValues);
 
-    // Make the POST request using axios to the PlugNPay Test URL
+    // Make the POST request
     const response = await axios.post(pnpPostUrl, pnpPostData, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
-    // Decode the result (assuming the response is URL encoded)
+    // Parse response
     const pnpResultDecoded = decodeURIComponent(response.data);
-
-    // Parse the response into an object (similar to PHP's explode function)
     const pnpTransactionArray = {};
-    const pnpTempArray = pnpResultDecoded.split("&");
-    pnpTempArray.forEach((entry) => {
+    pnpResultDecoded.split("&").forEach((entry) => {
       const [name, value] = entry.split("=");
       pnpTransactionArray[name] = value;
     });
 
-    // Handle the transaction result
+    // Handle response
     if (pnpTransactionArray["FinalStatus"] === "success") {
-      console.log(pnpTransactionArray);
-      res.sendFile("success.html", { root: __dirname });
-    } else if (pnpTransactionArray["FinalStatus"] === "badcard") {
-      res.sendFile("badcard.html", { root: __dirname });
-    } else if (pnpTransactionArray["FinalStatus"] === "fraud") {
-      res.sendFile("fraud.html", { root: __dirname });
-    } else if (pnpTransactionArray["FinalStatus"] === "problem") {
-      res.sendFile("problem.html", { root: __dirname });
+      req.paymentResult = pnpTransactionArray;
+      console.log(req.paymentResult)
+      //Save payment using repository
+      await paymentRepository.createPayment({
+        userID: req.user.id,
+        paymentPurpose: req.body.paymentPurpose,
+        amount: parseFloat(pnpTransactionArray["amountcharged"]),
+        currency: pnpTransactionArray["currency"].toUpperCase(),
+        orderID: pnpTransactionArray["orderID"],
+        paymentStatus: 'completed',
+        paymentMethod: 'credit_card',
+        cardType: pnpTransactionArray["card-type"],
+        lastFourDigits: pnpTransactionArray["receiptcc"].slice(-4),
+        transactionDetails: pnpTransactionArray
+      });
+
+      return next();
     } else {
-      res.sendFile("error.html", { root: __dirname });
+      return next(new ApiError(400, `Payment failed: ${pnpTransactionArray["FinalStatus"]}`, { details: pnpTransactionArray }));
     }
   } catch (error) {
-    console.error("Error in transaction:", error);
-    // res.sendFile("error.html", { root: __dirname });
+    console.error("Payment processing error:", error);
+    return next(new ApiError(500, "Payment processing failed", { details: error.message }));
   }
-}
-
-module.exports = {
-    makePayment
-}
+};

@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   changeCarStatus,
   getAllUnApprovedLocalCars,
+  getCurrentWeekAuctionCars
   
 } = require("../../controllers/localCars.controller.js");
 const {
@@ -18,5 +19,6 @@ router.post(
   createOffer
 );
 router.get("/local-cars-offers/get-car-all-offers", getCarAllOffers)
+router.get("current-week-aunction-cars", getCurrentWeekAuctionCars)
 
 module.exports = router;

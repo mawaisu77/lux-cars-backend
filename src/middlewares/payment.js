@@ -4,6 +4,7 @@ const axios = require('axios');
 const paymentRepository = require('../repositories/payment.repository');
 
 exports.processPayment = async (req, res, next) => {
+  console.log("Payment----------------")
   // Check if payment is already successful
   if (req.body.paymentStatus === "success") {
     return next();

@@ -1,8 +1,8 @@
 const  Funds  = require('../db/models/funds')
 
-const addFunds = async(fundsData) => {
+const addFunds = async(fundsData, options = {}) => {
     // saving the funds data to the database
-    return await Funds.create(fundsData);
+    return await Funds.create(fundsData, options);
 }
 
 const getUserFunds = async(userID) => {     

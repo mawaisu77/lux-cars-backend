@@ -1,4 +1,4 @@
-require("./utils/instrument.js")
+require("./utils/instrument.js");
 const Sentry = require("@sentry/node");
 const express = require("express");
 const morgan = require("morgan");
@@ -15,8 +15,8 @@ const corsOptions = {
     process.env.FRONTEND_URL_LOCAL,
     process.env.FRONTEND_URL_LOCAL_USER,
     ///Users/apple/Desktop/lux-cars-backend/src/utils/notification.html,
-    '*'
-  ] // Your frontend's origin
+    "*",
+  ], // Your frontend's origin
 };
 
 app.use(cors(corsOptions));
@@ -25,9 +25,9 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(morgan("dev"));
 
 const liveAuctionRouter = require('./routes/liveAuction.route.js')
-const userOrderRouter = require("./routes/orders.routes.js")
-const pusherRuter = require('./routes/pusher.route.js')
-const CRMRouter = require('./routes/crm.route.js')
+const userOrderRouter = require("./routes/orders.routes.js");
+const pusherRuter = require("./routes/pusher.route.js");
+const CRMRouter = require("./routes/crm.route.js");
 const authRouter = require("./routes/auth.route.js");
 const userRouter = require("./routes/user.route.js");
 const carsRouter = require("./routes/cars.route.js");
@@ -38,7 +38,7 @@ const reviewsRouter = require("./routes/reviews.route.js");
 const clearvinRouter = require("./routes/clearvin.route.js");
 const bidCarsRouter = require("./routes/bidCars.route.js");
 const bidsRouter = require("./routes/bids.route.js");
-const localCarsBidsRouter = require("./routes/localCarsBids.routes.js")
+const localCarsBidsRouter = require("./routes/localCarsBids.routes.js");
 const fundsRouter = require("./routes/funds.route.js");
 const savedCarsRouter = require("./routes/savedCars.route.js");
 const partsRequestRouter = require("./routes/partsRequest.route.js");
@@ -52,6 +52,7 @@ const adminLoanApplicationRouter = require("./routes/admin/adminLoanApplication.
 const adminPartsRequestsRouter = require("./routes/admin/adminPartsRequest.route.js");
 const invoiceRouter = require("./routes/admin/invoice.route.js");
 const adminLocalCarsRouter = require("./routes/admin/adminLocalCars.route.js");
+const paymentRouter = require("./routes/payment.route.js");
 
 const globalErrorHandler = require("./middlewares/errorHandler.js");
 
@@ -59,7 +60,7 @@ app.use("/api/v1", authRouter);
 app.use("/api/v1", userRouter);
 app.use("/api/v1", carsRouter);
 app.use("/api/v1", localCarsRouter);
-app.use("/api/v1", localCarsOffersRouter)
+app.use("/api/v1", localCarsOffersRouter);
 app.use("/api/v1", carDealersRouter);
 app.use("/api/v1", reviewsRouter);
 app.use("/api/v1", clearvinRouter);
@@ -69,12 +70,12 @@ app.use("/api/v1", fundsRouter);
 app.use("/api/v1", savedCarsRouter);
 app.use("/api/v1", partsRequestRouter);
 app.use("/api/v1", loanApplicationRouter);
-app.use("/api/v1", localCarsBidsRouter)
-app.use("/api/v1", pusherRuter)
-app.use("/api/v1", CRMRouter)
 app.use("/api/v1", liveAuctionRouter)
-
-app.use("/api/v1", userOrderRouter)
+app.use("/api/v1", localCarsBidsRouter);
+app.use("/api/v1", pusherRuter);
+app.use("/api/v1", CRMRouter);
+app.use("/api/v1", userOrderRouter);
+app.use("/api/v1", paymentRouter);
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
 app.use("/api/v1/admin", adminBidRouter);
@@ -86,8 +87,8 @@ app.use("/api/v1/admin", invoiceRouter);
 app.use("/api/v1/admin", adminLocalCarsRouter);
 
 app.use("/", async (req, res) => {
-  res.send("Hello from LuxCars Backend Services!")
-})
+  res.send("Hello from LuxCars Backend Services!");
+});
 app.use(
   "*",
   asyncHandler(async (req, res, next) => {

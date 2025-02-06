@@ -4,6 +4,9 @@ const  bidsPackages  = require('../utils/bidPackagesConfig.js')
 const  fundsRepository  = require('../repositories/funds.repository.js')
 const { pushNotification } = require("../services/pusher.service.js")
 const { addFundMessage } = require("../utils/pusherNotifications.js")
+const { processPayment } = require("../services/payment.service.js")
+const sequelize = require('../config/database.js');
+
 
 const checkDepositAndDecideBidLimit = async (deposit) => {
     let noOfCars;
@@ -59,12 +62,17 @@ const checkDepositAndDecideBidLimit = async (deposit) => {
 
 
 const addFunds = async (req, res) => {
-        // getting the user ID from the request
+    
+    // getting the user ID from the request
     const userID = req.user.id
     const { deposit } = req.body
     let userFunds = await fundsRepository.getUserFunds(userID)
+
     //console.log(userFunds.dataValues)
     if(!userFunds){
+
+        // creating a transaction
+        //const transaction = await sequelize.transaction();
 
         if(deposit < 350) throw new Error("Deposit amount is too low, at least add $350");
         else if(deposit > 10000) throw new Error("Deposit amount is too high, you can add max $10000");

@@ -3,11 +3,11 @@ const querystring = require('querystring');
 const axios = require('axios');
 const paymentRepository = require('../repositories/payment.repository');
 
-exports.processPayment = async (req, res, next) => {
+const processPayment = async (req, res, next) => {
   console.log("Payment----------------")
   // Check if payment is already successful
   if (req.body.paymentStatus === "success") {
-    return next();
+    return
   }
 
   // Validate required fields
@@ -18,20 +18,14 @@ exports.processPayment = async (req, res, next) => {
     "card_amount",
     "card_name",
     "email",
-    // "card_address1",
-    // "card_zip",
-    // "card_city",
-    // "card_state",
-    // "card_country",
   ];
 
   const missingFields = requiredFields.filter((field) => !req.body[field]);
   if (missingFields.length > 0) {
-    return next(new ApiError(400, "Missing required fields", { missingFields }));
+    throw new ApiError(400, "Missing required fields", { missingFields })
   }
 
   // PlugNPay Configuration
-
   const publisherName = process.env.PUBLISHER_NAME;
   const publisherPassword = process.env.PUBLISHER_PASSWORD;
   const pnpPostUrl = process.env.PNP_POST_URL;
@@ -48,19 +42,6 @@ exports.processPayment = async (req, res, next) => {
       "card-name": req.body.card_name,
       email: req.body.email,
       ipaddress: req.ip || "127.0.0.1",
-      // "card-address1": req.body.card_address1,
-      // "card-address2": req.body.card_address2 || "",
-      // "card-zip": req.body.card_zip,
-      // "card-city": req.body.card_city,
-      // "card-state": req.body.card_state,
-      // "card-country": req.body.card_country,
-      // shipinfo: "1",
-      // shipname: req.body.card_name,
-      // address1: req.body.card_address1,
-      // address2: req.body.card_address2 || "",
-      // zip: req.body.card_zip,
-      // state: req.body.card_state,
-      // country: req.body.card_country,
     };
 
     // Convert to URL-encoded string
@@ -84,27 +65,36 @@ exports.processPayment = async (req, res, next) => {
     // Handle response
     if (pnpTransactionArray["FinalStatus"] === "success") {
       req.paymentResult = pnpTransactionArray;
-      console.log(req.paymentResult)
-      //Save payment using repository
-      await paymentRepository.createPayment({
-        userID: req.user.id,
-        paymentPurpose: req.body.paymentPurpose,
-        amount: parseFloat(pnpTransactionArray["amountcharged"]),
-        currency: pnpTransactionArray["currency"].toUpperCase(),
-        orderID: pnpTransactionArray["orderID"],
-        paymentStatus: 'completed',
-        paymentMethod: 'credit_card',
-        cardType: pnpTransactionArray["card-type"],
-        lastFourDigits: pnpTransactionArray["receiptcc"].slice(-4),
-        transactionDetails: pnpTransactionArray
-      });
+      // console.log(req.paymentResult)
+      return true
 
-      return next();
     } else {
-      return next(new ApiError(400, `Payment failed: ${pnpTransactionArray["FinalStatus"]}`, { details: pnpTransactionArray }));
+      throw new ApiError(400, `Payment failed: ${pnpTransactionArray["FinalStatus"]}`, { details: pnpTransactionArray })
     }
   } catch (error) {
     console.error("Payment processing error:", error);
-    return next(new ApiError(500, "Payment processing failed", { details: error.message }));
+    throw new ApiError(500, "Payment processing failed", { details: error.message })
   }
 };
+
+const storePaymentData = async(userID, paymentPurpose, paymentDetails) => {
+    //Save payment using repository
+    await paymentRepository.createPayment({
+      userID: userID,
+      paymentPurpose: paymentPurpose,
+      amount: parseFloat(paymentDetails["amountcharged"]),
+      currency: paymentDetails["currency"].toUpperCase(),
+      orderID: paymentDetails["orderID"],
+      paymentStatus: 'completed',
+      paymentMethod: 'credit_card',
+      cardType: paymentDetails["card-type"],
+      lastFourDigits: paymentDetails["receiptcc"].slice(-4),
+      transactionDetails: paymentDetails
+    });
+}
+
+
+module.exports = {
+  processPayment,
+  storePaymentData
+}

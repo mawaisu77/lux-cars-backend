@@ -8,7 +8,7 @@ const {
     getAllUnApprovedLocalCars, 
     getAllLocalCars,  
     getFutureAuctionCars,
-    getCurrentWeekWednesdayCars,
+    getCurrentWeekAuctionCars,
     
 
 } = require("../controllers/localCars.controller.js");
@@ -27,7 +27,7 @@ router.get('/local-cars/get-user-all-local-cars',isAuthenticatedUser, getUserAll
 router.get('/local-cars/get-all-unapproved-local-cars', getAllUnApprovedLocalCars)
 router.get('/local-cars/get-all-local-cars', getAllLocalCars)
 router.get('/local-cars/get-future-auction-local-cars', getFutureAuctionCars)
-router.get('/local-cars/get-current-week-cars', getCurrentWeekWednesdayCars)
+router.get('/local-cars/get-current-week-cars', getCurrentWeekAuctionCars)
 
 
 

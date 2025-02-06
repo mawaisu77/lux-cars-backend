@@ -392,11 +392,25 @@ const getCurrentWeekAuctionCars = async (req, res) => {
   const to_date = new Date(now.getTime() + daysUntilWednesday * 24 * 60 * 60 * 1000);
   to_date.setHours(23, 59, 59, 999);
   req.query.auction_date_to = to_date;
+  let message;
+  if (currentDay <= 3) {
+    message = "These are the Cars that are going Live for Auction on Wednesday at 11:00 AM";
+  } else if (currentDay === 3 && now.getHours() < 10) {
+    message = "These are the Cars that are going Live for Auction Today at 11:00 AM";
+  } else if (currentDay === 3 && now.getHours() >= 10 && now.getHours() < 11) {
+    message = "These are the Cars that are going Live for Auction in less then 1 hour, at 11:00 AM";
+  } else if (currentDay === 3 && now.getHours() === 11 && now.getMinutes() < 20) {
+    message = "These are the Cars that are currently Live for Auction!";
+  } else if ((currentDay === 3 && now.getHours() === 11 && now.getMinutes() > 20) || (currentDay >= 3 && currentDay <= 7)) {
+    message = "These are the Cars that have completed their auction and are listed here for any administrative post-auction actions until Sunday at 11:59 PM";
+  }
+  
+  req.query.message = message;
 
   const localCars = await getAllLocalCars(req, res);
   return { 
     cars: localCars,
-    message: "Current week Auction Cars" 
+    message: message
   };
 };
 

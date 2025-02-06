@@ -1,6 +1,8 @@
 // file to define the routes for the Paymnet integration
 const express = require("express");
 const router = express.Router();
+const { ApiResponse } = require("../utils/ApiResponse")
+const { AppError } = require("../utils/ApiError")
 const { processPayment } = require("../middlewares/payment");
 const { isAuthenticatedUser } = require("../middlewares/auth");
 
@@ -10,17 +12,9 @@ router.post(
   processPayment,
   async (req, res) => {
     try {
-      res.status(200).json({
-        success: true,
-        message: "Payment processed successfully",
-        data: req.paymentResult,
-      });
+      res.status(201).json(new ApiResponse(201, req.paymentResult.FinalStatus, "Payment processed successfully"));
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Payment processing failed",
-        error: error.message,
-      });
+      throw new AppError(400, `Payment Failed Due To: ${error.message}`)
     }
   }
 );

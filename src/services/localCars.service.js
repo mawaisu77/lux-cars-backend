@@ -409,9 +409,11 @@ const getCurrentWeekAuctionCars = async (req, res) => {
     message = "These are the Cars that have completed their auction and are listed here for any administrative post-auction actions until Sunday at 11:59 PM";
   }
   
-  req.query.message = message;
+  message = message;
 
   const localCars = await getAllLocalCars(req, res);
+  if (localCars.cars.length === 0) message = ""
+
   return { 
     cars: localCars,
     message: message

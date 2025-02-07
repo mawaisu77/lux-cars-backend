@@ -39,8 +39,8 @@ const LocalCars = sequelize.define('localCars',
       type: Sequelize.STRING
     },
     mileage: {
-      allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.INTEGER,
+      allowNull: true,
     },
     description: {
       allowNull: false,

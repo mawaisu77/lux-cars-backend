@@ -32,6 +32,11 @@ const invoices = sequelize.define("invoices", {
       this.setDataValue("invoice", JSON.stringify(value));
     },
   },
+  status: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      defaultValue: 'Pending'
+  },
   createdAt: {
     allowNull: false,
     type: Sequelize.DATE,

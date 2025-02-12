@@ -37,6 +37,16 @@ const generateInvoice = async (req) => {
   return invoiceData;
 };
 
+
+const getUserInvoices = async (req) => {
+  const { userID } = req.body;
+  const invoices = await invoiceRepository.getUserInvoices(userID);
+  return invoices;
+};
+
+
+
 module.exports = {
   generateInvoice,
+  getUserInvoices
 };

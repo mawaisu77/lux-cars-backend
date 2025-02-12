@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(morgan("dev"));
 
+const invoiceUserRouter = require('./routes/invoice.route.js')
 const liveAuctionRouter = require('./routes/liveAuction.route.js')
 const userOrderRouter = require("./routes/orders.routes.js");
 const pusherRuter = require("./routes/pusher.route.js");
@@ -76,6 +77,7 @@ app.use("/api/v1", pusherRuter);
 app.use("/api/v1", CRMRouter);
 app.use("/api/v1", userOrderRouter);
 app.use("/api/v1", paymentRouter);
+app.use("/api/v1", invoiceUserRouter)
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
 app.use("/api/v1/admin", adminBidRouter);

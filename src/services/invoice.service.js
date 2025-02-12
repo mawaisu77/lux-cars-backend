@@ -5,7 +5,7 @@ const invoiceRepository = require("../repositories/invoice.repository.js");
 const userService = require("../services/user.service.js");
 
 const generateInvoice = async (req) => {
-  const { referenceId, userID, invoiceType } = req.body;
+  const { referenceId, userID, invoiceType, price } = req.body;
   //console.log("IMG FILE", req.file);
   const invoice = req.file ? await uploadSingleDoc(req) : null;
 
@@ -14,6 +14,7 @@ const generateInvoice = async (req) => {
     userID,
     invoiceType,
     invoice,
+    price
   };
 
   const user = await userService.getUserProfile(userID);

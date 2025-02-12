@@ -8,8 +8,8 @@ const getUserInvoices = async (userID) => {
   return await Invoice.findAll({ userID });
 };
 
-const changeInvoiceStatusToPaid = async (invoiceID) => {
-  return await Invoice.update({ status: 'Paid' }, { where: { id: invoiceID } });
+const changeInvoiceStatusToPaid = async (invoiceID, options = {}) => {
+  return await Invoice.update({ status: 'Paid' }, { where: { id: invoiceID } }, options);
 };
 
 module.exports = {

@@ -14,9 +14,15 @@ const getUserInvoices = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, invoices, "User's invoices retrieved successfully."));
 });
 
+const payInvoice = asyncHandler(async (req, res) => {
+    const invoices = await invoiceService.payInvoice(req, res);
+    res.status(200).json(new ApiResponse(200, invoices, "User's invoices retrieved successfully."));
+})
+
 
 
 module.exports = {
   generateInvoice,
-  getUserInvoices
+  getUserInvoices,
+  payInvoice
 };

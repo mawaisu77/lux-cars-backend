@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getUserInvoices } = require("../controllers/invoice.controller.js");
+const { getUserInvoices, payInvoice } = require("../controllers/invoice.controller.js");
 const { isAuthenticatedUser } = require("../middlewares/auth");
 const router = Router();
 
@@ -9,4 +9,9 @@ router.get(
   getUserInvoices
 );
 
+router.post(
+    "/pay-invoice",
+    isAuthenticatedUser,
+    payInvoice
+)
 module.exports = router;

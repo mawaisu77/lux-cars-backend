@@ -3,6 +3,8 @@ const sendEmail = require("../utils/sendImageMail.js");
 const { uploadSingleDoc } = require("../utils/uplaodDocument.js");
 const invoiceRepository = require("../repositories/invoice.repository.js");
 const userService = require("../services/user.service.js");
+const { processPayment } = require('./payment.service.js')
+const { sequelize } = require("../config/database.js");
 
 const generateInvoice = async (req) => {
   const { referenceId, userID, invoiceType, price } = req.body;
@@ -46,8 +48,26 @@ const getUserInvoices = async (req) => {
 };
 
 
+const payInvoice = async (req, res) => {
+  const { invoiceID } = req.query
+  if(!invoiceID) throw new ApiError(404, "InvoiceId is Required!")
+  const transaction = await sequelize.transaction();
+  const updatedInvoice = await invoiceRepository.changeInvoiceStatusToPaid(invoiceID, {transaction: transaction});
+
+  try{
+    await processPayment(req, res)
+    await transaction.commit();
+  }catch(error){
+    await transaction.rollback();
+    throw new ApiError(400, "Payment Failed!")
+  }
+
+  return updatedInvoice
+
+};
 
 module.exports = {
   generateInvoice,
-  getUserInvoices
+  getUserInvoices,
+  payInvoice
 };

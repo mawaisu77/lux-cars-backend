@@ -3,7 +3,7 @@ const querystring = require('querystring');
 const axios = require('axios');
 const paymentRepository = require('../repositories/payment.repository');
 
-const processPayment = async (req, res, next) => {
+const processPayment = async (req, res) => {
   console.log("Payment----------------")
   // Check if payment is already successful
   if (req.body.paymentStatus === "success") {

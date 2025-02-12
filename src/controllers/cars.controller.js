@@ -46,7 +46,11 @@ const getALLCategoriesVehichleCount = asyncHandler (async(req, res) => {
 const calculateEstimatedPriceForTheVehicle = asyncHandler (async(req, res) => {
     const estimatedPrices = await carsService.calculateEstimatedPriceForTheVehicle(req, res)
     res.status(201).json(new ApiResponse(201, estimatedPrices, "Cars Estimated Prices fetched successfully."))
+})
 
+const getSalesHistory = asyncHandler (async(req, res) => {
+    const car = await carsService.getSalesHistory(req, res)
+    res.status(201).json(new ApiResponse(201, car, "Cars Estimated Prices fetched successfully."))
 })
 
 module.exports = {
@@ -58,5 +62,6 @@ module.exports = {
     getCarByLotIDTesting,
     getHistoryCars,
     getALLCategoriesVehichleCount,
-    calculateEstimatedPriceForTheVehicle
+    calculateEstimatedPriceForTheVehicle,
+    getSalesHistory
 }

@@ -8,7 +8,8 @@ const {
     getCarByLotIDTesting, 
     getHistoryCars, 
     getALLCategoriesVehichleCount, 
-    calculateEstimatedPriceForTheVehicle
+    calculateEstimatedPriceForTheVehicle,
+    getSalesHistory
 } = require("../controllers/cars.controller");
 
 const router = Router()
@@ -22,6 +23,7 @@ router.get('/cars/get-cars-makes-models', carsMakesModels)
 router.get('/cars/get-history-cars', getHistoryCars)
 router.get('/cars/get-cars-counts', getALLCategoriesVehichleCount)
 router.get('/cars/get-cars-average-prices-data', calculateEstimatedPriceForTheVehicle)
+router.get('/cars/get-car-sales-history', getSalesHistory)
 
 
 module.exports = router

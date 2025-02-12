@@ -336,6 +336,19 @@ const calculateEstimatedPriceForTheVehicle = async (req, res) => {
     }
 }
 
+const getSalesHistory = async (req, res) => {
+    const { lot_id } = req.query
+    if(!lot_id) throw new ApiError(404, "Lot_Id of the Car is required!")
+    try {
+        const car = await axiosPrivate.get(`/api/sale-histories/lot-id?lot_id=${lot_id}`)
+        return car.data.data[0].sale_history
+    } catch (error) {
+        throw new ApiError(401, error.message)
+    }
+}
+
+
+
 module.exports = {
     getAllCars,
     getAllLatestCars,
@@ -348,5 +361,6 @@ module.exports = {
     getCarsByLotIDs,
     getHistoryCars,
     getALLCategoriesVehichleCount,
-    calculateEstimatedPriceForTheVehicle
+    calculateEstimatedPriceForTheVehicle,
+    getSalesHistory
 }

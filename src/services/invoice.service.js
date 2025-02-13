@@ -68,6 +68,14 @@ const payInvoice = async (req, res) => {
 
 const getAllInvoices = async () => {
   const invoices = await invoiceRepository.getAllInvoices();
+  let index = 0
+  for (const invoice of invoices) {
+    const user = await userService.getUserProfile(invoice.userID);
+    invoices[index].dataValues.userName = user.username;
+    invoices[index].dataValues.email = user.email;
+    index += 1;
+  }
+  console.log(invoices)
   return invoices;
 };
 

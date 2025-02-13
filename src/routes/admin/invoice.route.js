@@ -11,6 +11,6 @@ router.post(
   generateInvoice
 );
 
-router.get("/get-all-invoices", isAuthenticatedAdmin, getAllInvoices)
+router.get("/get-all-invoices", getAllInvoices)
 
 module.exports = router;

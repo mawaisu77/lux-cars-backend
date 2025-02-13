@@ -16,7 +16,12 @@ const getUserInvoices = asyncHandler(async (req, res) => {
 
 const payInvoice = asyncHandler(async (req, res) => {
     const invoices = await invoiceService.payInvoice(req, res);
-    res.status(200).json(new ApiResponse(200, invoices, "User's invoices retrieved successfully."));
+    res.status(200).json(new ApiResponse(200, invoices, "Invoice Paid successfully."));
+})
+
+const getAllInvoices = asyncHandler(async (req, res) => {
+  const invoices = await invoiceService.getAllInvoices(req, res);
+  res.status(200).json(new ApiResponse(200, invoices, "Invoices retrieved successfully."));
 })
 
 
@@ -24,5 +29,6 @@ const payInvoice = asyncHandler(async (req, res) => {
 module.exports = {
   generateInvoice,
   getUserInvoices,
-  payInvoice
+  payInvoice,
+  getAllInvoices
 };

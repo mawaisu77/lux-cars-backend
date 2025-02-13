@@ -4,7 +4,7 @@ const { uploadSingleDoc } = require("../utils/uplaodDocument.js");
 const invoiceRepository = require("../repositories/invoice.repository.js");
 const userService = require("../services/user.service.js");
 const { processPayment } = require('./payment.service.js')
-const { sequelize } = require("../config/database.js");
+const sequelize = require("../config/database.js");
 
 const generateInvoice = async (req) => {
   const { referenceId, userID, invoiceType, price } = req.body;
@@ -66,8 +66,14 @@ const payInvoice = async (req, res) => {
 
 };
 
+const getAllInvoices = async () => {
+  const invoices = await invoiceRepository.getAllInvoices();
+  return invoices;
+};
+
 module.exports = {
   generateInvoice,
   getUserInvoices,
-  payInvoice
+  payInvoice,
+  getAllInvoices
 };

@@ -66,29 +66,29 @@ const addFunds = async (req, res) => {
     const userID = req.user.id
     const { deposit } = req.body
     let userFunds = await fundsRepository.getUserFunds(userID)
-
+    const _deposit = Number(deposit)
     //console.log(userFunds.dataValues)
     if(!userFunds){
 
         // creating a transaction
         //const transaction = await sequelize.transaction();
 
-        if(deposit < 350) throw new Error("Deposit amount is too low, at least add $350");
-        else if(deposit > 10000) throw new Error("Deposit amount is too high, you can add max $10000");
+        if(_deposit < 350) throw new Error("Deposit amount is too low, at least add $350");
+        else if(_deposit > 10000) throw new Error("Deposit amount is too high, you can add max $10000");
 
-        const _funds = await checkDepositAndDecideBidLimit(deposit)
+        const _funds = await checkDepositAndDecideBidLimit(_deposit)
 
         // adding the funds to the user
         const funds = await fundsRepository.addFunds({
             userID: userID,
-            totalDeposits: deposit,
+            totalDeposits: _deposit,
             avalaibleBidAmount: _funds.bidLimit,
             usedBidAmount: 0,
             avalaibleBids: _funds.noOfCars,
             activeBids: 0
         })
 
-        const userMessage = await addFundMessage(deposit)
+        const userMessage = await addFundMessage(_deposit)
         pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")
 
         // returning the funds
@@ -99,8 +99,8 @@ const addFunds = async (req, res) => {
         const _funds = await checkDepositAndDecideBidLimit(deposit + userFunds.totalDeposits)
 
         // adding the funds to the user
-        if ((userFunds.totalDeposits + deposit) <= 10000){
-            userFunds.totalDeposits += deposit,
+        if ((userFunds.totalDeposits + _deposit) <= 10000){
+            userFunds.totalDeposits += _deposit,
             userFunds.avalaibleBidAmount = _funds.bidLimit - userFunds.usedBidAmount
             userFunds.avalaibleBids = _funds.noOfCars - userFunds.activeBids
             await userFunds.save()
@@ -109,7 +109,7 @@ const addFunds = async (req, res) => {
         }
 
 
-        const userMessage = await addFundMessage(deposit)
+        const userMessage = await addFundMessage(_deposit)
         pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")
 
         // returning the funds

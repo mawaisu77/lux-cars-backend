@@ -54,6 +54,7 @@ const adminPartsRequestsRouter = require("./routes/admin/adminPartsRequest.route
 const invoiceRouter = require("./routes/admin/invoice.route.js");
 const adminLocalCarsRouter = require("./routes/admin/adminLocalCars.route.js");
 const paymentRouter = require("./routes/payment.route.js");
+const userSearchRouter = require("./routes/userSearches.route.js")
 
 const globalErrorHandler = require("./middlewares/errorHandler.js");
 
@@ -78,6 +79,7 @@ app.use("/api/v1", CRMRouter);
 app.use("/api/v1", userOrderRouter);
 app.use("/api/v1", paymentRouter);
 app.use("/api/v1", invoiceUserRouter)
+app.use("/api/v1", userSearchRouter)
 app.use("/api/v1/admin", adminAuthRouter);
 app.use("/api/v1/admin", adminUserRouter);
 app.use("/api/v1/admin", adminBidRouter);

@@ -35,6 +35,8 @@ exports.processPayment = async (req, res, next) => {
   const publisherName = process.env.PUBLISHER_NAME;
   const publisherPassword = process.env.PUBLISHER_PASSWORD;
   const pnpPostUrl = process.env.PNP_POST_URL;
+  const card_amount = Number(req.body.card_amount)
+
 
   try {
     // Prepare POST data
@@ -44,7 +46,7 @@ exports.processPayment = async (req, res, next) => {
       "card-number": req.body.card_number,
       "card-cvv": req.body.card_cvv,
       "card-exp": req.body.card_exp,
-      "card-amount": req.body.card_amount,
+      "card-amount": card_amount,
       "card-name": req.body.card_name,
       email: req.body.email,
       ipaddress: req.ip || "127.0.0.1",

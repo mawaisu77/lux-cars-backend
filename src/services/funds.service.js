@@ -66,7 +66,7 @@ const addFunds = async (req, res) => {
     const userID = req.user.id
     const { deposit } = req.body
     let userFunds = await fundsRepository.getUserFunds(userID)
-    const _deposit = Number(deposit)
+    const _deposit = parseFloat(deposit)
     //console.log(userFunds.dataValues)
     if(!userFunds){
 

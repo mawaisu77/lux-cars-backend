@@ -9,8 +9,8 @@ const sequelize = require('../config/database.js');
 
 const checkDepositAndDecideBidLimit = async (_deposit) => {
     let noOfCars;
-    const bidLimit = deposit * 10
     const deposit = parseFloat(_deposit)
+    const bidLimit = deposit * 10
     if (deposit >= 350 && deposit < 1500) {
         noOfCars = 1;
     } else if (1500 <= deposit && deposit < 2000) {
@@ -96,7 +96,7 @@ const addFunds = async (req, res) => {
         
     }
     else{
-        const _funds = await checkDepositAndDecideBidLimit(deposit + userFunds.totalDeposits)
+        const _funds = await checkDepositAndDecideBidLimit(_deposit + userFunds.totalDeposits)
 
         // adding the funds to the user
         if ((userFunds.totalDeposits + _deposit) <= 10000){

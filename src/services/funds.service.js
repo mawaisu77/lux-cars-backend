@@ -7,10 +7,10 @@ const { processPayment } = require("../services/payment.service.js")
 const sequelize = require('../config/database.js');
 
 
-const checkDepositAndDecideBidLimit = async (deposit) => {
+const checkDepositAndDecideBidLimit = async (_deposit) => {
     let noOfCars;
     const bidLimit = deposit * 10
-
+    const deposit = parseFloat(_deposit)
     if (deposit >= 350 && deposit < 1500) {
         noOfCars = 1;
     } else if (1500 <= deposit && deposit < 2000) {

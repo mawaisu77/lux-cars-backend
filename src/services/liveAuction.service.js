@@ -215,7 +215,11 @@ const joinAuction = async () => {
 
 
 const liveCarListData = async(req, res ) => {
-    return carsForAuctionToday.slice(currentCarIndex + 1);
+    const cars = carsForAuctionToday.slice(currentCarIndex + 1);
+    cars.forEach((car, index) => {
+        car.dataValues.timeUntilAuction = `${index + 1} Min`;
+    });
+    return cars
 }
 
 

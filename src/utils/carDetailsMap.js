@@ -44,9 +44,7 @@ const mapCarDetails = async(carsData) => {
                             car.sale_history : 
                             null,
 
-            currentBid: car.currentBid ?
-                        car.currentBid :
-                        null,
+            currentBid: car.currentBid > car.current_bid ? car.currentBid : car.current_bid || 0,
 
             noOfBids: car.noOfBids ?
                       car.noOfBids :

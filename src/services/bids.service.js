@@ -120,6 +120,12 @@ const checkUserCanBid = async (req, res) => {
     if (!userFunds) {
         throw new ApiError(404, 'User funds not found');
     }
+
+    // check if the deposits less then 750, user can't bid on bid cars
+    if(userFunds.totalDeposits < 750){
+        throw new ApiError(400, 'Must have deposit more than $750 to place the bids on IAAI/Copart Cars');
+    }
+
     // checking if the user has enough funds
     const hasEnoughFunds = userFunds.avalaibleBidAmount >= currentBid;
     

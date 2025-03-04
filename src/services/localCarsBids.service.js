@@ -13,7 +13,7 @@ const ApiError = require('../utils/ApiError.js');
 
 const placeBid = async (req, res, options = {}) => {
 
-    const type = "live"
+    const type = req.body.type || "live"
     const { currentBid } = req.body
     if(!currentBid) throw new ApiError(404, "Bid Price not found!")
 
@@ -114,14 +114,6 @@ const updateLocalCarBidData = async (req, res) => {
     if (localCar.currentBid < currentBid){
         localCar.currentBid = currentBid
         localCar.noOfBids += 1
-        
-        // const auctionDate = new Date(localCar.auction_date);
-        // const now = new Date();
-        // const diff = auctionDate - now;
-        // if (diff > 0 && diff < 10000) { // 10 seconds in milliseconds
-        //     auctionDate.setSeconds(auctionDate.getSeconds() + 10);
-        //     localCar.auction_date = auctionDate;
-        // }
  
         const updateLocalCar = await localCar.save()
         if(!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")

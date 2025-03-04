@@ -3,7 +3,7 @@ const ApiError = require('../utils/ApiError')
 const  fundsRepository  = require('../repositories/funds.repository.js')
 const { pushNotification } = require("../services/pusher.service.js")
 const { addFundMessage } = require("../utils/pusherNotifications.js")
-const { processPayment } = require("../services/payment.service.js")
+const { processPayment, storePaymentData } = require("../services/payment.service.js")
 const sequelize = require('../config/database.js');
 
 
@@ -89,8 +89,9 @@ const addFunds = async (req, res) => {
             activeBids: 0
         }, { transaction })
 
-        if(processPayment(req, res)){
+        if(await processPayment(req, res)){
             await transaction.commit();
+            await storePaymentData(req, "Funds Addition")
         }else{
             await transaction.rollback();
             throw new Error("Payment failed");
@@ -108,7 +109,7 @@ const addFunds = async (req, res) => {
 
         // creating a transaction
         const transaction = await sequelize.transaction();
-        
+
         // adding the funds to the user
         if ((userFunds.totalDeposits + _deposit) <= 10000){
             userFunds.totalDeposits += _deposit,
@@ -119,8 +120,9 @@ const addFunds = async (req, res) => {
             throw new Error(`Deposit amount is too high, you can add max $10000, you already have deposited $${userFunds.totalDeposits}, the max amount you can add more is $${10000 - userFunds.totalDeposits}  `);
         }
 
-        if(processPayment(req, res)){
+        if(await processPayment(req, res)){
             await transaction.commit();
+            await storePaymentData(req, "Funds Addition")
         }else{
             await transaction.rollback();
             throw new Error("Payment failed");

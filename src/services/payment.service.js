@@ -66,6 +66,9 @@ const processPayment = async (req, res) => {
     if (pnpTransactionArray["FinalStatus"] === "success") {
       req.paymentResult = pnpTransactionArray;
       // console.log(req.paymentResult)
+      if(req.body.paymentPurpose === "Report Payment"){
+        await storePaymentData(req)
+      }
       return true
 
     } else {
@@ -77,7 +80,11 @@ const processPayment = async (req, res) => {
   }
 };
 
-const storePaymentData = async(userID, paymentPurpose, paymentDetails) => {
+const storePaymentData = async(req) => {
+
+    const paymentDetails = req.paymentResult;
+    const userID = req.user.id;
+    const paymentPurpose = req.body.paymentPurpose;
     //Save payment using repository
     await paymentRepository.createPayment({
       userID: userID,

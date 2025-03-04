@@ -3,7 +3,7 @@ const sendEmail = require("../utils/sendImageMail.js");
 const { uploadSingleDoc } = require("../utils/uplaodDocument.js");
 const invoiceRepository = require("../repositories/invoice.repository.js");
 const userService = require("../services/user.service.js");
-const { processPayment } = require('./payment.service.js')
+const { processPayment, storePaymentData } = require('./payment.service.js')
 const sequelize = require("../config/database.js");
 
 const generateInvoice = async (req) => {
@@ -56,6 +56,7 @@ const payInvoice = async (req, res) => {
 
   try{
     await processPayment(req, res)
+    await storePaymentData(req)
     await transaction.commit();
   }catch(error){
     await transaction.rollback();

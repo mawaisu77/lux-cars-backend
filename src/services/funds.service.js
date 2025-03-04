@@ -67,16 +67,17 @@ const addFunds = async (req, res) => {
     const { deposit } = req.body
     let userFunds = await fundsRepository.getUserFunds(userID)
     const _deposit = parseFloat(deposit)
-    //console.log(userFunds.dataValues)
-    if(!userFunds){
 
-        // creating a transaction
-        //const transaction = await sequelize.transaction();
+    // console.log(userFunds.dataValues)
+    if(!userFunds){
 
         if(_deposit < 350) throw new Error("Deposit amount is too low, at least add $350");
         else if(_deposit > 10000) throw new Error("Deposit amount is too high, you can add max $10000");
 
         const _funds = await checkDepositAndDecideBidLimit(_deposit)
+
+        // creating a transaction
+        const transaction = await sequelize.transaction();
 
         // adding the funds to the user
         const funds = await fundsRepository.addFunds({
@@ -86,7 +87,14 @@ const addFunds = async (req, res) => {
             usedBidAmount: 0,
             avalaibleBids: _funds.noOfCars,
             activeBids: 0
-        })
+        }, { transaction })
+
+        if(processPayment(req, res)){
+            await transaction.commit();
+        }else{
+            await transaction.rollback();
+            throw new Error("Payment failed");
+        }
 
         const userMessage = await addFundMessage(_deposit)
         pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")
@@ -98,16 +106,25 @@ const addFunds = async (req, res) => {
     else{
         const _funds = await checkDepositAndDecideBidLimit(_deposit + userFunds.totalDeposits)
 
+        // creating a transaction
+        const transaction = await sequelize.transaction();
+        
         // adding the funds to the user
         if ((userFunds.totalDeposits + _deposit) <= 10000){
             userFunds.totalDeposits += _deposit,
             userFunds.avalaibleBidAmount = _funds.bidLimit - userFunds.usedBidAmount
             userFunds.avalaibleBids = _funds.noOfCars - userFunds.activeBids
-            await userFunds.save()
+            await userFunds.save({ transaction })
         }else{
             throw new Error(`Deposit amount is too high, you can add max $10000, you already have deposited $${userFunds.totalDeposits}, the max amount you can add more is $${10000 - userFunds.totalDeposits}  `);
         }
 
+        if(processPayment(req, res)){
+            await transaction.commit();
+        }else{
+            await transaction.rollback();
+            throw new Error("Payment failed");
+        }
 
         const userMessage = await addFundMessage(_deposit)
         pushNotification(userID, userMessage, "Funds Addition", "user-notifications", "public-notification")

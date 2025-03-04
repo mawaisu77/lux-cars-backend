@@ -93,8 +93,13 @@ const storePaymentData = async(userID, paymentPurpose, paymentDetails) => {
     });
 }
 
+const findPaymentsByUserId = async (req, res) => {
+  const userID = req.user.id;
+  return await paymentRepository.findPaymentsByUserId(userID);
+}
 
 module.exports = {
   processPayment,
-  storePaymentData
+  storePaymentData,
+  findPaymentsByUserId
 }

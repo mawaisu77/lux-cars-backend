@@ -5,9 +5,9 @@ const { Op } = require("sequelize");
 
 const LocalCarsBids = require("../db/models/localcarsbids");
 
-const saveBid = async (bidData) => {
+const saveBid = async (bidData, options = {}) => {
     // saving the bid data to the database
-    return await LocalCarsBids.create(bidData);
+    return await LocalCarsBids.create(bidData, options);
 }
 
 const getActiveBidByLocalCarID = async(localCarID) => {

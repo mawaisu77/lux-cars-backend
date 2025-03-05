@@ -7,7 +7,7 @@ const router = Router()
 router.get('/bid-cars/find-bid-cars', findBidCars)
 router.post('/bid-cars/create-bid-car', createBidCar)
 router.put('/bid-cars/update-bid-car', updateBidCar)
-router.post('/bid-cars/place-bid', isAuthenticatedUser,  placeBid)
+router.post('/bid-cars/place-bid', isAuthenticatedUser, placeBid)
 
 
 module.exports =  router

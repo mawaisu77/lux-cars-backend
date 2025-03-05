@@ -7,7 +7,6 @@ const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacement, newBidOnCar } = require("../utils/pusherNotifications.js")
-//const carLocks = {}; // In-memory lock object
 const AsyncLock = require("async-lock");
 const lock = new AsyncLock();
 
@@ -222,8 +221,6 @@ const updateBidCar = async (req, res, options = {}) => {
 
 const placeBid = async (req, res, options = {}) => {
 
-    // console.log("Before Locking ===========", carLocks)
-
     // checking the users documents are verified or not 
     if(!req.user.documentVerified || req.user.documentVerificationStatus !== 'approved'){
         throw new ApiError(403, "Your document verification is pending")
@@ -330,18 +327,8 @@ const placeBid = async (req, res, options = {}) => {
             }
 
         }
-
         return car
-
-
-    }) 
-    // finally {
-    //     // Release the lock after processing
-    //     delete carLocks[lot_id];
-    //     console.log("Releasing Lock ===========", carLocks)
-
-    // }
-    
+    })
 }
 
 

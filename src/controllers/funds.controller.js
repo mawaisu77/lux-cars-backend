@@ -12,7 +12,13 @@ const getUserFunds = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, funds, "Funds has been fetched successfully.", ));
 })
 
+const refundUserFunds = asyncHandler(async (req, res) => {
+    const funds = await fundsService.refundUserFunds(req)
+    res.status(200).json(new ApiResponse(200, funds, "Funds has been refunded successfully.", ));
+})
+
 module.exports = {
     addFunds,
-    getUserFunds
+    getUserFunds,
+    refundUserFunds
 }

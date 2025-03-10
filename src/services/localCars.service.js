@@ -151,7 +151,7 @@ const adjustQueryForFilters = async (_query) => {
       query.auction_date[Op.gt] = new Date(new Date().getTime() + 60 * 60 * 1000); // Cars for users (auction date > 1 hour from now)
     } else if (query.type === 'buffer') {
       query.auction_date[Op.and] = [
-        { [Op.lte]: new Date(new Date().getTime() + 60 * 60 * 1000) } // Cars for admins (auction date <= 1 hour from now)
+        { [Op.between]: [new Date(), new Date(new Date().getTime() + 60 * 60 * 1000)] } // Cars going live for auction in an hour
       ];
     } else if (query.type === 'live') {
       query.auction_date[Op.between] = [new Date(), new Date(new Date().getTime() + 30 * 60 * 1000)]; // Cars for live bidding (auction date between now and 5 minutes from now)

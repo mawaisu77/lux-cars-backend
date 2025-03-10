@@ -181,6 +181,33 @@ const removeFundsFromUser = async (userId, amount, options = {}) => {
 }
 
 
+const refundUserFunds = async (req, res) => {
+    const userId = req.user.id
+    if(!userId) throw new ApiError(400, 'User ID is required');
+    // getting the user funds from the database
+    const userFunds = await fundsRepository.getUserFunds(userId);
+    // checking if the user funds are found
+    if (!userFunds) {
+        throw new ApiError(404, 'User funds not found');
+    }
+
+    // checking if the user has reached their max used bids and used bid amount is 0
+    if (userFunds.activeBids === userFunds.usedBidAmount === 0) {
+        // refunding the user
+        userFunds.avalaibleBidAmount = 0;
+        userFunds.usedBidAmount = 0;
+        userFunds.activeBids = 0;
+        userFunds.avalaibleBids = 0
+        userFunds.totalDeposits = 0;
+
+        // saving the funds to the database
+        await userFunds.save();
+    } else {
+        throw new ApiError(400, 'You should not have any active bids or used bid amount to get the refund');
+    }
+}
+
+
 const getUserFunds = async (req, res) => {
     // getting the user ID from the request
     const userID = req.user.id;
@@ -195,10 +222,10 @@ const getUserFunds = async (req, res) => {
 }
 
 
-
 module.exports = {
     addFunds,
     getUserFunds,
     addFundsToUser,
-    removeFundsFromUser
+    removeFundsFromUser,
+    refundUserFunds
 }

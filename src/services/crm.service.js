@@ -3,6 +3,7 @@ const  ApiError  = require('../utils/ApiError')
 const { bidExpirationNoteBidCar, auctionWinsNoteBidCar, bidExpirationNoteLocalCar } = require("../utils/CRMNotesMessages")
 const authRepository = require("../repositories/auth.repository")
 const bidCarsRepository = require("../repositories/bidCars.repository")
+const localCarsRepository = require("../repositories/localCars.repository")
 
 const searchContactInCRM = async (email) => {
     const contact = await axiosCRM.get(`/v1/contacts/lookup?email=${email}`)
@@ -108,23 +109,27 @@ const createNotesInCRMContacts = async (contactId, body) => {
 const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) => {
     try{
         const user = await authRepository.findUserById(userID)
-
-        let bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
-        bidCar = bidCar.dataValues
-        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
-        // getting the current bid and the number of bids
-        bidCar.carDetails.currentBid = bidCar.currentBid
-        bidCar.carDetails.noOfBids = bidCar.noOfBids
-        bidCar = (bidCar.carDetails)
-        //console.log("---------------------------------",bidCar)
     
         let noteData
-        if(type == "ExpireBid"){
-            noteData = await bidExpirationNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
-        // }else if(ExpireBidLocal){
-        //     noteData = await bidExpirationNoteLocalCar(user.username, bidPrice, date, bidCar)
-        }else{
-            noteData = await auctionWinsNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+        if(type == "ExpireBid" || type == "AuctionWon"){
+     
+            // getting the bid car details
+            let bidCar = await bidCarsRepository.getBidCarByLotID(lot_id)
+            bidCar = bidCar.dataValues
+            bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+            bidCar.carDetails.currentBid = bidCar.currentBid
+            bidCar.carDetails.noOfBids = bidCar.noOfBids
+            bidCar = (bidCar.carDetails)
+
+            if (type == "ExpireBid") noteData = await bidExpirationNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+            else noteData = await auctionWinsNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
+
+
+        }else if("ExpireBidLocal"){
+
+            let localCar = await localCarsRepository.getCarByID(lot_id)
+            noteData = await bidExpirationNoteLocalCar(user.username, bidPrice, date, localCar)
+
         }
 
         // need contactID, if no contact exist for the User

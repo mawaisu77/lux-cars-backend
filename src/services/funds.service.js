@@ -190,9 +190,8 @@ const refundUserFunds = async (req, res) => {
     if (!userFunds) {
         throw new ApiError(404, 'User funds not found');
     }
-
     // checking if the user has reached their max used bids and used bid amount is 0
-    if (userFunds.activeBids === userFunds.usedBidAmount === 0) {
+    if (Number(userFunds.activeBids) === 0 && Number(userFunds.usedBidAmount) === 0) {
         // refunding the user
         userFunds.avalaibleBidAmount = 0;
         userFunds.usedBidAmount = 0;

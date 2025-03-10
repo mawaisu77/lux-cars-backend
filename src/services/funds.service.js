@@ -201,7 +201,8 @@ const refundUserFunds = async (req, res) => {
         userFunds.totalDeposits = 0;
 
         // saving the funds to the database
-        await userFunds.save();
+        const updatedUserFunds = await userFunds.save();
+        return updatedUserFunds;
     } else {
         throw new ApiError(400, 'You should not have any active bids or used bid amount to get the refund');
     }

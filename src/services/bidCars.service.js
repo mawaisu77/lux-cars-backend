@@ -29,12 +29,16 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
     const filteredBidCars = bidCars.filter(bidCar => {
         const carDetails = JSON.parse(bidCar.carDetails); // Parse the carDetails string
         // Check if each query parameter matches the carDetails
+        // Check if the currentBid is greater than or equal to price_new, return false
+        if (carDetails.price_new != null && carDetails.currentBid > carDetails.price_new || carDetails.currentBid === carDetails.price_new) {
+            return false;
+        }
         return Object.entries(query).every(([key, value]) => {
             // Ensure the key exists in carDetails before comparing
             if (carDetails.hasOwnProperty(key.replace('_from', '').replace('_to', ''))) {
+
                 // Log the key and value for debugging
                 //console.log(`Checking key: ${key}, value: ${value}, carValue: ${carDetails[key.replace('_from', '').replace('_to', '')]}`);
-                
                 // Check for range if key ends with _from or _to
                 if (key.endsWith('_from')) {
                     if(key.replace('_from', '') === "auction_date"){
@@ -69,6 +73,7 @@ const filterBidCars = async(query, limitInt, offsetInt, bidCars) => {
                 
                 return false         
             }
+
             return false; // Key does not exist
         })
     })

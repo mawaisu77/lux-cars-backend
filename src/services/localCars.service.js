@@ -140,6 +140,9 @@ const getAllUnApprovedLocalCars = async (req, res) => {
 const adjustQueryForFilters = async (_query) => {
   var query = { ..._query };
 
+  // Ensure currentBid is less than buyNowPrice
+  query.currentBid[Op.lt] = query.buyNowPrice; 
+
   // Initialize auction_date if any filters are present
   if (query.auction_date) query.auction_date = { [Op.eq]: query.auction_date };
 
@@ -209,6 +212,7 @@ const adjustQueryForFilters = async (_query) => {
     }
   }
   delete query.type
+  
   return query;
 };
 

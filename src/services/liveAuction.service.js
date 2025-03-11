@@ -20,6 +20,7 @@ var timeLeft = 0
 const getTime = async () => {
     return time 
 }
+
 const setIsBonusTime = async (value) => {
     isBonusTime = value
 }
@@ -31,36 +32,6 @@ const setTimeLeft = async (value) => {
 const updateCurrentBidData = async (bidPrice) => {
     carsForAuctionToday[currentCarIndex].currentBid = bidPrice
     carsForAuctionToday[currentCarIndex].noOfBids += 1
-}
-
-const placeBidLive = async (req, res, options = {}) => {
-
-    isBonusTime = false
-    const bidexpired =  await expireBid(req)
-    if(!bidexpired) throw new ApiError(403, "Unable to Expire the recent Active Bid!")
-
-    const updateLocalCar = await updateLocalCarBidData(req)
-    if (!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
-    
-    // sending new bid to client side
-    const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
-    pushNotification("", carMessage, "New Bid On Car", "new-bid", "presence-live-auction")
-
-
-    const bidSaved = await saveBid(req)
-    if(!bidSaved) throw new ApiError(403, "Unable to save the BidData!")
-
-    const title = updateLocalCar.make + " " + updateLocalCar.model
-    const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
-    
-    if(!(bidexpired === parseInt(1))){
-        const userMessageExpireBid = await bidExpirationLocalCar(title, updateLocalCar.id)
-        pushNotification(bidexpired.userID, userMessageExpireBid, "Bid Expiration", "user-notifications", "public-notification")
-    }
-
-    pushNotification(req.user.id, userMessage, "Bid Placement", "user-notifications", "public-notification")
-
-    return updateLocalCar
 }
 
 const printState = async () => {
@@ -75,8 +46,6 @@ const printState = async () => {
 const startAuction = async () => {
     startTimer()
 }
-
-
 
 const startTimer = async () => {
     isLiveAuction = true
@@ -126,12 +95,6 @@ const startTimer = async () => {
     }
 }
 
-
-// const placeBid = async () => {
-//     timerDuration = 10000; // Reset timer to 10 seconds
-//     startTimer(); // Restart the timer after a bid is placed
-// }
-
 const endAucion = async () => {
     pushNotification("", {
         auctionCompleted: "Today's Auction is Complete, Thanks"
@@ -170,7 +133,6 @@ const assignBonusTime = async () => {
 
 // End the bid on a specific Car
 const endBidding = async () => {
-
     biddingActive = false;
     pushNotification("", {
         endAucion: "true",

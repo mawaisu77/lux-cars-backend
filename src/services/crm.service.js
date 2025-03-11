@@ -1,6 +1,12 @@
 const { axiosCRM } = require("../utils/axiosPrivate")
 const  ApiError  = require('../utils/ApiError')
-const { bidExpirationNoteBidCar, auctionWinsNoteBidCar, bidExpirationNoteLocalCar } = require("../utils/CRMNotesMessages")
+const { 
+    bidExpirationNoteBidCar, 
+    auctionWinsNoteBidCar, 
+    bidExpirationNoteLocalCar, 
+    refundRequestNote, 
+    auctionWinsNoteLocalCar 
+} = require("../utils/CRMNotesMessages")
 const authRepository = require("../repositories/auth.repository")
 const bidCarsRepository = require("../repositories/bidCars.repository")
 const localCarsRepository = require("../repositories/localCars.repository")
@@ -125,10 +131,11 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
             else noteData = await auctionWinsNoteBidCar(user.username, lot_id, bidPrice, date, bidCar)
 
 
-        }else if("ExpireBidLocal"){
+        }else if("ExpireBidLocal" || "AuctionWonLocalCar"){
 
             let localCar = await localCarsRepository.getCarByID(lot_id)
-            noteData = await bidExpirationNoteLocalCar(user.username, bidPrice, date, localCar)
+            if(type == "ExpireBidLocal") noteData = await bidExpirationNoteLocalCar(user.username, bidPrice, date, localCar)
+            else noteData = await auctionWinsNoteLocalCar(user.username, bidPrice, date, localCar)
 
         }
 
@@ -152,11 +159,18 @@ const createUserCRMContactNotes = async(userID, lot_id, date, bidPrice, type) =>
 
 }
 
+const createRefundRequestNote = async (userName, refundAmount, contactID) => {
+    const noteData = await refundRequestNote(userName, refundAmount, new Date())
+    const note = await createNotesInCRMContacts(contactID, noteData)
+    return note
+}
+
 
 module.exports = {
     createCRMContact,
     createCRMOpportunity,
     searchContactInCRM,
     createNotesInCRMContacts,
-    createUserCRMContactNotes
+    createUserCRMContactNotes,
+    createRefundRequestNote
 }

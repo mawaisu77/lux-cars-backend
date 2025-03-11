@@ -88,14 +88,57 @@ const bidExpirationNoteLocalCar = async (userName, bidPrice, date, localCar) => 
 
 }
 
+const auctionWinsNoteLocalCar = async (userName, bidPrice, date, localCar) => {
+
+    const noteData = {
+        body: `**USER AUCTION WON** \n${userName} has won the auction, the bid was made for ${bidPrice}$ on ${date}
+        
+    Car Details: 
+        VIN: ${localCar.vin}
+        Year: ${localCar.year}
+        Make: ${localCar.make}
+        Model: ${localCar.model}
+        Transmission: ${localCar.transmission}
+        Mileage: ${localCar.mileage}
+        Description: ${localCar.description}
+        Modification: ${localCar.modification}
+        SignificantFlaws: ${localCar.significantFlaws},
+        CarLocation: ${localCar.carLocation},
+        CarState: ${localCar.carState},
+        Zip: ${localCar.zip},
+        CarForSaleAT: ${localCar.isCarForSale},
+        CarTitledAt: ${localCar.carTitledAt},
+        CarTitledInfo: ${localCar.carTitledInfo},
+        MinPrice: ${localCar.minPrice},
+        TitlesStatus: ${localCar.titlesStatus},
+        Referral: ${localCar.referral},
+        Status: ${localCar.status},
+        Auction Date: ${localCar.auction_date}
+        Current Bid: ${localCar.currentBid}$
+        Number of Bids: ${localCar.noOfBids}
+        LuxCars Webiste Link: ${process.env.LUXCARS_BASE_URL}/local-vehicle-detail/${localCar.id}
+        `
+    }
+
+    return noteData
+    
+}
 
 
+const refundRequestNote = async (userName, refundAmount, date) => {
 
+    const noteData = {
+        body: `**REFUND REQUEST** \n${userName} has requested a refund of ${refundAmount}$ on ${date}`
+    }
 
+    return noteData
+}
 
 
 module.exports = {
     bidExpirationNoteBidCar,
     auctionWinsNoteBidCar,
-    bidExpirationNoteLocalCar
+    bidExpirationNoteLocalCar,
+    refundRequestNote,
+    auctionWinsNoteLocalCar,
 }

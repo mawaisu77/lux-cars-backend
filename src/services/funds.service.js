@@ -4,6 +4,7 @@ const  fundsRepository  = require('../repositories/funds.repository.js')
 const { pushNotification } = require("../services/pusher.service.js")
 const { addFundMessage } = require("../utils/pusherNotifications.js")
 const { processPayment, storePaymentData } = require("../services/payment.service.js")
+const { createRefundRequestNote } = require("../services/crm.service.js")
 const sequelize = require('../config/database.js');
 
 
@@ -190,8 +191,12 @@ const refundUserFunds = async (req, res) => {
     if (!userFunds) {
         throw new ApiError(404, 'User funds not found');
     }
+
     // checking if the user has reached their max used bids and used bid amount is 0
     if (Number(userFunds.activeBids) === 0 && Number(userFunds.usedBidAmount) === 0) {
+
+        createRefundRequestNote(req.user.username, userFunds.totalDeposits, req.user.contactID)
+
         // refunding the user
         userFunds.avalaibleBidAmount = 0;
         userFunds.usedBidAmount = 0;

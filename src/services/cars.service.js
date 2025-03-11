@@ -156,27 +156,18 @@ const getSyncedCarByLotID = async(req, res) => {
     let car
 
     if (lot_id.length === 17) {
-        try{
-            car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
-        }catch(error){
-            throw new ApiError(404, "No data found for car!")
+        
+        car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
+        if (car.data) {
+            car = car.data;
         }
-        if(!car){
-            throw new ApiError(404, "No data found for car!")
-        }
-        car = car.data
 
     }else{
         // First, try to get the car from the API
-        try{
-            car = await axiosPrivate.get(`/api/cars/${lot_id}`);
-        }catch(error){
-            throw new ApiError(404, "No data found for car!")
+        car = await axiosPrivate.get(`/api/cars/${lot_id}`);
+        if (car.data) {
+            car = car.data;
         }
-        if (!car || !car.data) {
-            throw new ApiError(404, "No data found for car!");
-        }
-        car = car.data;
     }
     // Then, check for the bidCar
     const bidCar = await getBidCarByLotID(lot_id);

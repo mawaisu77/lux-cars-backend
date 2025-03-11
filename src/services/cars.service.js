@@ -156,18 +156,26 @@ const getSyncedCarByLotID = async(req, res) => {
     let car
 
     if (lot_id.length === 17) {
-        
-        car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
-        if (car.data) {
-            car = car.data;
+        try{
+            car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
+            if(car.data){
+                car = car.data;
+            }
+        }catch(error){
+            console.log("Failed to fetch car by VIN:", error);
         }
 
     }else{
         // First, try to get the car from the API
-        car = await axiosPrivate.get(`/api/cars/${lot_id}`);
-        if (car.data) {
-            car = car.data;
+        try{
+            car = await axiosPrivate.get(`/api/cars/${lot_id}`);
+            if(car.data){
+                car = car.data;
+            }
+        }catch(error){
+            console.log("Failed to fetch car by Lot ID:", error);
         }
+
     }
     // Then, check for the bidCar
     const bidCar = await getBidCarByLotID(lot_id);

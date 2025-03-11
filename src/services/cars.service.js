@@ -182,12 +182,16 @@ const getSyncedCarByLotID = async(req, res) => {
     const bidCar = await getBidCarByLotID(lot_id);
 
     // If bidCar is found, append its currentBid and noOfBids to the car data
-    if (bidCar) {
+    if (bidCar && car) {
         car.currentBid = bidCar.currentBid;
         car.noOfBids = bidCar.noOfBids;
-    }else{
+    }else if (car && !bidCar) {
         car.currentBid = 0
         car.noOfBids = 0
+    }else if (!car && bidCar) {
+        car = bidCar
+    }else if (!car && !bidCar) {
+        throw new ApiError(404, "No data found for car!")
     }
 
     return car;

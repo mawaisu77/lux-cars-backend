@@ -178,7 +178,7 @@ const getSyncedCarByLotID = async(req, res) => {
 
     }
     // Then, check for the bidCar
-    const bidCar = await getBidCarByLotID(lot_id);
+    const bidCar = await getCarByLotID(req, res);
 
     // If bidCar is found, append its currentBid and noOfBids to the car data
     if (bidCar && car) {
@@ -204,27 +204,6 @@ const getCarByLotID = async (req, res) => {
 
     // getting the bidCar from the bidCars repository
     const bidCar = await getBidCarByLotID(lot_id)
-
-    // if the bidCar is not found then getting the car from the API
-    if(!bidCar){
-        try{
-
-            // 'https://api.apicar.store/api/cars/39778890?site=2'
-            const car = await axiosPrivate.get(`/api/cars/${lot_id}`);
-            if(!car){
-
-                throw new ApiError(404, "No data found for car!")
-            
-            }
-
-            // returning the car and the current bid and the number of bids
-            return {...car.data, currentBid: 0, noOfBids: 0}
-
-        }catch(error){
-            throw new ApiError(404, "No data found for car!")
-        }
-
-    }
 
     // converting the JSON carDetails to String
     bidCar.carDetails = await JSON.parse(bidCar.carDetails)

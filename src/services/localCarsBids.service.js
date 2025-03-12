@@ -42,12 +42,9 @@ const placeBid = async (req, res) => {
             const title = updateLocalCar.make + " " + updateLocalCar.model
             const carMessage = await newBidOnLocalCar(updateLocalCar.currentBid, updateLocalCar.noOfBids, updateLocalCar.auction_date, req.user.id, req.user.username) 
             const userMessage = await bidPlacementLocalCar(req.body.currentBid, title, updateLocalCar.id)
-            
+
             const removeFunds = await removeFundsFromUser(req.user.id, req.body.currentBid, { transaction: transaction })
             if(!removeFunds) throw new ApiError(403, "Unable to remove the Funds from the User!")
-
-            const addFunds = await addFundsToUser(bidexpired.userID, bidexpired.bidPrice, { transaction: transaction })
-            if(!addFunds) throw new ApiError(403, "Unable to add the Funds to the User!")
 
             if(!(bidexpired === parseInt(1))){
                 const userMessageExpireBid = await bidExpirationLocalCar(title, updateLocalCar.id)
@@ -67,6 +64,11 @@ const placeBid = async (req, res) => {
 
             await transaction.commit();
 
+            if (bidexpired && bidexpired != 1) {
+                const addFunds = await addFundsToUser(bidexpired.userID, bidexpired.bidPrice)
+                if(!addFunds) throw new ApiError(403, "Unable to add the Funds to the User!")
+            }
+            
             return updateLocalCar
 
         }catch(error){

@@ -168,7 +168,12 @@ const removeFundsFromUser = async (userId, amount, options = {}) => {
 
     // checking if the user has enough funds
     if (userFunds.avalaibleBidAmount < amount) {
-        throw new ApiError(400, 'Insufficient funds');
+        throw new ApiError(400, 'You need more bid amount to place a bid');
+    }
+
+    // checking if the user has enough bids
+    if (userFunds.avalaibleBids < 1) {
+        throw new ApiError(400, 'You need more bids to place a bid');
     }
 
     // removing the funds from the user

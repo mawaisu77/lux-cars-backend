@@ -42,15 +42,16 @@ const getAllLocalCars = async (_query) => {
     where: {      
       [Op.and]: [
         ...Object.keys(query).map(key => {
-          console.log(key)
           if (key == "minPrice"){
             return [{ [key]: { [Op.not]: null } }]
-          } else if (key == "buyNowPrice"){
+          } 
+          if (key == "buyNowPrice"){
             return [{ [key]: { [Op.not]: null } }]
           }
-          else if (typeof query[key] === 'string' && query[key] !== "" && query[key] !== null) {
-            return { [key]: { [Op.iLike]: query[key].toLowerCase() } };
-          } else if (query[key] !== undefined && query[key] !== null) {
+          if (typeof query[key] === 'string' && query[key] !== "" && query[key] !== null) {
+            return { [key]: { [Op.iLike]: `%${query[key].toLowerCase()}%` } };
+          } 
+          if (query[key] !== undefined && query[key] !== null) {
             return { [key]: query[key] };
           }
           return null;
@@ -65,11 +66,14 @@ const getAllLocalCars = async (_query) => {
       [Op.and]: Object.keys(query).map(key => {
         if (key == "minPrice"){
           return [{ [key]: { [Op.not]: [null, "", ''] } }]
-        } else if (key == "buyNowPrice"){
+        } 
+        if (key == "buyNowPrice"){
           return [{ [key]: { [Op.not]: [null, ""] } }]
-        } else if (typeof query[key] === 'string' && query[key]) {
-          return { [key]: { [Op.iLike]: query[key].toLowerCase() } };
-        } else if (query[key] !== undefined) {
+        } 
+        if (typeof query[key] === 'string' && query[key]) {
+          return { [key]: { [Op.iLike]: `%${query[key].toLowerCase()}%` } };
+        } 
+        if (query[key] !== undefined) {
           return { [key]: query[key] };
         }
         return null;

@@ -140,10 +140,6 @@ const getAllUnApprovedLocalCars = async (req, res) => {
 const adjustQueryForFilters = async (_query) => {
   var query = { ..._query };
 
-  // // Ensure currentBid is less than buyNowPrice
-  // query.currentBid = {};
-  // query.currentBid[Op.lt] = query.buyNowPrice; 
-
   // Initialize auction_date if any filters are present
   if (query.auction_date) query.auction_date = { [Op.eq]: query.auction_date };
 
@@ -220,7 +216,6 @@ const adjustQueryForFilters = async (_query) => {
 const getAllLocalCars = async (req, res) => {
   
   const query = await adjustQueryForFilters(req.query)
-  console.log(query.auction_date)
   const localCars = await localCarsRepository.getAllLocalCars(query);
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");

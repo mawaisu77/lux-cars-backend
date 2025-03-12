@@ -203,17 +203,20 @@ const getCarByLotID = async (req, res) => {
     const { lot_id } = req.query
 
     // getting the bidCar from the bidCars repository
-    const bidCar = await getBidCarByLotID(lot_id)
+    let bidCar = await getBidCarByLotID(lot_id)
+    if(bidCar){
+        // converting the JSON carDetails to String
+        bidCar.carDetails = await JSON.parse(bidCar.carDetails)
 
-    // converting the JSON carDetails to String
-    bidCar.carDetails = await JSON.parse(bidCar.carDetails)
+        // getting the current bid and the number of bids
+        const currentBid = bidCar.currentBid
+        const noOfBids = bidCar.noOfBids
 
-    // getting the current bid and the number of bids
-    const currentBid = bidCar.currentBid
-    const noOfBids = bidCar.noOfBids
-
-    // returning the car and the current bid and the number of bids
-    return {...bidCar.carDetails, currentBid, noOfBids}
+        // returning the car and the current bid and the number of bids
+        return {...bidCar.carDetails, currentBid, noOfBids}
+    }else{
+        return null
+    }
 
 }
 

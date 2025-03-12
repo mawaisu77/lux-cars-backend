@@ -63,22 +63,24 @@ const getAllLocalCars = async (_query) => {
   });
   const totalLength = await LocalCars.count({
     where: {      
-      [Op.and]: Object.keys(query).map(key => {
-        if (key == "minPrice"){
-          return [{ [key]: { [Op.not]: [null, "", ''] } }]
-        } 
-        if (key == "buyNowPrice"){
-          return [{ [key]: { [Op.not]: [null, ""] } }]
-        } 
-        if (typeof query[key] === 'string' && query[key]) {
-          return { [key]: { [Op.iLike]: `%${query[key].toLowerCase()}%` } };
-        } 
-        if (query[key] !== undefined) {
-          return { [key]: query[key] };
-        }
-        return null;
-      }).filter(Boolean),
-    }
+      [Op.and]: [
+        ...Object.keys(query).map(key => {
+          if (key == "minPrice"){
+            return [{ [key]: { [Op.not]: null } }]
+          } 
+          if (key == "buyNowPrice"){
+            return [{ [key]: { [Op.not]: null } }]
+          }
+          if (typeof query[key] === 'string' && query[key] !== "" && query[key] !== null) {
+            return { [key]: { [Op.iLike]: `%${query[key].toLowerCase()}%` } };
+          } 
+          if (query[key] !== undefined && query[key] !== null) {
+            return { [key]: query[key] };
+          }
+          return null;
+        }).filter(Boolean),
+      ]
+    },
   });
   return { cars, totalLength };
 };

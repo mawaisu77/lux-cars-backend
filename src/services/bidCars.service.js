@@ -2,7 +2,7 @@ const bidCarsRepository = require('../repositories/bidCars.repository.js');
 const ApiError = require('../utils/ApiError.js');
 const { saveBid, expireBid, checkUserCanBid } = require('./bids.service.js');
 const { addFundsToUser, removeFundsFromUser } = require('../services/funds.service.js')
-const { getCarByLotID } = require('./cars.service.js')
+const { getSyncedCarByLotID } = require('./cars.service.js')
 const sequelize = require('../config/database.js');
 const { mapCarDetails } = require('../utils/carDetailsMap.js');
 const { pushNotification } = require("../services/pusher.service.js")
@@ -154,7 +154,7 @@ const createBidCar = async (req, res, options = {}) => {
     req.query.lot_id = lot_id
 
     // getting car from third party API using lot_id        
-    var carDetails = await getCarByLotID(req)
+    var carDetails = await getSyncedCarByLotID(req)
     if(!carDetails){
         throw new ApiError(404, "Requested car not found!")
     }

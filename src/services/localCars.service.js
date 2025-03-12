@@ -141,6 +141,7 @@ const adjustQueryForFilters = async (_query) => {
   var query = { ..._query };
 
   // Ensure currentBid is less than buyNowPrice
+  query.currentBid = {};
   query.currentBid[Op.lt] = query.buyNowPrice; 
 
   // Initialize auction_date if any filters are present

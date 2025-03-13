@@ -147,14 +147,16 @@ const updateLocalCarBidData = async (req, res, options = {}) => {
  
         const updateLocalCar = await localCar.save(options)
         if(!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
-        if (Number(localCar.buyNowPrice) && Number(currentBid) >= Number(localCar.buyNowPrice)) {
-            // CRM Note to be created here for Local Cars Sold
-            let note
-            const type = "AuctionWonLocalCar"
-            try{
-                note = await CRMService.createUserCRMContactNotes(req.user.id, localCarID, new Date(), currentBid, type)
-            }catch(error){
-                console.log(error.response)
+        if(req.query.type != "live"){
+            if (Number(localCar.buyNowPrice) && Number(currentBid) >= Number(localCar.buyNowPrice)) {
+                // CRM Note to be created here for Local Cars Sold
+                let note
+                const type = "AuctionWonLocalCar"
+                try{
+                    note = await CRMService.createUserCRMContactNotes(req.user.id, localCarID, new Date(), currentBid, type)
+                }catch(error){
+                    console.log(error.response)
+                }
             }
         }
 

@@ -2,6 +2,8 @@ const localCarsRepository = require("../repositories/localCars.repository.js");
 
 const { pushNotification } = require("../services/pusher.service.js")
 const { bidPlacementLocalCar, newBidOnLocalCar, bidExpirationLocalCar } = require("../utils/pusherNotifications.js")
+const localCarsBidsRepository = require("../repositories/localCarsBids.repository.js")
+const CRMService = require("../services/crm.service.js")
 const ApiError = require("../utils/ApiError");
 
 
@@ -52,6 +54,24 @@ const startTimer = async () => {
     timeLeft = timerDuration;
     let exit = false
     const interval = setInterval( async () => {
+        if (carsForAuctionToday[currentCarIndex].buyNowPrice && Number(carsForAuctionToday[currentCarIndex].currentBid) >= Number(carsForAuctionToday[currentCarIndex].buyNowPrice)) {
+            await endBidding();
+            clearInterval(interval);
+            // Move to the next car if there are more cars
+            if (currentCarIndex < carsForAuctionToday.length - 1) {
+                console.log("next car")
+                await moveToNextCar()
+                exit = true
+                return
+            }
+            else{
+                currentCarIndex++
+                await endAucion()
+                clearInterval(interval);
+                exit = true
+                return
+            }
+        }
         if (!biddingActive) {
             clearInterval(interval);
         } else {
@@ -138,6 +158,21 @@ const endBidding = async () => {
         endAucion: "true",
         message: "Auction completed on this Car"
     }, "Auction-end-on-car", "end-auction", "presence-live-auction")
+    createCRMNoteForHighestBidder(carsForAuctionToday[currentCarIndex].id)
+}
+
+const createCRMNoteForHighestBidder = async (localCarID) => {
+    // CRM Note for the user who has the highest bid
+    const activeBid = await localCarsBidsRepository.getActiveBidByLocalCarID(localCarID);
+    if (activeBid) {
+        try{
+            const note = await CRMService.createUserCRMContactNotes(activeBid.userID, localCarID, new Date(), activeBid.bidPrice, "AuctionWonLocalCar");
+        }catch(error){
+            console.log(error)
+        }
+    } else {
+        console.log("No highest bidder found for the current car.");
+    }
 }
 
 

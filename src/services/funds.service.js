@@ -140,6 +140,7 @@ const addFunds = async (req, res) => {
 
 }
 
+
 const addFundsToUser = async (userId, amount, options = {}) => {
     // getting the user funds from the database
     const userFunds = await fundsRepository.getUserFunds(userId);
@@ -149,14 +150,15 @@ const addFundsToUser = async (userId, amount, options = {}) => {
     }
 
     // adding the funds to the user
-    userFunds.avalaibleBidAmount += amount;
-    userFunds.usedBidAmount -= amount;
-    userFunds.activeBids -= 1;
-    userFunds.avalaibleBids += 1;
+    userFunds.avalaibleBidAmount = Number(userFunds.avalaibleBidAmount) + Number(amount);
+    userFunds.usedBidAmount = Number(userFunds.usedBidAmount) - Number(amount);
+    userFunds.activeBids = Number(userFunds.activeBids) - 1;
+    userFunds.avalaibleBids = Number(userFunds.avalaibleBids) + 1;
 
     // saving the funds to the database
     return await userFunds.save(options);
 }
+
 
 const removeFundsFromUser = async (userId, amount, options = {}) => {
     // getting the user funds from the database
@@ -167,20 +169,20 @@ const removeFundsFromUser = async (userId, amount, options = {}) => {
     }
 
     // checking if the user has enough funds
-    if (userFunds.avalaibleBidAmount < amount) {
+    if (Number(userFunds.avalaibleBidAmount) < Number(amount)) {
         throw new ApiError(400, 'You need more bid amount to place a bid');
     }
 
     // checking if the user has enough bids
-    if (userFunds.avalaibleBids < 1) {
+    if (Number(userFunds.avalaibleBids) < 1) {
         throw new ApiError(400, 'You need more bids to place a bid');
     }
 
     // removing the funds from the user
-    userFunds.avalaibleBidAmount -= amount;
-    userFunds.usedBidAmount += amount;
-    userFunds.activeBids += 1;
-    userFunds.avalaibleBids -= 1;
+    userFunds.avalaibleBidAmount = Number(userFunds.avalaibleBidAmount) - Number(amount);
+    userFunds.usedBidAmount = Number(userFunds.usedBidAmount) + Number(amount);
+    userFunds.activeBids = Number(userFunds.activeBids) + 1;
+    userFunds.avalaibleBids = Number(userFunds.avalaibleBids) - 1;
     
     // saving the funds to the database
     return await userFunds.save(options);

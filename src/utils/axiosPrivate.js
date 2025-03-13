@@ -23,11 +23,8 @@ const axiosClearVin = axios.create({
 
 axiosClearVin.interceptors.request.use(
     function (config) {
-        const bearerToken = process.env.CLEARVIN_BEARER_TOKEN; // Add this line
-        config.headers['Authorization'] = `Bearer ${bearerToken}`; // Add this line
         config.headers['Content-Type'] = 'application/json';
         return config;
-
     },
     function (error) {
         throw new ApiError(404, "Data not found!")

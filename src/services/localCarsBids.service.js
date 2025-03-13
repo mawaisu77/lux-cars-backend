@@ -90,7 +90,7 @@ const saveBid = async (req, res, options = {}) => {
     const bidData = {
         userID: userID,
         localCarID: localCarID,
-        bidPrice: currentBid,
+        bidPrice: Number(currentBid),
     }
 
     // saving the bid in the DB
@@ -141,13 +141,13 @@ const updateLocalCarBidData = async (req, res, options = {}) => {
     var localCar = await localCarsRepository.getCarByID(localCarID)
     if (!localCar) throw new ApiError(404, "No Local Car found against the provided ID!")
 
-    if (localCar.currentBid < currentBid){
-        localCar.currentBid = currentBid
+    if (Number(localCar.currentBid) < Number(currentBid)){
+        localCar.currentBid = Number(currentBid)
         localCar.noOfBids += 1
  
         const updateLocalCar = await localCar.save(options)
         if(!updateLocalCar) throw new ApiError(403, "Unable to Update the BidData on LocalCar!")
-        if (localCar.buyNowPrice && currentBid >= localCar.buyNowPrice) {
+        if (Number(localCar.buyNowPrice) && Number(currentBid) >= Number(localCar.buyNowPrice)) {
             // CRM Note to be created here for Local Cars Sold
             let note
             const type = "AuctionWonLocalCar"

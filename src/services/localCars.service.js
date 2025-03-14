@@ -77,6 +77,9 @@ const getUserAllLocalCars = async (req, res) => {
   if (localCars.length === 0) {
     throw new ApiError(404, "No cars found!");
   }
+  localCars.forEach(car => {
+    car.dataValues.title = `${car.make} ${car.model} ${car.year}`;
+  });
   return {
     cars: localCars,
   };

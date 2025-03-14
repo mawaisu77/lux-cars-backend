@@ -91,6 +91,7 @@ const getAllOffersOfUser = async (req, res) => {
   const offersWithCarDetails = await Promise.all(
     Object.values(carOffersMap).map(async (carOffer) => {
       const carDetail = await localCarsRepository.getCarByID(carOffer.offer.localCarID);
+      carDetail.dataValues.title = `${carDetail.make} ${carDetail.model} ${carDetail.year}`;
       return {
         carData: carDetail,
         offer: carOffer.offer,

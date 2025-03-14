@@ -116,9 +116,12 @@ const getUsersSavedLocalCars = async (req, res) => {
     const userID = req.user.id;
     if (!userID) throw new ApiError(401, "User does not exist against the provied UserID")
     const savedCarsLots = await savedCarsRepository.getUsersSavedCars(userID);
-    var savedCars = []
+    let savedCars = []
     if (!savedCarsLots) return savedCars
     savedCars = await localCarsService.getLocalCarsByIDs(savedCarsLots.localCarsID)
+    savedCars.forEach(car => {
+        car.dataValues.title = `${car.make} ${car.model} ${car.year}`;
+    });
     return savedCars
 }
 

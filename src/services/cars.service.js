@@ -159,7 +159,7 @@ const getSyncedCarByLotID = async(req, res) => {
         try{
             car = await axiosPrivate.get(`/api/cars/vin/all?vin=${lot_id}`);
             if(car.data){
-                car = car.data;
+                car = car.data[0];
             }
         }catch(error){
             console.log("Failed to fetch car by VIN:", error);
@@ -192,6 +192,11 @@ const getSyncedCarByLotID = async(req, res) => {
     }else if (!car && !bidCar) {
         throw new ApiError(404, "No data found for car!")
     }
+
+    const {make, model, year} = car
+    const estimatedPrice = await calculateEstimatedPriceForTheVehicle(make, model, year)
+    car.estimatedPrice = estimatedPrice.estimatedPrice
+    car.estimatedPricesRange = estimatedPrice.estimatedPricesRange
 
     return car;
 
@@ -262,20 +267,25 @@ const carsMakesModels = async (req, res) => {
 
 const getHistoryCarsData = async (make, model, year, size = 30) => {
 
-    const year_from = parseInt(year) - 2
-    const year_to = parseInt(year) + 2
+    const year_from = parseInt(year)
+    const year_to = parseInt(year)
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const auction_date_from = oneYearAgo.toISOString().split('T')[0];
 
     // 'https://api.apicar.store/api/history-cars?make=Acura&model=CSX'
+    try{
     let cars = await axiosPrivate.get(`/api/history-cars?make=${make}&model=${model}&year_from=${year_from}&year_to=${year_to}&size=${size}&auction_date_from=${auction_date_from}`);
 
-    // mapping the cars to the required format
-    cars = await mapCarDetails(cars.data.data)
+        // mapping the cars to the required format
+        cars = await mapCarDetails(cars.data.data)
 
-    return cars
+        return cars
 
+    }catch(error){
+        console.log(error)
+        return []
+    }   
 
 }
 
@@ -290,16 +300,11 @@ const getHistoryCars = async (req, res) => {
 
 }
 
-const calculateEstimatedPriceForTheVehicle = async (req, res) => {
+const calculateEstimatedPriceForTheVehicle = async (make, model, year) => {
 
-    const car = await getCarByLotID(req)
 
-    const { make, model, year, size = 30} = car
+    let cars = await getHistoryCarsData(make, model, year)
 
-    //console.log("Make : Model : Year => ", make, " : ", model, " : ", year)
-
-    let cars = await getHistoryCarsData(make, model, year, size)
-    //console.log(cars)
     // calculating the average purchase price
     let purchasePrices = cars.map((car) => {
         if (car.sale_history && car.sale_history.length > 0) {
@@ -309,15 +314,16 @@ const calculateEstimatedPriceForTheVehicle = async (req, res) => {
         }
     });
     //console.log(purchasePrices)
-    let minPurchasePrice = Math.min(...purchasePrices);
-    let maxPurchasePrice = Math.max(...purchasePrices);
+    let sortedPurchasePrices = purchasePrices.sort((a, b) => a - b);
+    let minPurchasePrice = Math.floor(sortedPurchasePrices.slice(0, 15).reduce((acc, curr) => acc + curr, 0) / 15);
+    let maxPurchasePrice = Math.floor(sortedPurchasePrices.slice(-15).reduce((acc, curr) => acc + curr, 0) / 15);
     let totalPurchasePrice = purchasePrices.reduce((acc, curr) => acc + curr, 0);
-    let averagePurchasePrice = totalPurchasePrice / purchasePrices.length;
-    const purchasePriceRange = `${minPurchasePrice} - ${maxPurchasePrice}`;
+    let estimatedPrice = Math.floor(totalPurchasePrice / purchasePrices.length);
+    const estimatedPricesRange = `${minPurchasePrice} - ${maxPurchasePrice}`;
 
     return {
-        purchasePriceRange,
-        averagePurchasePrice
+        estimatedPricesRange,
+        estimatedPrice
     }
 }
 
